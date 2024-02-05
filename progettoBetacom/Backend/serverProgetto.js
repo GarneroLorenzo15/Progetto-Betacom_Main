@@ -13,21 +13,6 @@ const connection = mysql.createConnection({
 
 app.set('view engine', 'ejs');
 
-/* function inserisciID(){
-    for (let i = 0; i < 30; i++){
-        if(i === 1){
-            console.log("posto occupato: " + i)
-        }else{
-            connection.query('INSERT INTO prgettobetacomdb.utente (idu) VALUES (?)' , [i], (err, res) =>{
-                if(err) throw err;
-                console.log("idu aggiornato con successo: " + i + res)
-            })
-        }
-    } 
-}
-
-inserisciID();
- */
 
 app.get('/', (req, res) =>{
     res.send('works');
@@ -37,13 +22,13 @@ app.get('/', (req, res) =>{
     for(let i = 0; i < 27; i++){
         connection.query('SELECT * FROM prgettobetacomdb.utente (nome) VALUES (?)', [i],  (err, result) =>{
             if(err) throw err;
-            res.sendFile('../Frontend/views/utente', {utente: result});
+            res.render('../Frontend/views/utente', {utente: result});
         })
     }
     res.sendFile('../Frontend/views/utente', {utente: result});
-}); */
+});
 
-
+ */
 app.listen(port, () =>{
     console.log(`Server is running on port ${port}`)
 });;
