@@ -87,7 +87,7 @@ app.get('/api/eventi/delete/:id', (req, res) => {
     const eventid = req.params.id;
     connection.query('DELETE FROM evento WHERE id_Evento = ?', [eventid], (err, rows) => {
         if (err) throw err;
-        res.json({message: `l'evento ${eventid} è stato rimosso`});
+        res.json({message: `l'evento ${eventid} è stato rimosso`}); 
     });
 });
 
@@ -107,20 +107,43 @@ app.post('/api/eventi/add', (req, res) => {
 
 //proposte
 
-
-
 /**
  * Returns a list of all propostas in the database
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
 app.get('/api/proposte', (req, res) => {
-    connection.query('SELECT * FROM proposta', (err, rows) => {
+    connection.query('SELECT * FROM proposte', (err, rows) => {
         if (err) throw err;
         res.json(rows);
     })
 });
 
+
+/**
+ * Deletes a proposta from the database based on the specified proposta ID
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.get('/api/proposte/delete/:id', (req, res) => {
+    const proposteid = req.params.id;
+    connection.query('DELETE FROM proposte WHERE id_Proposta = ?', [proposteid],  (err, rows) => {
+        if (err) throw err;
+        res.json({message: `la proposta ${proposteid} è stato rimosso`});
+    })
+});
+
+/**
+ * Adds a new proposta to the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.post('/api/proposte/add', (req, res) => {
+    connection.query('INSERT INTO proposte (id_Proposta, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)',[5, 'piscina', '2024-04-21', 'Luogo molto divertente ma anche rilassante.', '', ''], (err, rows) => {
+        if (err) throw err; 
+        res.json({message: 'proposta inserita correttamente!'});
+    });
+});
 
 
 
