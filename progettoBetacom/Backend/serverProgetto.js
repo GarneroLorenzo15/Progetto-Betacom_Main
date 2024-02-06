@@ -35,6 +35,19 @@ app.get('/api/utenti', (req, res) => {
 
 
 /**
+ * Returns a list of all users in the database who are available
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.get('/api/utenti/partecipanti', (req, res) =>{
+    connection.query('SELECT * FROM utente WHERE disponibile = ?',[1],  (err, rows) =>{
+        if(err) throw err;
+        res.json(rows);
+    });
+});
+
+
+/**
  * Deletes a user from the database based on the specified user ID
  * @param {Object} req - The request object
  * @param {Object} res - The response object
