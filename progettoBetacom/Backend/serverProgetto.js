@@ -30,6 +30,13 @@ app.get('/api/utenti', (req, res) => {
     });
 });
 
+app.get('api/addUtente', (req, res) => {
+    connection.query('INSERT INTO utente (nome, cognome, email, password) VALUES (?,?,?,?)', [req.query.nome, req.query.cognome, req.query.email, req.query.password], (err, rows)=>{
+        if(err) throw err;
+        res.json(rows);
+    });
+});
+
 app.get('/api/eventi', (req, res) => {
     connection.query('SELECT * FROM evento', (err, rows) => {
         if (err) throw err;
