@@ -6,9 +6,9 @@ import About from './components/About.vue';
 Vue.use(VueRouter);
 
 const routes = [
-    {path: '/login', component: Login},
+    /* { path: '/login', component: Login}, */
     { path: '/', component: Home },
-    { path: '/utenti', component: About }
+    /* { path: '/utenti', component: About } */
 ];
 
 const router = new VueRouter({
