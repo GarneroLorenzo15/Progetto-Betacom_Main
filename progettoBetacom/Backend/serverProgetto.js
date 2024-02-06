@@ -19,10 +19,13 @@ const connection = mysql.createConnection({
 });
 
 
-app.get('/', (req, res) =>{
-    res.send('works');
-});;
+//utenti
 
+/**
+ * Returns a list of all users in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.get('/api/utenti', (req, res) => {
     connection.query('SELECT * FROM utente', (err, rows) => {
         if (err) throw err;
@@ -31,14 +34,27 @@ app.get('/api/utenti', (req, res) => {
 });
 
 
+/**
+ * Deletes a user from the database based on the specified user ID
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.get('/api/utenti/delete/:id', (req, res) => {
-    const userid = req.params.id;
+    const userid = req.params.id; // extract the user ID from the request parameter
+
     connection.query('DELETE FROM utente WHERE id_Utente = ?', [userid], (err, rows) => {
         if (err) throw err;
         res.json({message: `l'utente ${userid} è stato rimosso`});
     });
 });
 
+
+
+/**
+ * Adds a new user to the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.post('/api/utenti/add', (req, res) => {
     connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password) VALUES (?, ?, ?, ?, ?)',[1, 'Sandro', 'Maffiodo', 's.maffiodo', 'sandro'], (err, rows)=>{
         if(err) throw err;
@@ -46,12 +62,27 @@ app.post('/api/utenti/add', (req, res) => {
     });
 });
 
+
+
+//eventi
+
+/**
+ * Returns a list of all events in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.get('/api/eventi', (req, res) => {
     connection.query('SELECT * FROM evento', (err, rows) => {
         if (err) throw err;
         res.json(rows);
     });
 });
+
+/**
+ * Deletes a user from the database based on the specified user ID
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.get('/api/eventi/delete/:id', (req, res) => {
     const eventid = req.params.id;
     connection.query('DELETE FROM evento WHERE id_Evento = ?', [eventid], (err, rows) => {
@@ -59,6 +90,13 @@ app.get('/api/eventi/delete/:id', (req, res) => {
         res.json({message: `l'evento ${eventid} è stato rimosso`});
     });
 });
+
+
+/**
+ * Adds a new event to the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.post('/api/eventi/add', (req, res) => {
     connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)',[5, 'piscina', '2024-04-21', 'Luogo molto divertente ma anche rilassante.', '', ''], (err, rows) => {
         if (err) throw err;
@@ -67,6 +105,32 @@ app.post('/api/eventi/add', (req, res) => {
 });
 
 
+//proposte
+
+
+
+/**
+ * Returns a list of all propostas in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.get('/api/proposte', (req, res) => {
+    connection.query('SELECT * FROM proposta', (err, rows) => {
+        if (err) throw err;
+        res.json(rows);
+    })
+});
+
+
+
+
+/**
+ * Starts the server and listens for incoming requests
+ */
 app.listen(port, () =>{
+    /**
+   * Logs a message to the console indicating that the server is running on the specified port
+   * @param {number} port - The port on which the server is listening
+   */
     console.log(`Server is running on port ${port}`)
 });;
