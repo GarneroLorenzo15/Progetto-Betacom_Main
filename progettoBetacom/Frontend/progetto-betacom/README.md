@@ -1,4 +1,4 @@
-# progetto-betacom-gioco
+# progetto-betacom
 
 ## Project setup
 ```
