@@ -8,7 +8,9 @@ module.exports = {
     'eslint:recommended'
   ],
   parserOptions: {
-    parser: '@babel/eslint-parser'
+    babelOptions: {
+      configFile: './babel.config.js', // Percorso del file di configurazione Babel
+    },
   },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
