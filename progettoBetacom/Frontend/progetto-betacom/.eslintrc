@@ -1,6 +1,0 @@
-{
-    "root": true,
-    "parser": "@babel/eslint-parser",
-    "plugins": ["@babel"],
-    "extends": ["plugin:@babel/recommended"]
-}
