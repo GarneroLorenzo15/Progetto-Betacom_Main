@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/require-v-for-key -->
 <template>
   <div id="app">
     <div>
@@ -8,6 +9,11 @@
       <button @click="count--">-</button>
       <button @click="count += 10">+10</button>
       <button @click="count -= 10">-10</button>
+    </div>
+    <div>
+      <ul>
+        <li class="space" v-for="(value, index) in collegaBetacom">{{ index + 1 }}: {{ value.nome }}, {{ value.cognome }}, {{ value.email }}, {{ value.password }} </li>
+      </ul>
     </div>
     <button @click="count = 0">reset</button>
 <!--     <button @click="isBool()">show secondPage</button> -->
@@ -24,6 +30,19 @@ export default {
     return {
       bool: false,
       count: 0,
+      collegaBetacom:[{
+        nome: "Lorenzo",
+        cognome: "Garnero",
+        email: "l.garnero@gmail",
+        password: "*******"
+      },
+      {
+        nome: "Lorenzo",
+        cognome: "Garnero",
+        email: "l.garnero@gmail",
+        password: "*******"
+      }
+    ],
       isRed(){
         if(this.count >= 1){
           const rowHtml = `<div style="color:red;">${this.count}</div>`;
@@ -57,5 +76,9 @@ a {
 
 .center {
   text-align: center;
+}
+
+.space{
+  width: 100%;
 }
 </style>
