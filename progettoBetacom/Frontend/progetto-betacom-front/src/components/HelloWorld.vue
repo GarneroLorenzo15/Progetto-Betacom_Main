@@ -16,8 +16,10 @@
 </template>
 
 <script>
+
 export default {
   name: "App",
+
   data() {
     return {
       bool: false,
@@ -31,10 +33,7 @@ export default {
           return rowHtml;
         }
       },
-      /* isBool(){
-        this.bool =!this.bool;
-        console.log(this.bool);
-      } */
+      
     };
   },
 };

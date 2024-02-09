@@ -11,6 +11,7 @@
 import HelloWorld from './components/HelloWorld.vue';
 import SecondPage from './components/SecondPage.vue';
 
+
 export default {
   name: 'App',
   components: {
