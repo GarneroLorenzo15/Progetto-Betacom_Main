@@ -1,22 +1,20 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
+  <figure>
+    <img alt="Vue logo" src="./assets/logo.png">
+  </figure>
+  
 
-  <nav>
-    <router-link to="/"><HelloWorld msg="checked"/>Hello Word</router-link>
-    <router-link to="/secondPage"><SecondPage msg ="checked"/>Second Page</router-link>
-  </nav>
+  <Navbar/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-import SecondPage from './components/SecondPage.vue';
+import Navbar from './components/Navbar.vue';
 
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
-    SecondPage
+    Navbar,
   }
 }
 </script>
@@ -31,4 +29,8 @@ export default {
   margin-top: 60px;
 }
 
+figure{
+  display: flex;
+  justify-content: center;
+}
 </style>
