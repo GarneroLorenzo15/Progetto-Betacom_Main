@@ -1,14 +1,14 @@
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
   <div id="app">
-    <div class="">
+    <div class="w-full h-96 bg-red-500">
       <p :title="isRed()"> counter: <span v-html="isRed()"></span></p>
     </div>
     <div v-if="count < 10 && count > -10" >
-      <button @click="count++">+</button>
-      <button @click="count--">-</button>
-      <button @click="count += 10">+10</button>
-      <button @click="count -= 10">-10</button>
+      <button @click="count++"><p>+</p></button>
+      <button @click="count--"><p>-</p></button>
+      <button @click="count += 10"><p>+10</p></button>
+      <button @click="count -= 10"><p>-10</p></button>
     </div>
     <div>
       <ul>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import '@/assets/css/app.css'
 
 export default {
   name: "App",
@@ -77,6 +78,19 @@ a {
   text-align: center;
 }
 
+button{
+  border: 2px solid black;
+  border-radius: 25px;
+  padding-left: 30px;
+  padding-right: 30px;
+  background-color: gray;
+  margin: 10px;
+}
+
+button p{
+  display: flex;
+  justify-content: center;
+}
 .space{
   width: 100%;
 }

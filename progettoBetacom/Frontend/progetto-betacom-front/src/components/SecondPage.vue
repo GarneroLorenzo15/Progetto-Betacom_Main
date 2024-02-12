@@ -15,6 +15,7 @@
 
 <script setup>
 import {ref} from 'vue'
+import '@/assets/css/app.css'
 
 
     const count = ref(0);

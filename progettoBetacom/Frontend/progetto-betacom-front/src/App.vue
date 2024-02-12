@@ -1,5 +1,7 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
+  <div class="w-full flex items-center">
+    <img class="flex justify-center" alt="Vue logo" src="./assets/logo.png">
+  </div>
 
   <nav>
     <router-link to="/"><HelloWorld msg="checked"/>Hello Word</router-link>
@@ -8,6 +10,7 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue';
+import '@/assets/css/app.css';
 /* import SecondPage from './components/SecondPage.vue'; */
 
 
