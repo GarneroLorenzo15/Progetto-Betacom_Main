@@ -2,8 +2,8 @@
   <img alt="Vue logo" src="./assets/logo.png">
 
   <nav>
-    <router-link to="/"><HelloWorld msg="checked"/></router-link>
-    <router-link to="/secondPage"><SecondPage msg ="checked"/></router-link>
+    <router-link to="/"><HelloWorld msg="checked"/>Hello Word</router-link>
+    <router-link to="/secondPage"><SecondPage msg ="checked"/>Second Page</router-link>
   </nav>
 </template>
 

@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/require-v-for-key -->
 <template>
   <div id="app">
-    <div>
+    <div class="">
       <p :title="isRed()"> counter: <span v-html="isRed()"></span></p>
     </div>
     <div v-if="count < 10 && count > -10" >
