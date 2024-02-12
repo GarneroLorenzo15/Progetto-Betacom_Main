@@ -51,8 +51,7 @@ export default {
           const rowHtml = `<div style="color:blue">${this.count}</div>`;
           return rowHtml;
         }
-      },
-      
+      }, 
     };
   },
 };

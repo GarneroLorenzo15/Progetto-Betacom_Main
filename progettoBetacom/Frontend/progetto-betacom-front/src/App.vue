@@ -3,20 +3,19 @@
 
   <nav>
     <router-link to="/"><HelloWorld msg="checked"/>Hello Word</router-link>
-    <router-link to="/secondPage"><SecondPage msg ="checked"/>Second Page</router-link>
-  </nav>
+<!--   -->  </nav>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue';
-import SecondPage from './components/SecondPage.vue';
+/* import SecondPage from './components/SecondPage.vue'; */
 
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    SecondPage
+    /* SecondPage */
   }
 }
 </script>
