@@ -1,24 +1,22 @@
 <template>
-  <div class="w-full flex items-center">
-    <img class="flex justify-center" alt="Vue logo" src="./assets/logo.png">
-  </div>
+  <img alt="Vue logo" src="./assets/logo.png">
 
   <nav>
     <router-link to="/"><HelloWorld msg="checked"/>Hello Word</router-link>
-<!--   -->  </nav>
+    <router-link to="/secondPage"><SecondPage msg ="checked"/>Second Page</router-link>
+  </nav>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue';
-import '@/assets/css/app.css';
-/* import SecondPage from './components/SecondPage.vue'; */
+import SecondPage from './components/SecondPage.vue';
 
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    /* SecondPage */
+    SecondPage
   }
 }
 </script>
@@ -32,4 +30,5 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 </style>

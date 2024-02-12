@@ -1,12 +1,11 @@
-/* import Vue from 'vue';
-import Router from 'vue-router';
+/* import Vue from 'vue'; */
+import { createMemoryHistory, createRouter} from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue';
 import SecondPage from './components/SecondPage.vue';
 
 
 
-export default new Router({
-  routes: [
+ const routes = [
     {
       path: '/',
       name: 'home',
@@ -17,8 +16,11 @@ export default new Router({
       name: 'secondPage',
       component: SecondPage
     },
-    
-    // Altre definizioni di rotte
-  ]
-});
- */
+  ]; 
+
+  const router = createRouter({
+    history: createMemoryHistory(process.env.BASE_URL),
+    routes,
+  });
+
+  export default router;

@@ -59,8 +59,4 @@ import '@/assets/css/app.css'
 <style scoped>
 
 
-.back{
-  background-color: red;
-}
-
 </style>
