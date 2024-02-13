@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
-    <div>{{ count }}</div>
-    <div>
-      <button @click="count++">++</button>
+    <div class="container d-flex justify-content-center">{{ this.count }}</div>
+    <div class="d-flex justify-content-center">
+      <button @click="increment">+</button>
     </div>
   </div>
 </template>
@@ -12,10 +12,6 @@ export default {
   name: "HelloWorld",
   props: {
     msg: String,
-  },
-  count: 0,
-  incrrement() {
-    this.count++;
   },
 };
 </script>
