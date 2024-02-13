@@ -30,9 +30,9 @@
     </div>
     <div class="container d-flex justify-content-center">
       <div class="row" style="width: 50%">
-        <button class="w-full mb-3">
-          <router-link to="/eventi">Login</router-link>
-        </button>
+        <router-link to="/eventi">
+          <button class="w-full mb-3">Login</button>
+        </router-link>
       </div>
     </div>
     <div class="container my-5 d-flex justify-content-center text-white">
