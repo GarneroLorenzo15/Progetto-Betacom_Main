@@ -1,10 +1,16 @@
 <template>
-  <nav class="container d-flex justify-content-center my-5">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
   <router-view />
 </template>
+
+<script></script>
+
+<style>
+body {
+  background-image: linear-gradient(to top, #034ea1, #f38120);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>
 
 <!-- <script>
 import "../public/main.css";

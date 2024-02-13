@@ -1,11 +1,6 @@
 <template>
   <div class="home">
-    <div class="container d-flex justify-content-center">
-      <img class="" alt="Vue logo" src="../assets/logo.png" />
-    </div>
-    <div>
-      <HelloWorld msg="Welcome to Your Vue.js App" />
-    </div>
+    <HelloWorld></HelloWorld>
   </div>
 </template>
 
