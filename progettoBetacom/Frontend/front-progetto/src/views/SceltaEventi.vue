@@ -24,7 +24,7 @@
             <h5 class="card-title">{{ item.titolo }}</h5>
             <div class="d-flex justify-content-end">
               <div class="row">
-                <router-link to="/evento">
+                <router-link :to="'/eventi/' + item.id_Evento">
                   <button class="">VEDI DETTAGLIO</button>
                 </router-link>
               </div>

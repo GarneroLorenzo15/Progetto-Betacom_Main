@@ -3,14 +3,11 @@
     <div class="container my-5">
       <div class="row">
         <figure>
-          <img src="" alt="immagine evento" />
+          <img :src="eventDetails[0].immagine_Evento" alt="immagine evento" />
         </figure>
-        <h2>TITOLO EVENTO</h2>
+        <h2>{{ eventDetails[0].titolo }}</h2>
         <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
-          nesciunt voluptatem maxime molestias distinctio deleniti laborum harum
-          explicabo voluptates aut! Quas, nobis eos unde earum recusandae
-          facilis soluta ullam perspiciatis.
+          {{ eventDetails[0].descrizione }}
         </p>
       </div>
       <div class="d-flex justify-content-center">
@@ -22,11 +19,33 @@
 </template>
 <script>
 import NavBarBlue from "@/components/NavBarBlue.vue";
+import apiService from "@/services/apiService";
 
 export default {
   name: "EventoDetaglio",
   components: {
     NavBarBlue,
+  },
+  data() {
+    return {
+      eventDetails: [{}],
+    };
+  },
+  mounted() {
+    const id = this.$route.params.id;
+    console.log(id);
+    this.fetchEventsDetailsFromApi(id);
+  },
+  methods: {
+    async fetchEventsDetailsFromApi(id) {
+      try {
+        const response = await apiService.fetchEventDetails(id);
+        console.log(response.data);
+        this.eventDetails = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
 };
 </script>

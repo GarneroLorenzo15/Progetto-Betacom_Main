@@ -16,7 +16,7 @@ const routes = [
     component: () => import("../views/SceltaEventi.vue"), //dynamic import
   },
   {
-    path: "/evento",
+    path: "/eventi/:id",
     name: "DettaglioEvento",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -34,7 +34,6 @@ const routes = [
   {
     path: "/:catchAll(.*)",
     redirect: "/",
-    console: console.log("url errato"),
   },
 ];
 

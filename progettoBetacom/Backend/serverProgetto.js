@@ -91,6 +91,15 @@ app.get('/api/eventi', (req, res) => {
     });
 });
 
+app.get('/api/eventi/:id', (req, res) =>{
+    const eventid = req.params.id;
+
+    connection.query('SELECT * FROM evento WHERE id_Evento = ?', [eventid], (err, rows) => {
+        if (err) throw err;
+        res.json(rows); 
+    })
+})
+
 /**
  * Deletes a user from the database based on the specified user ID
  * @param {Object} req - The request object
@@ -145,6 +154,8 @@ app.get('/api/proposte/delete/:id', (req, res) => {
         res.json({message: `la proposta ${proposteid} è stato rimosso`});
     })
 });
+
+
 
 /**
  * Adds a new proposta to the database

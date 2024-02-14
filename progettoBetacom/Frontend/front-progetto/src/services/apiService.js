@@ -11,4 +11,7 @@ export default {
   fetchProposals() {
     return axios.get(`${API_URL}/api/proposte`);
   },
+  fetchEventDetails(id) {
+    return axios.get(`${API_URL}/api/eventi/${id}`);
+  },
 };
