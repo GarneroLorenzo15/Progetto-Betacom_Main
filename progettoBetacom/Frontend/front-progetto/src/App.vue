@@ -9,7 +9,7 @@ body {
   background-image: linear-gradient(to top, #034ea1, #f38120);
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
+  height: auto;
 }
 a {
   color: #f38120;

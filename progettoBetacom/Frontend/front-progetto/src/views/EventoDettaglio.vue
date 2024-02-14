@@ -5,13 +5,16 @@
         <figure>
           <img src="" alt="immagine evento" />
         </figure>
-        <h2>titolo evento</h2>
+        <h2>TITOLO EVENTO</h2>
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt
           nesciunt voluptatem maxime molestias distinctio deleniti laborum harum
           explicabo voluptates aut! Quas, nobis eos unde earum recusandae
           facilis soluta ullam perspiciatis.
         </p>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="row"><button>VOTA EVENTO</button></div>
       </div>
     </div>
     <NavBarBlue></NavBarBlue>
