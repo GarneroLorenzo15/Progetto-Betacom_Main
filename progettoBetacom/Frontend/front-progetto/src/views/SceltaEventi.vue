@@ -29,10 +29,7 @@
         </div> -->
       </div>
     </div>
-    <div
-      class="container w-full h-92 border-nav"
-      style="background-color: white"
-    >
+    <div class="w-full h-92 border-nav" style="background-color: white">
       <nav class="row d-flex flex-nowrap justify-content-between">
         <div class="d-flex w-50 justify-content-center">
           <div class="active">

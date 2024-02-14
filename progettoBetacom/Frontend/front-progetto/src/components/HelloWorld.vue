@@ -23,7 +23,7 @@
           <input
             class="w-full mb-3"
             type="text"
-            placeholder="  inserici password(cognome in minuscolo)"
+            placeholder="  inserici password(cognome in minuscolo)..."
           />
         </div>
       </div>
