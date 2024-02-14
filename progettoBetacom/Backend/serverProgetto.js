@@ -96,7 +96,7 @@ app.get('/api/eventi', (req, res) => {
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
-app.get('/api/eventi/delete/:id', (req, res) => {
+app.delete('/api/eventi/delete/:id', (req, res) => {
     const eventid = req.params.id;
     connection.query('DELETE FROM evento WHERE id_Evento = ?', [eventid], (err, rows) => {
         if (err) throw err;

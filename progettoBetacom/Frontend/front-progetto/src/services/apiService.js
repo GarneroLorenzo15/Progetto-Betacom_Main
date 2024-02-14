@@ -8,4 +8,7 @@ export default {
   fetchUsers() {
     return axios.get(`${API_URL}/api/utenti`);
   },
+  fetchProposals() {
+    return axios.get(`${API_URL}/api/proposte`);
+  },
 };

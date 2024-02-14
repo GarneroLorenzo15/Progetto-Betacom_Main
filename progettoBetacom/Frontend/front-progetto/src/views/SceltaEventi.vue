@@ -12,7 +12,7 @@
         <h1 class="d-flex justify-content-center">Scegli un Evento</h1>
       </div>
     </div>
-    <div class="container mt-2" v-for="item in items" :key="item.id">
+    <div class="container mt-5" v-for="item in items" :key="item.id">
       <div class="d-flex justify-content-center">
         <div class="card">
           <img
@@ -49,7 +49,7 @@ export default {
   data() {
     return {
       items: [],
-      console: console.log(this.items),
+      /* console: console.log(this.items), */
     };
   },
   mounted() {
