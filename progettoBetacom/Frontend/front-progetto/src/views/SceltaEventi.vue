@@ -12,10 +12,14 @@
         <h1 class="d-flex justify-content-center">Scegli un Evento</h1>
       </div>
     </div>
-    <div class="container mt-2" v-for="item in items" :key="item.titolo">
+    <div class="container mt-2" v-for="item in items" :key="item.id">
       <div class="d-flex justify-content-center">
         <div class="card">
-          <img :src="item.img" class="card-img-top" alt="immagine" />
+          <img
+            :src="item.immagine_evento"
+            class="card-img-top"
+            alt="immagine"
+          />
           <div class="card-body">
             <h5 class="card-title">{{ item.titolo }}</h5>
             <div class="d-flex justify-content-end">
@@ -35,6 +39,7 @@
 
 <script>
 import NavBar from "@/components/NavBar.vue";
+import apiService from "../services/apiService.js";
 
 export default {
   name: "SceltaEventi",
@@ -43,33 +48,22 @@ export default {
   },
   data() {
     return {
-      items: [
-        {
-          titolo: "Titolo Evento",
-          descrizione:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quasi, quibusdam, quod, quae, quae, quae, quae, quae, quae, quae.",
-          img: "https://www.riveraction.it/wp-content/uploads/2018/01/pag-rafting-valsesia.jpg",
-        },
-        {
-          titolo: "Titolo Evento",
-          descrizione:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quasi, quibusdam, quod, quae, quae, quae, quae, quae, quae, quae.",
-          img: "https://www.riveraction.it/wp-content/uploads/2018/01/pag-rafting-valsesia.jpg",
-        },
-        {
-          titolo: "Titolo Evento",
-          descrizione:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quasi, quibusdam, quod, quae, quae, quae, quae, quae, quae, quae.",
-          img: "https://www.riveraction.it/wp-content/uploads/2018/01/pag-rafting-valsesia.jpg",
-        },
-        {
-          titolo: "Titolo Evento",
-          descrizione:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quasi, quibusdam, quod, quae, quae, quae, quae, quae, quae, quae.",
-          img: "https://www.riveraction.it/wp-content/uploads/2018/01/pag-rafting-valsesia.jpg",
-        },
-      ],
+      items: [],
+      console: console.log(this.items),
     };
+  },
+  mounted() {
+    this.fetchEventsFromApi();
+  },
+  methods: {
+    async fetchEventsFromApi() {
+      try {
+        const response = await apiService.fetchEvents();
+        this.items = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
