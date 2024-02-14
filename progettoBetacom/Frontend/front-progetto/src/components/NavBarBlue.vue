@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full h-92 border-nav" style="background-color: white">
+  <div class="w-full h-92 border-nav" style="background-color: blue">
     <nav class="row d-flex flex-nowrap justify-content-between">
       <div class="d-flex w-50 justify-content-center">
         <div class="active">
@@ -13,15 +13,34 @@
       </div>
     </nav>
     <div class="row mt-2">
-      <p class="d-flex justify-content-center">Powered by Lorenzo Garnero</p>
+      <p class="d-flex justify-content-center text-white">
+        Powered by Lorenzo Garnero
+      </p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "NavBar",
+  name: "NavBarBlue",
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+i {
+  color: white;
+}
+.active {
+  position: relative;
+}
+
+.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px; /* Puoi regolare l'altezza della linea */
+  background-color: white; /* Colore arancione */
+}
+</style>
