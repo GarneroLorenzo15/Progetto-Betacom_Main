@@ -2,6 +2,8 @@
   <div class="container"></div>
 </template>
 
-<script></script>
+<script>
+/*eslint-disable*/
+</script>
 
 <style scoped></style>

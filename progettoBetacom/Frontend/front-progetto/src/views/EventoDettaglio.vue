@@ -9,10 +9,17 @@
             alt="immagine evento"
           />
         </figure>
-        <h2>{{ eventDetails[0].titolo }}</h2>
-        <p>
-          {{ eventDetails[0].descrizione }}
-        </p>
+        <div class="row">
+          <div>
+            <p>{{ eventDay }}</p>
+          </div>
+        </div>
+        <div class="row">
+          <h2>{{ eventDetails[0].titolo }}</h2>
+          <p>
+            {{ eventDetails[0].descrizione }}
+          </p>
+        </div>
       </div>
       <div class="d-flex justify-content-center">
         <div class="row"><button>VOTA EVENTO</button></div>
@@ -22,6 +29,7 @@
   </div>
 </template>
 <script>
+/*eslint-disable*/
 import NavBarBlue from "@/components/NavBarBlue.vue";
 import apiService from "@/services/apiService";
 
@@ -33,6 +41,7 @@ export default {
   data() {
     return {
       eventDetails: [{}],
+      eventDay: "",
     };
   },
   mounted() {

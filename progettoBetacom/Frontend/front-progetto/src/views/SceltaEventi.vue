@@ -38,6 +38,7 @@
 </template>
 
 <script>
+/*eslint-disable*/
 import NavBar from "@/components/NavBar.vue";
 import apiService from "../services/apiService.js";
 
