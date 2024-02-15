@@ -1,6 +1,8 @@
 <template>
+  <!-- eslint-disable -->
   <div class="eventi">
-    <div class="container">
+    <div class="h-render">
+      <div class="container">
       <div class="d-flex justify-content-end mr-5">
         <div class="row">
           <router-link to="/">
@@ -32,6 +34,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
     <NavBar></NavBar>
   </div>
@@ -69,12 +72,15 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .w-full {
   width: 100%;
 }
 .h-full {
   height: 100%;
+}
+.h-render {
+  height: 250vh;
 }
 .w-50 {
   width: 50%;

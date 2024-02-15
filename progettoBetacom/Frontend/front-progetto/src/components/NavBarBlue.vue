@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div class="w-full h-92 border-nav" style="background-color: #034ea1">
     <nav class="row d-flex flex-nowrap justify-content-between">
       <div class="d-flex w-50 justify-content-center">
@@ -23,8 +24,14 @@
 </template>
 
 <script>
+/*eslint-disable*/
 export default {
   name: "NavBarBlue",
+  data() {
+    return {
+      currentTab: "profilo",
+    };
+  },
 };
 </script>
 
@@ -42,7 +49,7 @@ i {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 2px; /* Puoi regolare l'altezza della linea */
-  background-color: white; /* Colore arancione */
+  height: 2px;
+  background-color: white; 
 }
 </style>

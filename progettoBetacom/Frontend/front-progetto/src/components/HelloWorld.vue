@@ -1,4 +1,5 @@
 <template>
+  <!-- eslint-disable -->
   <div class="hello">
     <div class="container my-5">
       <div class="row">
@@ -31,7 +32,7 @@
     <div class="container d-flex justify-content-center">
       <div class="row" style="width: 50%">
         <router-link to="/eventi">
-          <button class="w-full mb-3">Login</button>
+          <button class="w-full mb-3">LOGIN</button>
         </router-link>
       </div>
     </div>
@@ -44,6 +45,7 @@
 </template>
 
 <script>
+/*eslint-disable*/
 export default {
   name: "HelloWorld",
 };

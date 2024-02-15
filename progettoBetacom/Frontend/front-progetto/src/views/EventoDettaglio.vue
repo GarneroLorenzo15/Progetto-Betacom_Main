@@ -12,7 +12,7 @@
         <div class="row">
           <div class="d-flex justify-content-end flex-nowrap">
             <div class="w-50 d-flex justify-content-end align-items-center">
-              <div class="mr-3">
+              <div class="mx-2">
                 {{ eventDay }}
               </div>
             </div>
@@ -70,10 +70,17 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .bg-white {
   background-color: white;
   height: 100vh;
+}
+button {
+  background-color: #034ea1;
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  border-radius: 25px;
 }
 .calendar {
   font-size: smaller;

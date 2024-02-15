@@ -56,4 +56,11 @@ i {
   width: 100%;
   height: 100%;
 }
+button {
+  background-color: #034ea1;
+  color: white;
+  font-weight: bold;
+  font-size: large;
+  border-radius: 25px;
+}
 </style>

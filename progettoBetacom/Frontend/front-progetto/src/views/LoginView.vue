@@ -1,6 +1,9 @@
 <template>
+  <!-- eslint-disable -->
   <div class="login">
-    <HelloWorld></HelloWorld>
+    <div class="">
+       <HelloWorld></HelloWorld>
+    </div>
   </div>
 </template>
 
@@ -16,3 +19,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+</style>
