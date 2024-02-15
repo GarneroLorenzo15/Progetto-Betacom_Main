@@ -1,9 +1,13 @@
 <template>
   <div class="bg-white py-5">
-    <div class="container my-5">
+    <div class="container">
       <div class="row">
         <figure>
-          <img :src="eventDetails[0].immagine_Evento" alt="immagine evento" />
+          <img
+            class="w-full"
+            :src="eventDetails[0].immagine_evento"
+            alt="immagine evento"
+          />
         </figure>
         <h2>{{ eventDetails[0].titolo }}</h2>
         <p>
