@@ -61,7 +61,7 @@ export default {
         const response = await apiService.fetchEventDetails(id);
         console.log(response.data);
         this.eventDetails = response.data;
-        const eventData = moment(this.eventDetails.data);
+        const eventData = moment(this.eventDetails[0].data);
         this.eventDay = eventData.format("DD/MM/YYYY");
       } catch (error) {
         console.error(error);

@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const mysql = require('mysql');
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 const port = 3000;
 
 const app = express();
@@ -528,6 +530,65 @@ app.post('/api/proposte/add', (req, res) => {
     }
 }); */
 
+//voti
+
+/**
+ * Returns a list of all votes in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.get('/api/voti', async (req, res) => {
+    try {
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM voti', (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+
+        if(rows.length > 0) {
+           res.status(200).json(rows); 
+        } else if(rows.length <= 0){
+             res.status(404).json({ error: 'Not Found' });
+        };
+    } catch (err) {
+        console.error('Error fetching users:', err);
+        if( res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    };
+});
+
+//login user
+
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+
+    connection.query('SELECT * FROM utente WHERE email= ? ', [email], (err, res) => {
+        if (err) {
+            return res.status(500).json({ error:"Errore del server" });
+        }
+
+        if(res.length === 0){
+            res.status(404).json({ error: "Not Found"});
+        }
+
+        const user = results[0];
+
+        if(password === user.password){
+
+            const token = jwt.sign({ username: user.email, password: user.password}, 'chiave-segreta', { expiresIn: '20 minutes'});
+            res.json({ token });
+        }else {
+            res.status(400).json({ error: "credenziali errate"});
+        }
+    })
+})
 
 
 /**
@@ -539,4 +600,4 @@ app.listen(port, () =>{
    * @param {number} port - The port on which the server is listening
    */
     console.log(`Server is running on port ${port}`)
-});;
+});
