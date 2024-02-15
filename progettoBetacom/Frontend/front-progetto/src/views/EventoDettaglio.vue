@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white py-5">
+  <div class="bg-white">
     <div class="container">
       <div class="row">
         <figure>
@@ -10,8 +10,13 @@
           />
         </figure>
         <div class="row">
-          <div>
-            <p>{{ eventDay }}</p>
+          <div class="d-flex justify-content-end flex-nowrap">
+            <div class="w-50 d-flex justify-content-end align-items-center">
+              <div class="mr-3">
+                {{ eventDay }}
+              </div>
+            </div>
+            <i class="bi bi-calendar-event-fill calendar"></i>
           </div>
         </div>
         <div class="row">
@@ -32,6 +37,7 @@
 /*eslint-disable*/
 import NavBarBlue from "@/components/NavBarBlue.vue";
 import apiService from "@/services/apiService";
+import moment from "moment";
 
 export default {
   name: "EventoDetaglio",
@@ -55,6 +61,8 @@ export default {
         const response = await apiService.fetchEventDetails(id);
         console.log(response.data);
         this.eventDetails = response.data;
+        const eventData = moment(this.eventDetails.data);
+        this.eventDay = eventData.format("DD/MM/YYYY");
       } catch (error) {
         console.error(error);
       }
@@ -66,5 +74,9 @@ export default {
 .bg-white {
   background-color: white;
   height: 100vh;
+}
+.calendar {
+  font-size: smaller;
+  color: #034ea1;
 }
 </style>
