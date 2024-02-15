@@ -1,4 +1,4 @@
-# progetto-betacom-front
+# front-progetto
 
 ## Project setup
 ```
