@@ -86,4 +86,17 @@ button {
   font-size: smaller;
   color: #034ea1;
 }
+.active {
+  position: relative;
+}
+
+.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px; 
+  background-color: orange; 
+}
 </style>

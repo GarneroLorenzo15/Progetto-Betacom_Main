@@ -30,7 +30,7 @@
 export default {
   name: "NavBar",
   return: {
-    currentTab: "eventi",
+    currentTab: 'eventi',
   }
 };
 </script>
@@ -46,7 +46,7 @@ export default {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 2px;
-  background-color: black; 
+  height: 2px; 
+  background-color: #f38120; 
 }
 </style>

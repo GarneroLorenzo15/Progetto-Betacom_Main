@@ -564,31 +564,7 @@ app.get('/api/voti', async (req, res) => {
     };
 });
 
-//login user
-
-app.post('/login', (req, res) => {
-    const { email, password } = req.body;
-
-    connection.query('SELECT * FROM utente WHERE email= ? ', [email], (err, res) => {
-        if (err) {
-            return res.status(500).json({ error:"Errore del server" });
-        }
-
-        if(res.length === 0){
-            res.status(404).json({ error: "Not Found"});
-        }
-
-        const user = results[0];
-
-        if(password === user.password){
-
-            const token = jwt.sign({ username: user.email, password: user.password}, 'chiave-segreta', { expiresIn: '20 minutes'});
-            res.json({ token });
-        }else {
-            res.status(400).json({ error: "credenziali errate"});
-        }
-    })
-})
+app.post('/api/voti/add')
 
 
 /**

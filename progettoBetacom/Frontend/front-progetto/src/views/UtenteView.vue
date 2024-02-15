@@ -12,23 +12,11 @@
           <p>Lista Partecipanti</p>
         </div>
         <div class="card-body">
-          <ul class="d-flex">
-            <div class="col-2">
-              <ol v-for="user in users" :key="user.id">
-                <p class="text">{{ user.id_Utente }}</p>
-              </ol>
+            <div class="d-flex flex-wrap justify-content-between" v-for="user in users" :key="user.id">
+              <p class="w-33">{{ user.id_Utente }}</p>
+              <p class="w-33">{{ user.nome }}</p>
+              <p class="w-33">{{ user.cognome }}</p>
             </div>
-            <div class="col-6">
-              <ol v-for="user in users" :key="user.id">
-                <p class="text">{{ user.nome }}</p>
-              </ol>
-            </div>
-            <div class="col-6">
-              <ol v-for="user in users" :key="user.id">
-                <p class="text">{{ user.cognome }}</p>
-              </ol>
-            </div>
-          </ul>
         </div>
       </div>
     </div>
@@ -69,6 +57,9 @@ export default {
 </script>
 
 <style scoped>
+.w-33{
+  width: 33,333%;
+}
 .card-header {
   background-color: white;
 }
