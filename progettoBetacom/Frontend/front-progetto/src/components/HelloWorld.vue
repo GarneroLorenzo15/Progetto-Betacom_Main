@@ -2,11 +2,6 @@
   <!-- eslint-disable -->
   <div class="hello">
     <div class="container my-5">
-      <div class="row">
-        <h1 class="d-flex justify-content-center">Esegui Il Login</h1>
-      </div>
-    </div>
-    <div class="container">
       <div class="row" style="height: 200px">
         <figure class="w-full d-flex justify-content-center align-items-center">
           <i class="bi bi-person"></i>

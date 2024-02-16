@@ -5,9 +5,16 @@
       <div class="container">
       <div class="d-flex justify-content-end mr-5">
         <div class="row">
-          <router-link to="/">
-            <i class="bi bi-box-arrow-right colorto"></i>
-          </router-link>
+          <div class="d-flex">
+            <div class="d-flex">
+              <i class="bi bi-plus-circle-fill"></i>
+            </div>
+            <div class="d-flex">
+              <router-link to="/">
+                <i class="bi bi-box-arrow-right colorto"></i>
+              </router-link>
+          </div>
+          </div>     
         </div>
       </div>
       <div class="row my-3">

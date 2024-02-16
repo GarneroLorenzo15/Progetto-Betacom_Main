@@ -21,7 +21,7 @@
         </div>
         <div class="row">
           <h2>{{ eventDetails[0].titolo }}</h2>
-          <p>
+          <p class="text-justify">
             {{ eventDetails[0].descrizione }}
           </p>
         </div>
