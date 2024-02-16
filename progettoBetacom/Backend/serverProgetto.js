@@ -384,6 +384,9 @@ app.post('/api/eventi/add', async (req, res) => {
 
         // Manipola i dati come desiderato
         // Ad esempio, puoi fare delle verifiche o modifiche
+        
+
+
 
         // Esegui la query con i dati manipolati
         const rows = await new Promise((resolve, reject) => {
@@ -396,11 +399,14 @@ app.post('/api/eventi/add', async (req, res) => {
             });
         });
 
-        // Rispondi con i risultati dell'inserimento
-        res.status(200).json(rows);
+        if(res.length > 0) {
+            res.status(200).json(rows);
+        } else if(res.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
+        }
+
     } catch (err) {
         console.error('Errore durante l\'inserimento dell\'evento:', err);
-        // Restituisci il codice di stato appropriato in base all'errore
         if (err.code === 'ER_BAD_FIELD_ERROR') {
             res.status(400).json({ error: 'Il campo fornito non è valido' });
         } else {

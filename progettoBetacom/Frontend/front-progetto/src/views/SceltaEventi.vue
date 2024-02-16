@@ -44,16 +44,17 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Aggiungi Evento</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <form @submit.prevent="addEvent">
+            <form @submit.prevent="addEventsFromApi()">
+              <!-- aggiungi id_Evento che valga uno in più rispetto al più grande già presente -->
               <input type="text" v-model="newEvent.titolo" placeholder="Titolo dell'evento" required>
               <input type="date" v-model="newEvent.data" required>
               <textarea v-model="newEvent.descrizione" placeholder="Descrizione dell'evento"></textarea>
-              <input type="text" v-model="newEvent.luogo" placeholder="Luogo dell'evento">
+              <input type="text" v-model="newEvent.luogo" placeholder="URL Luogo dell'evento">
               <input type="text" v-model="newEvent.immagine_evento" placeholder="URL dell'immagine dell'evento">
               <button type="submit" class="btn btn-primary">Aggiungi evento</button>
             </form>
@@ -79,6 +80,7 @@ export default {
     return {
       items: [],
       newEvent: {
+        id_Evento: "",
         titolo: "",
         data: "",
         descrizione: "",
@@ -102,9 +104,16 @@ export default {
 
     async addEventsFromApi() {
       try {
+
+        //Gen maxID
+        const maxID = Math.max(...this.items.map(item => item.id_Evento));
+        this.newEvent.id_Evento = maxID + 1;
+ 
         const response = await apiService.addEvents();
+        console.log('qui');
         const nuovoEvento = response.data;
         this.newEvent = {
+          id_Evento: "",
           titolo: "",
           data: "",
           descrizione: "",
@@ -114,20 +123,28 @@ export default {
         this.items.push(nuovoEvento);
         console.log(this.items);
 
-        closeModal();
+        this.closeModal();
       } catch (error) {
         console.log(error);
       }
     },
 
     openModal() {
-      const modal = this.$refs.modal;
-      modal.show();
+      const modal = document.getElementById('exampleModal');
+
+      if(modal){
+        modal.classList.add('show');
+        modal.style.display = 'block';
+      }
     },
 
     closeModal() {
-      const modal = this.$refs.modal;
-      modal.hide();
+      const modal = document.getElementById('exampleModal');
+
+      if(modal){
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+      }
     },
   },
 
