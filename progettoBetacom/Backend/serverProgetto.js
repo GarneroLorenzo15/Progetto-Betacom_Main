@@ -379,16 +379,14 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
 
 app.post('/api/eventi/add', async (req, res) => {
     try {
-        // Estrai i dati dalla richiesta
         const { id_Evento, titolo, data, descrizione, luogo, immagine_evento } = req.body;
 
-        // Manipola i dati come desiderato
-        // Ad esempio, puoi fare delle verifiche o modifiche
-        
+        if(!titolo || !descrizione || !data){
+            res.status(400).json({ error: 'Il campo fornito è obbliogatorio' });
+        }
 
 
-
-        // Esegui la query con i dati manipolati
+    
         const rows = await new Promise((resolve, reject) => {
             connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)', [id_Evento, titolo, data, descrizione, luogo, immagine_evento], (err, rows) => {
                 if (err) {
@@ -412,12 +410,12 @@ app.post('/api/eventi/add', async (req, res) => {
         } else {
             res.status(500).json({ error: 'Si è verificato un errore durante l\'elaborazione della richiesta' });
         }
-    }
+    } 
 });
 
 
 
-//proposte
+//proposte 
 
 /**
  * Returns a list of all propostas in the database

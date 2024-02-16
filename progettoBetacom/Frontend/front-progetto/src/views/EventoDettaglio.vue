@@ -47,14 +47,12 @@ export default {
   },
   mounted() {
     const id = this.$route.params.id;
-    console.log(id);
     this.fetchEventsDetailsFromApi(id);
   },
   methods: {
     async fetchEventsDetailsFromApi(id) {
       try {
         const response = await apiService.fetchEventDetails(id);
-        console.log(response.data);
         this.eventDetails = response.data;
         const eventData = moment(this.eventDetails[0].data);
         this.eventDay = eventData.format("DD/MM/YYYY");
