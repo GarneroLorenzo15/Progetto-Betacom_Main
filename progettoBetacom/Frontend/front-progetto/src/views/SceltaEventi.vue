@@ -3,45 +3,63 @@
   <div class="eventi">
     <div class="h-render">
       <div class="container">
-      <div class="d-flex justify-content-end mr-5">
-        <div class="row">
-          <div class="d-flex">
-            <div class="d-flex">
+        <div class="">
+          <div class="row d-flex justify-content-between flex-nowrap ">
+            <!-- Bottone per aprire la modale di aggiunta eventi -->
+            <div class="w-50" @click="openModal()" :title="'aggiungi eventi'">
               <i class="bi bi-plus-circle-fill"></i>
             </div>
-            <div class="d-flex">
+            <div class="w-50 d-flex justify-content-end mr-5">
               <router-link to="/">
                 <i class="bi bi-box-arrow-right colorto"></i>
               </router-link>
+            </div>
           </div>
-          </div>     
+        </div>
+        <div class="row my-3">
+          <h1 class="d-flex justify-content-center">Scegli un Evento</h1>
         </div>
       </div>
-      <div class="row my-3">
-        <h1 class="d-flex justify-content-center">Scegli un Evento</h1>
-      </div>
-    </div>
-    <div class="container mt-5" v-for="item in items" :key="item.id">
-      <div class="d-flex justify-content-center">
-        <div class="card">
-          <img
-            :src="item.immagine_evento"
-            class="card-img-top"
-            alt="immagine"
-          />
-          <div class="card-body">
-            <h5 class="card-title">{{ item.titolo }}</h5>
-            <div class="d-flex justify-content-end">
-              <div class="row">
-                <router-link :to="'/eventi/' + item.id_Evento">
-                  <button class="">VEDI DETTAGLIO</button>
-                </router-link>
+      <div class="container mt-5" v-for="item in items" :key="item.id">
+        <div class="d-flex justify-content-center">
+          <div class="card">
+            <img :src="item.immagine_evento" class="card-img-top" alt="immagine" />
+            <div class="card-body">
+              <h5 class="card-title">{{ item.titolo }}</h5>
+              <div class="d-flex justify-content-end">
+                <div class="row">
+                  <router-link :to="'/eventi/' + item.id_Evento">
+                    <button class="">VEDI DETTAGLIO</button>
+                  </router-link>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- Modal per aggiungere un nuovo evento -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Aggiungi Evento</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form @submit.prevent="addEvent">
+              <input type="text" v-model="newEvent.titolo" placeholder="Titolo dell'evento" required>
+              <input type="date" v-model="newEvent.data" required>
+              <textarea v-model="newEvent.descrizione" placeholder="Descrizione dell'evento"></textarea>
+              <input type="text" v-model="newEvent.luogo" placeholder="Luogo dell'evento">
+              <input type="text" v-model="newEvent.immagine_evento" placeholder="URL dell'immagine dell'evento">
+              <button type="submit" class="btn btn-primary">Aggiungi evento</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
     <NavBar></NavBar>
   </div>
@@ -60,7 +78,13 @@ export default {
   data() {
     return {
       items: [],
-      /* console: console.log(this.items), */
+      newEvent: {
+        titolo: "",
+        data: "",
+        descrizione: "",
+        luogo: "",
+        immagine_evento: "",
+      }
     };
   },
   mounted() {
@@ -75,7 +99,38 @@ export default {
         console.log(error);
       }
     },
+
+    async addEventsFromApi() {
+      try {
+        const response = await apiService.addEvents();
+        const nuovoEvento = response.data;
+        this.newEvent = {
+          titolo: "",
+          data: "",
+          descrizione: "",
+          luogo: "",
+          immagine_evento: "",
+        }
+        this.items.push(nuovoEvento);
+        console.log(this.items);
+
+        closeModal();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    openModal() {
+      const modal = this.$refs.modal;
+      modal.show();
+    },
+
+    closeModal() {
+      const modal = this.$refs.modal;
+      modal.hide();
+    },
   },
+
 };
 </script>
 
@@ -83,29 +138,37 @@ export default {
 .w-full {
   width: 100%;
 }
+
 .h-full {
   height: 100%;
 }
+
 .h-render {
-  height: 250vh;
+  height: auto;
 }
+
 .w-50 {
   width: 50%;
 }
+
 .h-50 {
   height: 50%;
 }
+
 .h-92 {
   height: 100px;
 }
+
 .border-nav {
   border-radius: 25px 25px 0 0;
   position: fixed;
   bottom: 0;
 }
+
 i {
   font-size: 45px;
 }
+
 .active {
   position: relative;
 }
@@ -116,13 +179,17 @@ i {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 2px; /* Puoi regolare l'altezza della linea */
-  background-color: orange; /* Colore arancione */
+  height: 2px;
+  /* Puoi regolare l'altezza della linea */
+  background-color: orange;
+  /* Colore arancione */
 }
+
 .object-contain {
   width: 100%;
   height: 100%;
 }
+
 button {
   background-color: #034ea1;
   color: white;
@@ -130,17 +197,31 @@ button {
   font-size: large;
   border-radius: 25px;
 }
+
 .card {
   width: 75%;
   height: auto;
   border-radius: 25px;
 }
+
 .card-header {
   border-radius: 25px;
   width: 100%;
   height: 50%;
 }
+
 .colorto {
   color: black;
 }
-</style>
+
+.mr-5 {
+  margin-right: 5rem;
+}
+
+img {
+  border-radius: 25px;
+}
+
+.container:last-of-type {
+  margin-bottom: 10rem;
+}</style>

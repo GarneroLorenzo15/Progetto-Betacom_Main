@@ -1,6 +1,6 @@
 <template>
   <!--eslint-disable-->
-  <div class="w-full h-92 border-nav" style="background-color: white">
+  <div class="w-full h-92 border-nav " style="background-color: white">
     <nav class="row d-flex flex-nowrap justify-content-between">
       <div class="d-flex w-50 justify-content-center">
         <div :class="{ active: currentTab === 'eventi' }">
@@ -30,7 +30,7 @@
 export default {
   name: "NavBar",
   return: {
-    currentTab: 'eventi',
+    currentTab: "eventi",
   }
 };
 </script>
@@ -48,5 +48,8 @@ export default {
   width: 100%;
   height: 2px; 
   background-color: #f38120; 
+}
+.mt-5{
+  margin-top: 20rem;
 }
 </style>

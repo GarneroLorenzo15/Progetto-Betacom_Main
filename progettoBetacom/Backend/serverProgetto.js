@@ -340,18 +340,18 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
-app.post('/api/eventi/add', (req, res) => {
+/* app.post('/api/eventi/add', (req, res) => {
     connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)',[5, 'piscina', '2024-04-21', 'Luogo molto divertente ma anche rilassante.', '', ''], (err, rows) => {
         if (err) throw err;
         res.json(rows);
     });
-});
+}); */
 /**
  * Using the try & catch block to handle errors
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
-app.post('/api/eventi/add', async (req, res) => {
+/* app.post('/api/eventi/add', async (req, res) => {
     
     try {
         const rows = await new Promise((resolve, reject) => {
@@ -375,7 +375,40 @@ app.post('/api/eventi/add', async (req, res) => {
             res.status(400).json({ error: 'Bad Request' }); 
         }
     };
+}); */
+
+app.post('/api/eventi/add', async (req, res) => {
+    try {
+        // Estrai i dati dalla richiesta
+        const { id_Evento, titolo, data, descrizione, luogo, immagine_evento } = req.body;
+
+        // Manipola i dati come desiderato
+        // Ad esempio, puoi fare delle verifiche o modifiche
+
+        // Esegui la query con i dati manipolati
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)', [id_Evento, titolo, data, descrizione, luogo, immagine_evento], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+
+        // Rispondi con i risultati dell'inserimento
+        res.status(200).json(rows);
+    } catch (err) {
+        console.error('Errore durante l\'inserimento dell\'evento:', err);
+        // Restituisci il codice di stato appropriato in base all'errore
+        if (err.code === 'ER_BAD_FIELD_ERROR') {
+            res.status(400).json({ error: 'Il campo fornito non è valido' });
+        } else {
+            res.status(500).json({ error: 'Si è verificato un errore durante l\'elaborazione della richiesta' });
+        }
+    }
 });
+
 
 
 //proposte

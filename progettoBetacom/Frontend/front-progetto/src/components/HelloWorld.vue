@@ -1,9 +1,9 @@
 <template>
   <!-- eslint-disable -->
   <div class="hello">
-    <div class="container my-5">
+    <div class="container margin">
       <div class="row" style="height: 200px">
-        <figure class="w-full d-flex justify-content-center align-items-center">
+        <figure class="w-full d-flex justify-content-center align-items-center mb">
           <i class="bi bi-person"></i>
         </figure>
       </div>
@@ -73,5 +73,8 @@ a {
 i {
   color: #d9d9d9;
   font-size: 10rem;
+}
+.margin{
+  margin-top: 8rem;
 }
 </style>

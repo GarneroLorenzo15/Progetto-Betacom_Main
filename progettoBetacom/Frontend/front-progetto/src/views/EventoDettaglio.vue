@@ -1,14 +1,9 @@
 <template>
+  <!-- eslint-disable -->
   <div class="bg-white">
+    <img class="w-full" :src="eventDetails[0].immagine_evento" alt="immagine evento" />
     <div class="container">
       <div class="row">
-        <figure>
-          <img
-            class="w-full"
-            :src="eventDetails[0].immagine_evento"
-            alt="immagine evento"
-          />
-        </figure>
         <div class="row">
           <div class="d-flex justify-content-end flex-nowrap">
             <div class="w-50 d-flex justify-content-end align-items-center">
@@ -75,6 +70,7 @@ export default {
   background-color: white;
   height: 100vh;
 }
+
 button {
   background-color: #034ea1;
   color: white;
@@ -82,10 +78,12 @@ button {
   font-size: large;
   border-radius: 25px;
 }
+
 .calendar {
   font-size: smaller;
   color: #034ea1;
 }
+
 .active {
   position: relative;
 }
@@ -96,7 +94,15 @@ button {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 2px; 
-  background-color: orange; 
+  height: 2px;
+  background-color: orange;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+img {
+  border-radius: 0 0 25px 25px;
 }
 </style>

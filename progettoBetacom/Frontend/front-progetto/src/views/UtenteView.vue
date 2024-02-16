@@ -12,10 +12,16 @@
           <p>Lista Partecipanti</p>
         </div>
         <div class="card-body">
-            <div class="d-flex flex-wrap justify-content-between" v-for="user in users" :key="user.id">
-              <p class="w-33">{{ user.id_Utente }}</p>
-              <p class="w-33">{{ user.nome }}</p>
-              <p class="w-33">{{ user.cognome }}</p>
+            <div class="d-flex flex-wrap" v-for="user in users" :key="user.id">
+              <div class="w-33 m-1">
+                <p>{{ user.id_Utente }}</p>
+              </div>
+              <div class="w-33 m-1">
+                  <p>{{ user.nome }}</p>
+              </div>
+              <div class="w-33 m-1">
+                <p>{{ user.cognome }}</p>
+              </div>
             </div>
         </div>
       </div>
@@ -69,5 +75,8 @@ export default {
 .card {
   width: 90%;
   margin-bottom: 10rem;
+}
+.mr-1{
+  margin-right: 1rem;
 }
 </style>
