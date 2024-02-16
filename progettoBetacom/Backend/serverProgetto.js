@@ -350,8 +350,8 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
  * Using the try & catch block to handle errors
  * @param {Object} req - The request object
  * @param {Object} res - The response object
- */
-/* app.post('/api/eventi/add', async (req, res) => {
+ *//* 
+app.post('/api/eventi/add', async (req, res) => {
     
     try {
         const rows = await new Promise((resolve, reject) => {
@@ -375,33 +375,34 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
             res.status(400).json({ error: 'Bad Request' }); 
         }
     };
-}); */
-
+});
+ */
 app.post('/api/eventi/add', async (req, res) => {
     try {
         const { id_Evento, titolo, data, descrizione, luogo, immagine_evento } = req.body;
 
-        if(!titolo || !descrizione || !data){
+        if(!titolo || !descrizione  ){
             res.status(400).json({ error: 'Il campo fornito è obbliogatorio' });
         }
-
-
+  
+ 
     
         const rows = await new Promise((resolve, reject) => {
             connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)', [id_Evento, titolo, data, descrizione, luogo, immagine_evento], (err, rows) => {
-                if (err) {
+                if (err) { 
                     reject(err);
                 } else {
                     resolve(rows);
                 }
             });
         });
-
+ 
+         
         if(res.length > 0) {
             res.status(200).json(rows);
         } else if(res.length <= 0) {
             res.status(404).json({ error: 'Not Found' });
-        }
+        } 
 
     } catch (err) {
         console.error('Errore durante l\'inserimento dell\'evento:', err);

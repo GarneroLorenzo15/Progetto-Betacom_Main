@@ -104,13 +104,14 @@ export default {
 
     async addEventsFromApi() {
       try {
-
+        console.log("ihiwbivcwvku");
         //Gen maxID
         const maxID = Math.max(...this.items.map(item => item.id_Evento));
         this.newEvent.id_Evento = maxID + 1;
+        console.log(this.newEvent.id_Evento);
  
-        const response = await apiService.addEvents();
-        console.log('qui');
+        const response = await apiService.addEvents(this.newEvent.id_Evento);
+        console.log(this.newEvent.id_Evento);
         const nuovoEvento = response.data;
         this.newEvent = {
           id_Evento: "",
