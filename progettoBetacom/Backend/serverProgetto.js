@@ -390,7 +390,7 @@ app.post('/api/eventi/add', async (req, res) => {
         const rows = await new Promise((resolve, reject) => {
             connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)', [id_Evento, titolo, data, descrizione, luogo, immagine_evento], (err, rows) => {
                 if (err) { 
-                    reject(err);
+                    reject(err);      
                 } else {
                     resolve(rows);
                 }

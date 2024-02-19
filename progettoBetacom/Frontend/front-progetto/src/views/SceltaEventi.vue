@@ -20,7 +20,7 @@
           <h1 class="d-flex justify-content-center">Scegli un Evento</h1>
         </div>
       </div>
-      <div class="container mt-5" v-for="item in items" :key="item.id">
+      <div class="container-2 mt-5" v-for="item in items" :key="item.id">
         <div class="d-flex justify-content-center">
           <div class="card">
             <img :src="item.immagine_evento" class="card-img-top" alt="immagine" />
@@ -50,13 +50,16 @@
           </div>
           <div class="modal-body">
             <form @submit.prevent="addEventsFromApi()">
-              <!-- aggiungi id_Evento che valga uno in più rispetto al più grande già presente -->
-              <input type="text" v-model="newEvent.titolo" placeholder="Titolo dell'evento" required>
-              <input type="date" v-model="newEvent.data" required>
-              <textarea v-model="newEvent.descrizione" placeholder="Descrizione dell'evento"></textarea>
-              <input type="text" v-model="newEvent.luogo" placeholder="URL Luogo dell'evento">
-              <input type="text" v-model="newEvent.immagine_evento" placeholder="URL dell'immagine dell'evento">
-              <button type="submit" class="btn btn-primary">Aggiungi evento</button>
+              <div class="container">
+                <div class="row d-flex justify-content-around flex-wrap m-1">
+                  <input class="mb-2" type="text" v-model="newEvent.titolo" placeholder="Titolo dell'evento" required>
+                  <input class="mb-2" type="date" v-model="newEvent.data" required>
+                  <textarea class="mb-2" v-model="newEvent.descrizione" placeholder="Descrizione dell'evento"></textarea>
+                  <input class="mb-2" type="text" v-model="newEvent.luogo" placeholder="URL Luogo dell'evento">
+                  <input class="mb-2" type="text" v-model="newEvent.immagine_evento" placeholder="URL dell'immagine dell'evento">
+                  <button type="submit" class="btn btn-primary">Aggiungi evento</button>
+                </div>
+              </div>
             </form>
           </div>
         </div>
@@ -240,6 +243,6 @@ img {
   border-radius: 25px;
 }
 
-.container:last-of-type {
+.container-2:last-of-type {
   margin-bottom: 10rem;
 }</style>
