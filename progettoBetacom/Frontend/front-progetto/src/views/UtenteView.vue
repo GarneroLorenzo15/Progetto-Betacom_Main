@@ -9,7 +9,9 @@
     <div class="row d-flex justify-content-center">
       <div class="card">
         <div class="card-header d-flex justify-content-center">
-          <p>Lista Partecipanti</p>
+        <h2></h2>
+        <h2></h2>
+              <p>Visualizza andamento Partecipazioni</p>
         </div>
         <div class="card-body">
             <div class="d-flex flex-wrap" v-for="user in users" :key="user.id">
@@ -21,6 +23,14 @@
               </div>
               <div class="w-33 m-1">
                 <p>{{ user.cognome }}</p>
+              </div>
+              <div class="w-33 m-1 d-flex justify-content-end">
+                <div v-if="user.disponibile === 1">
+                  <p>✔️</p>
+                </div>
+                <div v-else-if="user.disponibile === 0">
+                  <p>✖️</p>
+                </div>
               </div>
             </div>
         </div>
@@ -65,6 +75,9 @@ export default {
 <style scoped>
 .w-33{
   width: 33,333%;
+}
+.w-25{
+  width: 25%;
 }
 .card-header {
   background-color: white;

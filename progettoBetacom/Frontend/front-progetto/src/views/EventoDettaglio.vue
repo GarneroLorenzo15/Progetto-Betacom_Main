@@ -19,6 +19,7 @@
           <p class="text-justify">
             {{ eventDetails[0].descrizione }}
           </p>
+          <p class="mb-3">Per maggiori info sul posto clicca <a :href="eventDetails[0].luogo">qui</a></p>
         </div>
       </div>
       <div class="d-flex justify-content-center">

@@ -379,7 +379,8 @@ app.post('/api/eventi/add', async (req, res) => {
  */
 app.post('/api/eventi/add', async (req, res) => {
     try {
-        const { id_Evento, titolo, data, descrizione, luogo, immagine_evento } = req.body;
+        console.log(req.body);
+        const { titolo, data, descrizione, luogo, immagine_evento } = req.body;
 
         if(!titolo || !descrizione  ){
             res.status(400).json({ error: 'Il campo fornito è obbliogatorio' });
@@ -388,9 +389,9 @@ app.post('/api/eventi/add', async (req, res) => {
  
     
         const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)', [id_Evento, titolo, data, descrizione, luogo, immagine_evento], (err, rows) => {
+            connection.query('INSERT INTO evento ( titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?)', [ titolo, data, descrizione, luogo, immagine_evento], (err, rows) => {
                 if (err) { 
-                    reject(err);      
+                    reject(err);       
                 } else {
                     resolve(rows);
                 }
