@@ -80,7 +80,7 @@ export default {
     return {
       items: [],
       newEvent: {
-        id_Evento: "",
+        id_Evento: null,
         titolo: "",
         data: "",
         descrizione: "",
@@ -108,19 +108,19 @@ export default {
         //Gen maxID
         const maxID = Math.max(...this.items.map(item => item.id_Evento));
         this.newEvent.id_Evento = maxID + 1;
-        console.log(this.newEvent.id_Evento);
+        /* console.log(this.newEvent.id_Evento); */
  
-        const response = await apiService.addEvents(this.newEvent.id_Evento);
+        const response = await apiService.addEvents();
         console.log(this.newEvent.id_Evento);
         const nuovoEvento = response.data;
-        this.newEvent = {
+        /* this.newEvent = {
           id_Evento: "",
           titolo: "",
           data: "",
           descrizione: "",
           luogo: "",
           immagine_evento: "",
-        }
+        } */
         this.items.push(nuovoEvento);
         console.log(this.items);
 

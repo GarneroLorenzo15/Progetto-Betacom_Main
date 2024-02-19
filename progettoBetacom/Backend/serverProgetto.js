@@ -19,9 +19,9 @@ const connection = mysql.createConnection({
     port: '3306',
     database: 'databasebetacomgioco'
 });
+  
 
-
-//utenti
+//utenti   
 
 /**
  * Returns a list of all users in the database
@@ -46,7 +46,7 @@ app.get('/api/utenti', async (req, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(rows);
+                    resolve(rows);    
                 }
             });
         });

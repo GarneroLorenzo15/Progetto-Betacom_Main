@@ -14,7 +14,7 @@ export default {
   fetchEventDetails(id) {
     return axios.get(`${API_URL}/api/eventi/${id}`);
   },
-  addEvents() {
-    return axios.post(`${API_URL}/api/eventi/add`);
+  addEvents(newEvent) {
+    return axios.post(`${API_URL}/api/eventi/add`, newEvent);
   },
 };
