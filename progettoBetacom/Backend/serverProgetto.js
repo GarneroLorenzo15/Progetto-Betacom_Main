@@ -377,6 +377,11 @@ app.post('/api/eventi/add', async (req, res) => {
     };
 });
  */
+/**
+ * Adds a new event to the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.post('/api/eventi/add', async (req, res) => {
     try {
         console.log(req.body);
@@ -415,6 +420,38 @@ app.post('/api/eventi/add', async (req, res) => {
     } 
 });
 
+/* app.post('/api/eventi/add', async (req, res) => {
+    try {
+        const { titolo, data, descrizione, luogo, immagine_evento } = req.body;
+
+        if (!titolo || !descrizione) {
+            return res.status(400).json({ error: 'Il campo fornito è obbligatorio' });
+        }
+
+        // Query per ottenere l'ID autoincrementato minore disponibile
+        const getMinAvailableIdQuery = 'SELECT MIN(id + 1) AS next_id FROM evento WHERE NOT EXISTS (SELECT 1 FROM evento AS t WHERE t.id = evento.id + 1)';
+
+        const [minIdRows,] = await connection.query(getMinAvailableIdQuery);
+
+        const nextId = minIdRows[0].next_id || 1; // Se non c'è alcun record, inizia da 1
+
+        // Inserisci il nuovo record con l'ID autoincrementato minore disponibile
+        const insertQuery = 'INSERT INTO evento (id, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)';
+        const insertValues = [nextId, titolo, data, descrizione, luogo, immagine_evento];
+ 
+        const [rows,] = await connection.query(insertQuery, insertValues);
+
+        res.status(200).json({ id: nextId, message: 'Evento inserito correttamente' });
+
+    } catch (err) {
+        console.error('Errore durante l\'inserimento dell\'evento:', err);
+        if (err.code === 'ER_BAD_FIELD_ERROR') {
+            res.status(400).json({ error: 'Il campo fornito non è valido' });
+        } else {
+            res.status(500).json({ error: 'Si è verificato un errore durante l\'elaborazione della richiesta' });
+        }
+    }
+}); */
 
 
 //proposte 
