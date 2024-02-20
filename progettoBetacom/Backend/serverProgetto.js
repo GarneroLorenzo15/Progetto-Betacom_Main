@@ -376,7 +376,7 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
         }
     };
 });
-
+ 
 
 /**
  * Adds a new event to the database
