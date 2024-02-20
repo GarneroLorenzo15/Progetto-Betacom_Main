@@ -57,7 +57,7 @@
                   <textarea class="mb-2" v-model="newEvent.descrizione" placeholder="Descrizione dell'evento"></textarea>
                   <input class="mb-2" type="text" v-model="newEvent.luogo" placeholder="URL Luogo dell'evento">
                   <input class="mb-2" type="text" v-model="newEvent.immagine_evento" placeholder="URL dell'immagine dell'evento">
-                  <button type="submit" class="btn btn-primary">Aggiungi evento</button>
+                  <button type="submit" class="btn btn-primary" @click="closeModal()">Aggiungi evento</button>
                 </div>
               </div>
             </form>
@@ -117,7 +117,6 @@ export default {
         this.items.push(nuovoEvento);
         console.log(this.items);
 
-        this.closeModal();
       } catch (error) {
         console.log(error);
       }
