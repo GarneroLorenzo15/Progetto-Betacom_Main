@@ -1,13 +1,9 @@
 <template>
+  <!-- eslint-disable -->
   <div class="hello">
-    <div class="container my-5">
-      <div class="row">
-        <h1 class="d-flex justify-content-center">Esegui Il Login</h1>
-      </div>
-    </div>
-    <div class="container">
+    <div class="container margin">
       <div class="row" style="height: 200px">
-        <figure class="w-full d-flex justify-content-center align-items-center">
+        <figure class="w-full d-flex justify-content-center align-items-center mb">
           <i class="bi bi-person"></i>
         </figure>
       </div>
@@ -31,7 +27,7 @@
     <div class="container d-flex justify-content-center">
       <div class="row" style="width: 50%">
         <router-link to="/eventi">
-          <button class="w-full mb-3">Login</button>
+          <button class="w-full mb-3">LOGIN</button>
         </router-link>
       </div>
     </div>
@@ -44,6 +40,7 @@
 </template>
 
 <script>
+/*eslint-disable*/
 export default {
   name: "HelloWorld",
 };
@@ -76,5 +73,8 @@ a {
 i {
   color: #d9d9d9;
   font-size: 10rem;
+}
+.margin{
+  margin-top: 8rem;
 }
 </style>

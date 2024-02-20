@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const mysql = require('mysql');
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 const port = 3000;
 
 const app = express();
@@ -17,9 +19,9 @@ const connection = mysql.createConnection({
     port: '3306',
     database: 'databasebetacomgioco'
 });
+  
 
-
-//utenti
+//utenti   
 
 /**
  * Returns a list of all users in the database
@@ -44,7 +46,7 @@ app.get('/api/utenti', async (req, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(rows);
+                    resolve(rows);    
                 }
             });
         });
@@ -338,17 +340,17 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
-app.post('/api/eventi/add', (req, res) => {
+/* app.post('/api/eventi/add', (req, res) => {
     connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)',[5, 'piscina', '2024-04-21', 'Luogo molto divertente ma anche rilassante.', '', ''], (err, rows) => {
         if (err) throw err;
         res.json(rows);
     });
-});
+}); */
 /**
  * Using the try & catch block to handle errors
  * @param {Object} req - The request object
  * @param {Object} res - The response object
- */
+ *//* 
 app.post('/api/eventi/add', async (req, res) => {
     
     try {
@@ -374,9 +376,48 @@ app.post('/api/eventi/add', async (req, res) => {
         }
     };
 });
+ */
+app.post('/api/eventi/add', async (req, res) => {
+    try {
+        console.log(req.body);
+        const { titolo, data, descrizione, luogo, immagine_evento } = req.body;
+
+        if(!titolo || !descrizione  ){
+            res.status(400).json({ error: 'Il campo fornito è obbliogatorio' });
+        }
+  
+ 
+    
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('INSERT INTO evento ( titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?)', [ titolo, data, descrizione, luogo, immagine_evento], (err, rows) => {
+                if (err) { 
+                    reject(err);       
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+ 
+         
+        if(res.length > 0) {
+            res.status(200).json(rows);
+        } else if(res.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
+        } 
+
+    } catch (err) {
+        console.error('Errore durante l\'inserimento dell\'evento:', err);
+        if (err.code === 'ER_BAD_FIELD_ERROR') {
+            res.status(400).json({ error: 'Il campo fornito non è valido' });
+        } else {
+            res.status(500).json({ error: 'Si è verificato un errore durante l\'elaborazione della richiesta' });
+        }
+    } 
+});
 
 
-//proposte
+
+//proposte 
 
 /**
  * Returns a list of all propostas in the database
@@ -528,6 +569,41 @@ app.post('/api/proposte/add', (req, res) => {
     }
 }); */
 
+//voti
+
+/**
+ * Returns a list of all votes in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.get('/api/voti', async (req, res) => {
+    try {
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM voti', (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+
+        if(rows.length > 0) {
+           res.status(200).json(rows); 
+        } else if(rows.length <= 0){
+             res.status(404).json({ error: 'Not Found' });
+        };
+    } catch (err) {
+        console.error('Error fetching users:', err);
+        if( res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    };
+});
+
+app.post('/api/voti/add')
 
 
 /**
@@ -539,4 +615,4 @@ app.listen(port, () =>{
    * @param {number} port - The port on which the server is listening
    */
     console.log(`Server is running on port ${port}`)
-});;
+});

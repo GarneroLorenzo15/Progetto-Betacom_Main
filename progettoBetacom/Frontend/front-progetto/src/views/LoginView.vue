@@ -1,10 +1,14 @@
 <template>
+  <!-- eslint-disable -->
   <div class="login">
-    <HelloWorld></HelloWorld>
+    <div class="">
+       <HelloWorld></HelloWorld>
+    </div>
   </div>
 </template>
 
 <script>
+/*eslint-disable*/
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
 
@@ -15,3 +19,7 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+</style>
