@@ -106,30 +106,18 @@ export default {
     },
 
     async addEventsFromApi() {
+      //Gen maxID
+      const maxID = Math.max(...this.items.map(item => item.id_Evento));
+      this.newEvent.id_Evento = maxID + 1;
       try {
-        /* console.log("ihiwbivcwvku"); */
-        //Gen maxID
-        /* console.log(this.newEvent.titolo); */
-        /* const maxID = Math.max(...this.items.map(item => item.id_Evento));
-        this.newEvent.id_Evento = maxID + 1; */
-        /* console.log(this.newEvent.id_Evento); */
- 
+        
         const response = await apiService.addEvents(this.newEvent);
-        /* console.log(this.newEvent); */
         conasole.log(response);
-/*         const nuovoEvento = response.data;
- */        /* this.newEvent = {
-          id_Evento: "",
-          titolo: "",
-          data: "",
-          descrizione: "",
-          luogo: "",
-          immagine_evento: "",
-        } */
-        /* this.items.push(nuovoEvento);
+        const nuovoEvento = response.data;
+        this.items.push(nuovoEvento);
         console.log(this.items);
 
-        this.closeModal(); */
+        this.closeModal();
       } catch (error) {
         console.log(error);
       }

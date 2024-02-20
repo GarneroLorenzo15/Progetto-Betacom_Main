@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="d-flex justify-content-center">
-        <div class="row"><button>VOTA EVENTO</button></div>
+        <div class="row mb-20"><button>VOTA EVENTO</button></div>
       </div>
     </div>
     <NavBarBlue></NavBarBlue>
@@ -68,6 +68,10 @@ export default {
 .bg-white {
   background-color: white;
   height: 100vh;
+}
+
+.mb-20 {
+  margin-bottom: 20rem;
 }
 
 button {
