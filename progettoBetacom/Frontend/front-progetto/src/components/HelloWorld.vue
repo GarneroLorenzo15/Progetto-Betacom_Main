@@ -11,15 +11,19 @@
     <div class="container my-5">
       <div class="row d-flex justify-content-center">
         <div>
-          <input class="w-full mb-3" v-model="this.email" type="text" placeholder="  inserici email..." />
-          <input class="w-full mb-3" v-model="this.password" type="text" placeholder="  inserici password(cognome in minuscolo)..." />
+          <input class="w-full mb-3" v-model="this.email" type="email" placeholder="  inserici email..." />
+          <div class="d-flex align-items-center mb-3">
+            <input class="w-full" v-model="this.password" :type="passwordFieldType"
+              placeholder="  inserici password(cognome in minuscolo)..." />
+            <button @click="togglePassword()"> {{ showPassword ? 'Mostra' : 'Nascondi' }} </button>
+          </div>
         </div>
       </div>
     </div>
     <div class="container d-flex justify-content-center">
       <div class="row" style="width: 50%">
         <!-- <router-link to="/eventi"> -->
-          <button class="w-full mb-3" @click="login()">LOGIN</button>
+        <button class="w-full mb-3" @click="login()">LOGIN</button>
         <!-- </router-link> -->
       </div>
     </div>
@@ -38,8 +42,14 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      showPassword: false,
     };
+  },
+  computed: {
+    passwordFieldType() {
+      return this.showPassword ? 'password' : 'text';
+    }
   },
   methods: {
     login() {
@@ -70,6 +80,9 @@ export default {
           console.log(this.email, this.password);
           console.error('Errore durante il login:', error.message);
         });
+    },
+    togglePassword() {
+      this.showPassword = !this.showPassword;
     }
   }
 };
