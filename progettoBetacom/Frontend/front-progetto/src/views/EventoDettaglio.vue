@@ -15,7 +15,17 @@
           </div>
         </div>
         <div class="row">
-          <h2>{{ eventDetails[0].titolo }}</h2>
+                <div class="row d-flex ">
+                  <div class="w-50">
+                    <h5>
+                      {{ eventDetails[0].titolo}}
+                    </h5>
+                  </div>
+                  <div class="d-flex justify-content-end w-50">
+                    <p @click="deleteEventFromApi()">❌</p>
+                  </div>
+                </div>
+          <!-- <h2>{{ eventDetails[0].titolo }}</h2> -->
           <p class="text-justify">
             {{ eventDetails[0].descrizione }}
           </p>
@@ -59,6 +69,15 @@ export default {
         this.eventDay = eventData.format("DD/MM/YYYY");
       } catch (error) {
         console.error(error);
+      }
+    },
+    async deleteEventFromApi() {
+      try {
+        const response = await apiService.deleteEvent(this.eventDetails[0].id_Evento);
+        this.items = response.data;
+        this.$router.push("/");
+      } catch (error) {
+        console.log(error);
       }
     },
   },

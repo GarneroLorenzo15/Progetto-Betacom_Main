@@ -201,13 +201,30 @@ app.post('/api/utenti/add', async (req, res) => {
 
 //login 
 
+
+
+/**
+ * Returns the rendered HTML for the events page.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {string} The rendered HTML for the events page.
+ */
+app.get('/api/account', async (req, res) => {
+    return res.render('/eventi');
+});
+
+/**
+ * Returns a JSON Web Token (JWT) that can be used to authenticate the user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
 
-
-
-    const query = 'SELECT * FROM utente WHERE email = ? AND password = ?';
-    connection.query(query, [email, password], (err, user) =>{
+    connection.query('SELECT id_Utente FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) =>{
+        
         if(err) {
             console(err);
             res.status(500).json({ error: 'Server Error' });
@@ -219,12 +236,12 @@ app.post('/api/login', async (req, res) => {
 
         const token = jwt.sign({email: email}, secretKey, { expires: '1h'});
         req.json({ token: token});
-    })
-})
+    })       
+})   
 
 
 //eventi
-
+ 
 /**
  * Returns a list of all events in the database
  * @param {Object} req - The request object
@@ -263,9 +280,9 @@ app.get('/api/eventi', async(req, res) => {
         }else if (res.statusCode === 400){
             res.status(400).json({ error: 'Bad Request' }); 
         }
-    };
+    };  
 });
-
+  
 
 
 /**
@@ -364,7 +381,7 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
 /**
  * Adds a new event to the database
  * @param {Object} req - The request object
- * @param {Object} res - The response object
+ * @param {Object} res - The response object  
  */
 /* app.post('/api/eventi/add', (req, res) => {
     connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)',[5, 'piscina', '2024-04-21', 'Luogo molto divertente ma anche rilassante.', '', ''], (err, rows) => {

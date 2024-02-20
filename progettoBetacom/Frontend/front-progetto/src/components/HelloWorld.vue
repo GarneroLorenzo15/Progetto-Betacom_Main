@@ -22,9 +22,9 @@
     </div>
     <div class="container d-flex justify-content-center">
       <div class="row" style="width: 50%">
-        <!-- <router-link to="/eventi"> -->
+        <router-link to="/eventi">
         <button class="w-full mb-3" @click="login()">LOGIN</button>
-        <!-- </router-link> -->
+        </router-link>
       </div>
     </div>
     <div class="container my-5 d-flex justify-content-center text-white">
@@ -37,6 +37,8 @@
 
 <script>
 /*eslint-disable*/
+import apiService from "../services/apiService";
+
 export default {
   name: "HelloWorld",
   data() {
@@ -52,34 +54,13 @@ export default {
     }
   },
   methods: {
-    login() {
-      // Invia le credenziali al server
-      fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: this.email,
-          password: this.password
-        })
-      })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Credenziali non valide.');
-          }
-        })
-        .then(data => {
-          // Salva il token ricevuto e fai reindirizzare l'utente
-          localStorage.setItem('token', data.token);
-          this.$router.push('/eventi');
-        })
-        .catch(error => {
-          console.log(this.email, this.password);
-          console.error('Errore durante il login:', error.message);
-        });
+     async login() {
+      try {
+        const response = await apiService.Login({ email: this.email, password: this.password });
+        console.log(response.json());
+      } catch (error) {
+        console.log(error);
+      }
     },
     togglePassword() {
       this.showPassword = !this.showPassword;
