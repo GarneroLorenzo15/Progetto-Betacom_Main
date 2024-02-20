@@ -57,7 +57,7 @@
                   <textarea class="mb-2" v-model="newEvent.descrizione" placeholder="Descrizione dell'evento"></textarea>
                   <input class="mb-2" type="text" v-model="newEvent.luogo" placeholder="URL Luogo dell'evento">
                   <input class="mb-2" type="text" v-model="newEvent.immagine_evento" placeholder="URL dell'immagine dell'evento">
-                  <button type="submit" class="btn btn-primary">Aggiungi evento</button>
+                  <button type="submit" @click="closeModal(), fetchEventsFromApi()">Aggiungi evento</button>
                 </div>
               </div>
             </form>
@@ -106,9 +106,7 @@ export default {
     },
 
     async addEventsFromApi() {
-      //Gen maxID
-      const maxID = Math.max(...this.items.map(item => item.id_Evento));
-      this.newEvent.id_Evento = maxID + 1;
+
       try {
         
         const response = await apiService.addEvents(this.newEvent);
@@ -117,7 +115,8 @@ export default {
         this.items.push(nuovoEvento);
         console.log(this.items);
 
-        this.closeModal();
+        
+
       } catch (error) {
         console.log(error);
       }
