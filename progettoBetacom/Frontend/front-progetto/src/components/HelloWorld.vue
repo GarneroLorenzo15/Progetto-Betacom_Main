@@ -11,24 +11,16 @@
     <div class="container my-5">
       <div class="row d-flex justify-content-center">
         <div>
-          <input
-            class="w-full mb-3"
-            type="text"
-            placeholder="  inserici email..."
-          />
-          <input
-            class="w-full mb-3"
-            type="text"
-            placeholder="  inserici password(cognome in minuscolo)..."
-          />
+          <input class="w-full mb-3" v-model="this.email" type="text" placeholder="  inserici email..." />
+          <input class="w-full mb-3" v-model="this.password" type="text" placeholder="  inserici password(cognome in minuscolo)..." />
         </div>
       </div>
     </div>
     <div class="container d-flex justify-content-center">
       <div class="row" style="width: 50%">
-        <router-link to="/eventi">
-          <button class="w-full mb-3">LOGIN</button>
-        </router-link>
+        <!-- <router-link to="/eventi"> -->
+          <button class="w-full mb-3" @click="login()">LOGIN</button>
+        <!-- </router-link> -->
       </div>
     </div>
     <div class="container my-5 d-flex justify-content-center text-white">
@@ -43,6 +35,43 @@
 /*eslint-disable*/
 export default {
   name: "HelloWorld",
+  data() {
+    return {
+      email: '',
+      password: ''
+    };
+  },
+  methods: {
+    login() {
+      // Invia le credenziali al server
+      fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: this.email,
+          password: this.password
+        })
+      })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Credenziali non valide.');
+          }
+        })
+        .then(data => {
+          // Salva il token ricevuto e fai reindirizzare l'utente
+          localStorage.setItem('token', data.token);
+          this.$router.push('/eventi');
+        })
+        .catch(error => {
+          console.log(this.email, this.password);
+          console.error('Errore durante il login:', error.message);
+        });
+    }
+  }
 };
 </script>
 
@@ -51,6 +80,7 @@ export default {
 .w-full {
   width: 100%;
 }
+
 button,
 input {
   border-radius: 25px;
@@ -59,22 +89,27 @@ input {
 h3 {
   margin: 40px 0 0;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li {
   display: inline-block;
   margin: 0 10px;
 }
+
 a {
   color: #f38120;
 }
+
 i {
   color: #d9d9d9;
   font-size: 10rem;
 }
-.margin{
+
+.margin {
   margin-top: 8rem;
 }
 </style>

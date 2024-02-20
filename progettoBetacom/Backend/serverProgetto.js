@@ -12,6 +12,8 @@ app.use(cors());
 app.use(morgan('tiny')); //stampa nel terminale le richieste che arrivano nel server
 app.use(express.json()); //per tradurre i json in arrivo nei pacchetti destinati al nostro server
 
+const secretKey = '1234';
+
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -195,6 +197,30 @@ app.post('/api/utenti/add', async (req, res) => {
         }
     };
 });
+
+
+//login 
+
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+
+
+
+    const query = 'SELECT * FROM utente WHERE email = ? AND password = ?';
+    connection.query(query, [email, password], (err, user) =>{
+        if(err) {
+            console(err);
+            res.status(500).json({ error: 'Server Error' });
+        }
+
+        if(!user) {
+            res.status(400).json({ error: 'Bad Request' });
+        }
+
+        const token = jwt.sign({email: email}, secretKey, { expires: '1h'});
+        req.json({ token: token});
+    })
+})
 
 
 //eventi
