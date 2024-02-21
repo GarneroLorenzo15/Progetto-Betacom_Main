@@ -22,9 +22,9 @@
     </div>
     <div class="container d-flex justify-content-center">
       <div class="row" style="width: 50%">
-        <!-- <router-link to="/eventi"> -->
+        <router-link to="/eventi">
         <button class="w-full mb-3" @click="login(Credenziali)">LOGIN</button>
-        <!-- </router-link> -->
+        </router-link>
       </div>
     </div>
     <div class="container my-5 d-flex justify-content-center text-white">

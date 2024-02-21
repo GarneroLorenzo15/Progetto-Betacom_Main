@@ -221,9 +221,41 @@ app.get('/api/account', async (req, res) => {
  * @param {Object} res - The response object.
  */
 app.post('/api/login', async (req, res) => {
-    console.log(req.body);
+    /* console.log(req.body); */
     const { email, password } = req.body;
 
+    if(!email || !password) {
+        res.status(400).json({ error: 'campo obbligatorio' });
+    }
+
+    try {
+        const rows = await new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) => {
+            if(err) {
+                reject(err);
+            } else if(result){
+                resolve(result);
+                console.log('qui, login()');
+            }
+        })
+    });
+    
+        if(rows.length <= 0){
+            res.status(404).json({error: "not found, login()"})
+        } else if (rows.length > 0) {
+            res.status(200).json(rows);
+        }
+
+    } catch (error) {
+        console.error('Error fetching users:', error);
+         if( res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    }
+    
+/*     console.log(req.body.email, req.body.password);
     connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) =>{
         
         if(err) {
@@ -240,11 +272,13 @@ app.post('/api/login', async (req, res) => {
             res.render('http://localhost:8080/eventi');
         }
 
-    }) 
-       /*  const token = jwt.sign({ email: email}, secretKey, { expires: '1h'});
+        const token = jwt.sign({ email: email}, secretKey, { expires: '1h'});
         res.json({ token: token}); */
+
+}); 
+       
       
-})   
+  
 
 
 //eventi 
