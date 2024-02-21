@@ -220,28 +220,35 @@ app.get('/api/account', async (req, res) => {
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  */
-/* app.post('/api/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
+    console.log(req.body);
     const { email, password } = req.body;
 
-    connection.query('SELECT id_Utente FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) =>{
+    connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) =>{
         
         if(err) {
             console.log(err);
             res.status(500).json({ error: 'Server Error' });
         }
 
-        if(!user) {
+        if(!result) {
             res.status(400).json({ error: 'Bad Request' });
         }
 
-        const token = jwt.sign({email: email}, secretKey, { expires: '1h'});
-        req.json({ token: token});
-    })       
-})    */
+        if(result){
+            res.status(200).json({message: 'corretto'});
+            res.render('http://localhost:8080/eventi');
+        }
+
+    }) 
+       /*  const token = jwt.sign({ email: email}, secretKey, { expires: '1h'});
+        res.json({ token: token}); */
+      
+})   
 
 
-//eventi
- 
+//eventi 
+  
 /**
  * Returns a list of all events in the database
  * @param {Object} req - The request object
@@ -427,10 +434,10 @@ app.post('/api/eventi/add', async (req, res) => {
  */
 app.post('/api/eventi/add', async (req, res) => {
     try {
-        console.log(req.body);
+        console.log(req.body); 
         const { titolo, data, descrizione, luogo, immagine_evento } = req.body;
 
-        if(!titolo || !descrizione  ){
+        if(!titolo || !descrizione  ){ 
             res.status(400).json({ error: 'Il campo fornito è obbliogatorio' });
         }
   

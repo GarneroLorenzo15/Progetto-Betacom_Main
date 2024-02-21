@@ -20,7 +20,7 @@ export default {
   deleteEvent(id) {
     return axios.delete(`${API_URL}/api/eventi/delete/${id}`);
   },
-  Login(email, password) {
-    return axios.post(`${API_URL}/api/login`, { email, password });
+  Login(Credenziali) {
+    return axios.post(`${API_URL}/api/login`, Credenziali);
   },
 };

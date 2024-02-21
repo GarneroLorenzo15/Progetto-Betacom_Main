@@ -1,7 +1,7 @@
 <template>
   <!-- eslint-disable -->
   <div class="hello">
-    <div class="container margin">
+    <div class="container margin h-auto">
       <div class="row" style="height: 200px">
         <figure class="w-full d-flex justify-content-center align-items-center mb">
           <i class="bi bi-person"></i>
@@ -11,9 +11,9 @@
     <div class="container my-5">
       <div class="row d-flex justify-content-center">
         <div>
-          <input class="w-full mb-3" v-model="this.email" type="email" placeholder="  inserici email..." />
+          <input class="w-full mb-3" v-model="this.Credenziali.email" type="email" placeholder="  inserici email..." />
           <div class="d-flex align-items-center mb-3">
-            <input class="w-full" v-model="this.password" :type="passwordFieldType"
+            <input class="w-full" v-model="this.Credenziali.password" :type="passwordFieldType"
               placeholder="  inserici password(cognome in minuscolo)..." />
             <button @click="togglePassword()"> {{ showPassword ? 'Mostra' : 'Nascondi' }} </button>
           </div>
@@ -22,9 +22,9 @@
     </div>
     <div class="container d-flex justify-content-center">
       <div class="row" style="width: 50%">
-        <router-link to="/eventi">
-        <button class="w-full mb-3" @click="login()">LOGIN</button>
-        </router-link>
+        <!-- <router-link to="/eventi"> -->
+        <button class="w-full mb-3" @click="login(Credenziali)">LOGIN</button>
+        <!-- </router-link> -->
       </div>
     </div>
     <div class="container my-5 d-flex justify-content-center text-white">
@@ -43,8 +43,10 @@ export default {
   name: "HelloWorld",
   data() {
     return {
-      email: '',
-      password: '',
+      Credenziali: {
+        email: '',
+        password: '',
+      },
       showPassword: false,
     };
   },
@@ -54,12 +56,13 @@ export default {
     }
   },
   methods: {
-     async login() {
+    async login(Credenziali) {
       try {
-        const response = await apiService.Login({ email: this.email, password: this.password });
-        console.log(response.json());
+        console.log(this.Credenziali.email, this.Credenziali.password, "login()")
+        const response = await apiService.Login(Credenziali);
+        /* { email: this.email, password: this.password } */
       } catch (error) {
-        console.log(error);
+        console.log(error, "login()");
       }
     },
     togglePassword() {
@@ -105,5 +108,9 @@ i {
 
 .margin {
   margin-top: 8rem;
+}
+
+.h-auto{
+  height: auto;
 }
 </style>
