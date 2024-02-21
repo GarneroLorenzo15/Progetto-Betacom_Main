@@ -63,5 +63,6 @@ button {
   font-weight: bold;
   font-size: large;
   border-radius: 25px;
+  border: 0px;
 }
 </style>

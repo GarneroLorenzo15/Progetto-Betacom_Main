@@ -252,4 +252,5 @@ img {
 .container-2:last-of-type {
   margin-bottom: 10rem;
 }
+
 </style>

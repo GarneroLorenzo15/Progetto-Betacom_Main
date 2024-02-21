@@ -226,7 +226,7 @@ app.post('/api/login', async (req, res) => {
     connection.query('SELECT id_Utente FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) =>{
         
         if(err) {
-            console(err);
+            console.log(err);
             res.status(500).json({ error: 'Server Error' });
         }
 

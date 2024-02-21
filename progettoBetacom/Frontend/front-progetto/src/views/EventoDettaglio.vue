@@ -4,28 +4,27 @@
     <img class="w-full" :src="eventDetails[0].immagine_evento" alt="immagine evento" />
     <div class="container">
       <div class="row">
-        <div class="row">
-          <div class="d-flex justify-content-end flex-nowrap">
-            <div class="w-50 d-flex justify-content-end align-items-center">
-              <div class="mx-2">
-                {{ eventDay }}
-              </div>
+        <div class="row mt-1">
+          <div class="row d-flex ">
+            <div class="w-50">
+              <h5>
+                {{ eventDetails[0].titolo }}
+              </h5>
             </div>
-            <i class="bi bi-calendar-event-fill calendar"></i>
+            <div class="d-flex justify-content-end w-50">
+              <p @click="deleteEventFromApi()">❌</p>
+            </div>
           </div>
-        </div>
-        <div class="row">
-                <div class="row d-flex ">
-                  <div class="w-50">
-                    <h5>
-                      {{ eventDetails[0].titolo}}
-                    </h5>
-                  </div>
-                  <div class="d-flex justify-content-end w-50">
-                    <p @click="deleteEventFromApi()">❌</p>
-                  </div>
+          <div class="row">
+            <div class="d-flex justify-content-end flex-nowrap">
+              <div class="w-50 d-flex justify-content-end align-items-center">
+                <div class="mx-2">
+                  {{ eventDay }}
                 </div>
-          <!-- <h2>{{ eventDetails[0].titolo }}</h2> -->
+              </div>
+              <i class="bi bi-calendar-event-fill calendar"></i>
+            </div>
+          </div>
           <p class="text-justify">
             {{ eventDetails[0].descrizione }}
           </p>
