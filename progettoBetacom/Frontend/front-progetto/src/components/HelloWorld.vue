@@ -13,7 +13,7 @@
         <div>
           <input class="w-full mb-3" v-model="this.email" type="email" placeholder="  inserici email..." />
           <div class="d-flex align-items-center mb-3">
-            <input class="w-full" v-model="this.password" :type="passwordFieldType()"
+            <input class="w-full" v-model="this.password" :type="passwordFieldType"
               placeholder="  inserici password(cognome in minuscolo)..." />
             <button @click="togglePassword()"> {{ showPassword ? 'Mostra' : 'Nascondi' }} </button>
           </div>
