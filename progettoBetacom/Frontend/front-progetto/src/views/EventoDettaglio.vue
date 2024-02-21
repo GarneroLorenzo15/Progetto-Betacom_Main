@@ -3,7 +3,7 @@
   <div class="bg-white">
     <img class="w-full" :src="eventDetails[0].immagine_evento" alt="immagine evento" />
     <div class="container">
-      <div class="row">
+      <div class="row d-flex justify-content-center">
         <div class="row mt-1">
           <div class="row d-flex ">
             <div class="w-50">
@@ -74,7 +74,7 @@ export default {
       try {
         const response = await apiService.deleteEvent(this.eventDetails[0].id_Evento);
         this.items = response.data;
-        this.$router.push("/");
+        this.$router.push("/eventi");
       } catch (error) {
         console.log(error);
       }

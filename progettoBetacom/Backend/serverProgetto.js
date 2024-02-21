@@ -220,7 +220,7 @@ app.get('/api/account', async (req, res) => {
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  */
-app.post('/api/login', async (req, res) => {
+/* app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
 
     connection.query('SELECT id_Utente FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) =>{
@@ -237,7 +237,7 @@ app.post('/api/login', async (req, res) => {
         const token = jwt.sign({email: email}, secretKey, { expires: '1h'});
         req.json({ token: token});
     })       
-})   
+})    */
 
 
 //eventi
