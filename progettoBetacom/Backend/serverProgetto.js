@@ -174,9 +174,12 @@ app.delete('/api/utenti/delete/:id', async (req, res) => {
  * @param {Object} res - The response object
  */
 app.post('/api/utenti/add', async (req, res) => {
+
+    const { id_Utente, nome, cognome, email, password } = req.body;
+
     try {
         const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password) VALUES (?,?,?,?,?)',[1, 'Sandro', 'Maffiodo','s.maffiodo','sandro'], (err, rows)=>{
+            connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password) VALUES (?,?,?,?,?)',[id_Utente, nome, cognome, email, password], (err, rows)=>{
                 if(err) {
                     reject(err);
                 } else {
@@ -210,7 +213,7 @@ app.post('/api/utenti/add', async (req, res) => {
  * @param {Object} res - The response object.
  * @returns {string} The rendered HTML for the events page.
  */
-app.get('/api/account', async (req, res) => {
+app.get('/api/account', async (req, res) => {  
     return res.render('http://localhost:8080/eventi');
 });
 

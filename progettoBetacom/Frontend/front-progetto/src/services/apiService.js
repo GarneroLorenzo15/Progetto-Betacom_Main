@@ -23,4 +23,7 @@ export default {
   Login(Credenziali) {
     return axios.post(`${API_URL}/api/login`, Credenziali);
   },
+  addUtenti() {
+    return axios.post(`${API_URL}/api/utenti/add`);
+  },
 };
