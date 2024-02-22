@@ -25,14 +25,11 @@
           <div class="card">
             <img :src="item.immagine_evento" class="card-img-top" alt="immagine" />
             <div class="card-body">
-              <div class="row d-flex ">
-                <div class="w-50">
+              <div class="row d-flex">
+                <div class="w-full">
                   <h5>
                     {{ item.titolo }}
                   </h5>
-                </div>
-                <div class="d-flex justify-content-end w-50">
-                  <p @click="deleteEventFromApi()">❌</p>
                 </div>
               </div>
               <div class="d-flex justify-content-end">

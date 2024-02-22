@@ -5,9 +5,9 @@
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="row mt-1">
-          <div class="row d-flex ">
-            <div class="w-50">
-              <h5>
+          <div class="row d-flex justify-content-beween flex-nowrap my-2">
+            <div class="d-flex w-50">
+              <h5 class="d-felx text-center spaces">
                 {{ eventDetails[0].titolo }}
               </h5>
             </div>
@@ -83,13 +83,23 @@ export default {
 };
 </script>
 <style scoped>
+.w-full{
+  width: 100%;
+}
 .bg-white {
   background-color: white;
   height: 100vh;
 }
 
+.mr-5{
+  margin-right: 5rem;
+}
 .mb-20 {
   margin-bottom: 20rem;
+}
+
+.spaces{
+  white-space: nowrap;
 }
 
 button {
