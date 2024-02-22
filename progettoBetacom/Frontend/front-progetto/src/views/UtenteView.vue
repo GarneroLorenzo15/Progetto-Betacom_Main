@@ -21,24 +21,27 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="d-flex flex-wrap" v-for="user in users" :key="user.id">
-            <div class="w-33 m-1">
-              <p>{{ user.id_Utente }}</p>
-            </div>
-            <div class="w-33 m-1">
-              <p>{{ user.nome }}</p>
-            </div>
-            <div class="w-33 m-1">
-              <p>{{ user.cognome }}</p>
-            </div>
-            <div class="w-33 m-1 d-flex justify-content-end">
-              <div v-if="user.disponibile === 1">
-                <p>✔️</p>
+          <div class="row d-flex flex-nowrap align-items-center" v-for="user in users" :key="user.id">
+              <div class="w-20 ">
+                <p>{{ user.id_Utente }}</p>
               </div>
-              <div v-else-if="user.disponibile === 0">
-                <p>✖️</p>
+              <div class="w-20 spaces">
+                <p>{{ user.nome }}</p>
               </div>
-            </div>
+              <div class="w-20   spaces">
+                <p>{{ user.cognome }}</p>
+              </div>
+              <div class="w-20 d-flex justify-content-end">
+                <div v-if="user.disponibile === 1">
+                  <p>✔️</p>
+                </div>
+                <div v-else-if="user.disponibile === 0">
+                  <p>✖️</p>
+                </div>
+              </div>
+              <div class="w-20 d-flex justify-content-end">
+                <i class="bi bi-dash-circle-fill"></i>
+              </div>
           </div>
         </div>
       </div>
@@ -146,6 +149,14 @@ export default {
 
 .w-25 {
   width: 25%;
+}
+
+.w-20{
+  width: 20%;
+}
+
+.w-5{
+  
 }
 
 .card-header {
