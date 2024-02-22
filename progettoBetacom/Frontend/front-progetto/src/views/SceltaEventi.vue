@@ -10,9 +10,9 @@
               <i class="bi bi-plus-circle-fill"></i>
             </div>
             <div class="w-50 d-flex justify-content-end mr-5">
-              <router-link to="/">
-                <i class="bi bi-box-arrow-right colorto"></i>
-              </router-link>
+              <!-- <router-link to="/"> -->
+                <i class="bi bi-box-arrow-right colorto" @click="logout()"></i>
+              <!-- </router-link> -->
             </div>
           </div>
         </div>
@@ -130,7 +130,10 @@ export default {
       }
     },
 
-    
+    logout(){
+      localStorage.removeItem('token');
+      this.$router.push('/login');
+    },
 
     openModal() {
       const modal = document.getElementById('exampleModal');
