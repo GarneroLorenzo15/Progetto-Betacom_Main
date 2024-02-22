@@ -211,7 +211,7 @@ app.post('/api/utenti/add', async (req, res) => {
  * @returns {string} The rendered HTML for the events page.
  */
 app.get('/api/account', async (req, res) => {
-    return res.render('/eventi');
+    return res.render('http://localhost:8080/eventi');
 });
 
 /**
@@ -220,8 +220,8 @@ app.get('/api/account', async (req, res) => {
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  */
-app.post('/api/login', async (req, res) => {
-    /* console.log(req.body); */
+app.post('/api/login', async (req, res) => { 
+    console.log(req.body);
     const { email, password } = req.body;
 
     if(!email || !password) {
@@ -230,54 +230,67 @@ app.post('/api/login', async (req, res) => {
 
     try {
         const rows = await new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) => {
+        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, rows) => {
             if(err) {
                 reject(err);
-            } else if(result){
-                resolve(result);
-                console.log('qui, login()');
+            } else if(rows){
+                resolve(rows);
             }
         })
     });
     
-        if(rows.length <= 0){
-            res.status(404).json({error: "not found, login()"})
-        } else if (rows.length > 0) {
-            res.status(200).json(rows);
-        }
+    console.log(rows);
 
-    } catch (error) {
+    if(rows.length > 0) {
+        const token = jwt.sign({ id: rows[0].id_Utente }, secretKey , { expiresIn: '1h' });
+        return res.status(200).json({ token: token });
+    } else if(rows.length <= 0){
+        res.status(404).json({ error: 'Utente non trovato' });
+    }
+
+
+   } catch (error) {
         console.error('Error fetching users:', error);
-         if( res.statusCode === 500) {
+         if( res.statusCode === 500) { 
             res.status(500).json({ error: 'Server Error' }); 
         }else if (res.statusCode === 400){
             res.status(400).json({ error: 'Bad Request' }); 
         }
+    } 
+
+});
+
+
+/* app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Campo obbligatorio' });
+        }
+
+        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) => {
+            if (err) {
+                console.error('Errore nel recupero dell\'utente:', err);
+                return res.status(500).json({ error: 'Errore del server' });
+            }
+            
+            if (result.length === 0) {
+                return res.status(404).json({ error: 'Utente non trovato' });
+            }
+
+            // L'utente è stato trovato, genera un token JWT
+            const token = jwt.sign({ email: email }, secretKey, { expiresIn: '1h' });
+            res.status(200).json({token: token});
+            // Reindirizza alla pagina degli eventi
+            res.redirect(200, 'http://localhost:8080/eventi');
+        });
+    } catch (error) {
+        console.error('Errore durante il login:', error);
+        res.status(500).json({ error: 'Errore del server' });
     }
-    
-/*     console.log(req.body.email, req.body.password);
-    connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) =>{
-        
-        if(err) {
-            console.log(err);
-            res.status(500).json({ error: 'Server Error' });
-        }
+}); */
 
-        if(!result) {
-            res.status(400).json({ error: 'Bad Request' });
-        }
-
-        if(result){
-            res.status(200).json({message: 'corretto'});
-            res.render('http://localhost:8080/eventi');
-        }
-
-        const token = jwt.sign({ email: email}, secretKey, { expires: '1h'});
-        res.json({ token: token}); */
-
-}); 
-       
-      
   
 
 

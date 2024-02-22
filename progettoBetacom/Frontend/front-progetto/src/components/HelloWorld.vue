@@ -1,7 +1,7 @@
 <template>
   <!-- eslint-disable -->
   <div class="hello">
-    <div class="container margin h-auto">
+    <div class="container margin-top h-auto">
       <div class="row" style="height: 200px">
         <figure class="w-full d-flex justify-content-center align-items-center mb">
           <i class="bi bi-person"></i>
@@ -22,12 +22,12 @@
     </div>
     <div class="container d-flex justify-content-center">
       <div class="row" style="width: 50%">
-        <router-link to="/eventi">
-        <button class="w-full mb-3" @click="login(Credenziali)">LOGIN</button>
-        </router-link>
+<!--         <router-link to="/eventi"> -->
+        <button class="w-full mb-3" @click="login()">LOGIN</button>
+        <!-- </router-link> -->
       </div>
     </div>
-    <div class="container my-5 d-flex justify-content-center text-white">
+    <div class="container d-flex justify-content-center text-white fondo-page">
       <div class="row">
         <p>Powered by Lorenzo Garnero</p>
       </div>
@@ -47,7 +47,7 @@ export default {
         email: '',
         password: '',
       },
-      showPassword: false,
+      showPassword: true,
     };
   },
   computed: {
@@ -56,13 +56,14 @@ export default {
     }
   },
   methods: {
-    async login(Credenziali) {
+    async login() {
       try {
-        console.log(this.Credenziali.email, this.Credenziali.password, "login()")
-        const response = await apiService.Login(Credenziali);
-        /* { email: this.email, password: this.password } */
+        const response = await apiService.Login(this.Credenziali);
+        const { token } = await response.data
+        localStorage.setItem('token', token);
+        this.$router.push('/eventi');
       } catch (error) {
-        console.log(error, "login()");
+        console.log(error);
       }
     },
     togglePassword() {
@@ -106,10 +107,14 @@ i {
   font-size: 10rem;
 }
 
-.margin {
+.margin-top {
   margin-top: 8rem;
 }
 
+.fondo-page{
+  position: relative;
+  margin-top: 8.2rem;
+}
 .h-auto{
   height: auto;
 }
