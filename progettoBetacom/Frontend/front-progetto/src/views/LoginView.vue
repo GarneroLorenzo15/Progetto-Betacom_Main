@@ -2,7 +2,7 @@
   <!-- eslint-disable -->
   <div class="login">
     <div class="">
-       <HelloWorld></HelloWorld>
+      <HelloWorld></HelloWorld>
     </div>
   </div>
 </template>

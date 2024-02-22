@@ -3,19 +3,28 @@
   <div class="bg-white">
     <img class="w-full" :src="eventDetails[0].immagine_evento" alt="immagine evento" />
     <div class="container">
-      <div class="row">
-        <div class="row">
-          <div class="d-flex justify-content-end flex-nowrap">
-            <div class="w-50 d-flex justify-content-end align-items-center">
-              <div class="mx-2">
-                {{ eventDay }}
-              </div>
+      <div class="row d-flex justify-content-center">
+        <div class="row mt-1">
+          <div class="row d-flex justify-content-beween flex-nowrap my-2">
+            <div class="d-flex w-50">
+              <h5 class="d-felx text-center spaces">
+                {{ eventDetails[0].titolo }}
+              </h5>
             </div>
-            <i class="bi bi-calendar-event-fill calendar"></i>
+            <div class="d-flex justify-content-end w-50">
+              <p @click="deleteEventFromApi()">❌</p>
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <h2>{{ eventDetails[0].titolo }}</h2>
+          <div class="row">
+            <div class="d-flex justify-content-end flex-nowrap">
+              <div class="w-50 d-flex justify-content-end align-items-center">
+                <div class="mx-2">
+                  {{ eventDay }}
+                </div>
+              </div>
+              <i class="bi bi-calendar-event-fill calendar"></i>
+            </div>
+          </div>
           <p class="text-justify">
             {{ eventDetails[0].descrizione }}
           </p>
@@ -61,17 +70,36 @@ export default {
         console.error(error);
       }
     },
+    async deleteEventFromApi() {
+      try {
+        const response = await apiService.deleteEvent(this.eventDetails[0].id_Evento);
+        this.items = response.data;
+        this.$router.push("/eventi");
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 };
 </script>
 <style scoped>
+.w-full{
+  width: 100%;
+}
 .bg-white {
   background-color: white;
   height: 100vh;
 }
 
+.mr-5{
+  margin-right: 5rem;
+}
 .mb-20 {
   margin-bottom: 20rem;
+}
+
+.spaces{
+  white-space: nowrap;
 }
 
 button {

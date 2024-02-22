@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <div class="d-flex justify-content-center">
-        <h2>Profilo Utente</h2>
+        <h2>Area Personale</h2>
       </div>
     </div>
     <div class="row d-flex justify-content-center">

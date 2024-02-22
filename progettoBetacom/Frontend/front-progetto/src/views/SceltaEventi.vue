@@ -10,9 +10,9 @@
               <i class="bi bi-plus-circle-fill"></i>
             </div>
             <div class="w-50 d-flex justify-content-end mr-5">
-              <router-link to="/">
-                <i class="bi bi-box-arrow-right colorto"></i>
-              </router-link>
+              <!-- <router-link to="/"> -->
+                <i class="bi bi-box-arrow-right colorto" @click="logout()"></i>
+              <!-- </router-link> -->
             </div>
           </div>
         </div>
@@ -25,7 +25,13 @@
           <div class="card">
             <img :src="item.immagine_evento" class="card-img-top" alt="immagine" />
             <div class="card-body">
-              <h5 class="card-title">{{ item.titolo }}</h5>
+              <div class="row d-flex">
+                <div class="w-full">
+                  <h5>
+                    {{ item.titolo }}
+                  </h5>
+                </div>
+              </div>
               <div class="d-flex justify-content-end">
                 <div class="row">
                   <router-link :to="'/eventi/' + item.id_Evento">
@@ -39,7 +45,8 @@
       </div>
     </div>
     <!-- Modal per aggiungere un nuovo evento -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -56,7 +63,8 @@
                   <input class="mb-2" type="date" v-model="newEvent.data" required>
                   <textarea class="mb-2" v-model="newEvent.descrizione" placeholder="Descrizione dell'evento"></textarea>
                   <input class="mb-2" type="text" v-model="newEvent.luogo" placeholder="URL Luogo dell'evento">
-                  <input class="mb-2" type="text" v-model="newEvent.immagine_evento" placeholder="URL dell'immagine dell'evento">
+                  <input class="mb-2" type="text" v-model="newEvent.immagine_evento"
+                    placeholder="URL dell'immagine dell'evento">
                   <button type="submit" @click="closeModal(), fetchEventsFromApi()">Aggiungi evento</button>
                 </div>
               </div>
@@ -108,24 +116,29 @@ export default {
     async addEventsFromApi() {
 
       try {
-        
+
         const response = await apiService.addEvents(this.newEvent);
         conasole.log(response);
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
         console.log(this.items);
 
-        
+
 
       } catch (error) {
         console.log(error);
       }
     },
 
+    logout(){
+      localStorage.removeItem('token');
+      this.$router.push('/login');
+    },
+
     openModal() {
       const modal = document.getElementById('exampleModal');
 
-      if(modal){
+      if (modal) {
         modal.classList.add('show');
         modal.style.display = 'block';
       }
@@ -134,7 +147,7 @@ export default {
     closeModal() {
       const modal = document.getElementById('exampleModal');
 
-      if(modal){
+      if (modal) {
         modal.classList.remove('show');
         modal.style.display = 'none';
       }
@@ -167,6 +180,10 @@ export default {
 
 .h-92 {
   height: 100px;
+}
+
+.pr-5 {
+  margin-right: 10rem;
 }
 
 .border-nav {
@@ -234,4 +251,6 @@ img {
 
 .container-2:last-of-type {
   margin-bottom: 10rem;
-}</style>
+}
+
+</style>

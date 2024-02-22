@@ -17,4 +17,10 @@ export default {
   addEvents(newEvent) {
     return axios.post(`${API_URL}/api/eventi/add`, newEvent);
   },
+  deleteEvent(id) {
+    return axios.delete(`${API_URL}/api/eventi/delete/${id}`);
+  },
+  Login(Credenziali) {
+    return axios.post(`${API_URL}/api/login`, Credenziali);
+  },
 };

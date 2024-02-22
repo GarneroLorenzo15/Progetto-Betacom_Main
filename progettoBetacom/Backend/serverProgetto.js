@@ -12,6 +12,8 @@ app.use(cors());
 app.use(morgan('tiny')); //stampa nel terminale le richieste che arrivano nel server
 app.use(express.json()); //per tradurre i json in arrivo nei pacchetti destinati al nostro server
 
+const secretKey = '1234';
+
 
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -197,8 +199,103 @@ app.post('/api/utenti/add', async (req, res) => {
 });
 
 
-//eventi
+//login 
 
+
+
+/**
+ * Returns the rendered HTML for the events page.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {string} The rendered HTML for the events page.
+ */
+app.get('/api/account', async (req, res) => {
+    return res.render('http://localhost:8080/eventi');
+});
+
+/**
+ * Returns a JSON Web Token (JWT) that can be used to authenticate the user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
+app.post('/api/login', async (req, res) => { 
+    console.log(req.body);
+    const { email, password } = req.body;
+
+    if(!email || !password) {
+        res.status(400).json({ error: 'campo obbligatorio' });
+    }
+
+    try {
+        const rows = await new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, rows) => {
+            if(err) {
+                reject(err);
+            } else if(rows){
+                resolve(rows);
+            }
+        })
+    });
+    
+    console.log(rows);
+
+    if(rows.length > 0) {
+        const token = jwt.sign({ id: rows[0].id_Utente }, secretKey , { expiresIn: '1h' });
+        return res.status(200).json({ token: token });
+    } else if(rows.length <= 0){
+        res.status(404).json({ error: 'Utente non trovato' });
+    }
+
+
+   } catch (error) {
+        console.error('Error fetching users:', error);
+         if( res.statusCode === 500) { 
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    } 
+
+});
+
+
+/* app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Campo obbligatorio' });
+        }
+
+        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) => {
+            if (err) {
+                console.error('Errore nel recupero dell\'utente:', err);
+                return res.status(500).json({ error: 'Errore del server' });
+            }
+            
+            if (result.length === 0) {
+                return res.status(404).json({ error: 'Utente non trovato' });
+            }
+
+            // L'utente è stato trovato, genera un token JWT
+            const token = jwt.sign({ email: email }, secretKey, { expiresIn: '1h' });
+            res.status(200).json({token: token});
+            // Reindirizza alla pagina degli eventi
+            res.redirect(200, 'http://localhost:8080/eventi');
+        });
+    } catch (error) {
+        console.error('Errore durante il login:', error);
+        res.status(500).json({ error: 'Errore del server' });
+    }
+}); */
+
+  
+
+
+//eventi 
+  
 /**
  * Returns a list of all events in the database
  * @param {Object} req - The request object
@@ -237,9 +334,9 @@ app.get('/api/eventi', async(req, res) => {
         }else if (res.statusCode === 400){
             res.status(400).json({ error: 'Bad Request' }); 
         }
-    };
+    };  
 });
-
+  
 
 
 /**
@@ -333,12 +430,12 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
         }
     };
 });
-
+ 
 
 /**
  * Adds a new event to the database
  * @param {Object} req - The request object
- * @param {Object} res - The response object
+ * @param {Object} res - The response object  
  */
 /* app.post('/api/eventi/add', (req, res) => {
     connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)',[5, 'piscina', '2024-04-21', 'Luogo molto divertente ma anche rilassante.', '', ''], (err, rows) => {
@@ -384,10 +481,10 @@ app.post('/api/eventi/add', async (req, res) => {
  */
 app.post('/api/eventi/add', async (req, res) => {
     try {
-        console.log(req.body);
+        console.log(req.body); 
         const { titolo, data, descrizione, luogo, immagine_evento } = req.body;
 
-        if(!titolo || !descrizione  ){
+        if(!titolo || !descrizione  ){ 
             res.status(400).json({ error: 'Il campo fornito è obbliogatorio' });
         }
   

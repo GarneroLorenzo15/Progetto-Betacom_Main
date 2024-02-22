@@ -34,11 +34,6 @@ export default {
       currentTab: "eventi",
     };
   },
-  /* methods: {
-    setCurrentTab(tab) {
-      this.currentTab = tab;
-    }
-  } */
 };
 </script>
 
