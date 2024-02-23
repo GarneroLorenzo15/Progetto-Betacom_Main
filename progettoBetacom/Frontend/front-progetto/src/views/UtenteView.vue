@@ -22,16 +22,16 @@
         </div>
         <div class="card-body">
           <div class="row d-flex flex-nowrap align-items-center" v-for="user in users" :key="user.id">
-              <div class="w-20 ">
+              <div class="w-10 spaces">
                 <p>{{ user.id_Utente }}</p>
               </div>
-              <div class="w-20 spaces">
+              <div class="w-33 mr-1 spaces">
                 <p>{{ user.nome }}</p>
               </div>
-              <div class="w-20   spaces">
+              <div class="w-33 spaces">
                 <p>{{ user.cognome }}</p>
               </div>
-              <div class="w-20 d-flex justify-content-end">
+              <div class="w-5 mr-1 d-flex justify-content-end">
                 <div v-if="user.disponibile === 1">
                   <p>✔️</p>
                 </div>
@@ -39,7 +39,7 @@
                   <p>✖️</p>
                 </div>
               </div>
-              <div class="w-20 d-flex justify-content-end">
+              <div class="w-5 d-flex justify-content-end">
                 <i class="bi bi-dash-circle-fill"></i>
               </div>
           </div>
@@ -144,20 +144,29 @@ export default {
 
 <style scoped>
 .w-33 {
-  width: 33, 333%;
+  width: 33.333%;
 }
 
 .w-25 {
   width: 25%;
 }
 
+.w-10 {
+  width: 10%;
+}
+
+.w-5{
+  width: 5%;
+}
+
 .w-20{
   width: 20%;
 }
 
-.w-5{
-  
+.w-40 {
+  width: 40%;
 }
+
 
 .card-header {
   background-color: white;

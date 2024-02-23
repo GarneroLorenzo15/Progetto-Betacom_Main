@@ -383,7 +383,7 @@ app.get('/api/eventi/:id', async (req, res) => {
         
     } catch (err) {
         console.error('Error fetching users:', err);
-        res.status(500).json({ error: 'Server Error' }); 
+        res.status(500).json({ error: 'Server Error' });  
         res.status(400).json({ error: 'Bad Request' }); 
     };
 });
