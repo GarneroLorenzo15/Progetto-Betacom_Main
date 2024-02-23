@@ -32,14 +32,14 @@
                 <p>{{ user.cognome }}</p>
               </div>
               <div class="w-5 mr-1 d-flex justify-content-end">
-                <div v-if="user.disponibile === 1">
+                <div class="color-green" v-if="user.disponibile === 1">
                   <p>✔️</p>
                 </div>
-                <div v-else-if="user.disponibile === 0">
+                <div class="color-red" v-else-if="user.disponibile === 0">
                   <p>✖️</p>
                 </div>
               </div>
-              <div class="w-5 d-flex justify-content-end">
+              <div class="w-5 d-flex justify-content-end margin-bottom">
                 <i class="bi bi-dash-circle-fill"></i>
               </div>
           </div>
@@ -53,9 +53,9 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Aggiungi Evento</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              <div type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()">
+                <span aria-hidden="true">✖️</span>
+              </div>
             </div>
             <div class="modal-body">
               <form @submit.prevent="addUtenteFromApi()">
@@ -63,8 +63,9 @@
                   <div class="row d-flex justify-content-around flex-wrap m-1">
                     <input class="mb-2" type="text" v-model="newUtente.nome" placeholder="Nome Utente..." required>
                     <input class="mb-2" type="text" v-model="newUtente.cognome" placeholder="Cognome utente...">
+                    <input class="mb-2" type="email" v-model="newUtente.email" placeholder="Email Utente...">
                     <input class="mb-2" type="password" v-model="newUtente.password" placeholder="Password...">
-                    <button type="submit" @click="closeModal()">Aggiungi evento</button>
+                    <button type="submit" @click="closeModal()">Aggiungi Utente</button>
                   </div>
                 </div>
               </form>
@@ -167,6 +168,9 @@ export default {
   width: 40%;
 }
 
+.margin-bottom {
+  margin-bottom: 1rem;
+}
 
 .card-header {
   background-color: white;
@@ -179,6 +183,14 @@ export default {
 .card {
   width: 90%;
   margin-bottom: 10rem;
+}
+
+.color-red{
+  color: red;
+}
+
+.color-green {
+  color: green;
 }
 
 .mr-1 {
