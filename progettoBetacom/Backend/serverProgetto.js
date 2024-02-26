@@ -67,6 +67,35 @@ app.get('/api/utenti', async (req, res) => {
 });
 
 
+app.get('/api/utenti/:id', async (req, res) => {
+    const userid = req.params.id;
+
+    try{
+        const rows = await new Promise((resolve, reject) =>{
+            connection.query('SELECT * FROM utenti WHERE id = ?', [userid], (err, rows) =>{
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });   
+        });
+
+        res.status(200).json({message: 'OK'});
+    } catch(err){
+        console.error('Error fetching users:', err);
+        if(res.statusCode === 404) {
+            res.status(404).json({ error: 'Not Found' });
+        } else if( res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    }
+
+})
+
+
 
 /**
  * Returns a list of all users in the database who are available
@@ -153,7 +182,7 @@ app.delete('/api/utenti/delete/:id', async (req, res) => {
         }else if (res.statusCode === 400){
             res.status(400).json({ error: 'Bad Request' }); 
         }
-    };
+    }; 
 });
 
 
@@ -176,6 +205,7 @@ app.delete('/api/utenti/delete/:id', async (req, res) => {
 app.post('/api/utenti/add', async (req, res) => {
 
     const { id_Utente, nome, cognome, email, password } = req.body;
+    console.log(req.body);
 
     try {
         const rows = await new Promise((resolve, reject) => {
@@ -250,7 +280,7 @@ app.post('/api/login', async (req, res) => {
     } else if(rows.length <= 0){
         res.status(404).json({ error: 'Utente non trovato' });
     }
-
+ 
 
    } catch (error) {
         console.error('Error fetching users:', error);

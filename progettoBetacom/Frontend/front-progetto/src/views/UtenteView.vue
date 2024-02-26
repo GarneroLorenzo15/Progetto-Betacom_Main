@@ -2,7 +2,7 @@
   <!-- eslint-disable -->
   <div class="container">
     <div class="row">
-      <div class="d-flex justify-content-center">
+      <div class="d-flex justify-content-center my-3">
         <h2>Area Personale</h2>
       </div>
     </div>
@@ -21,9 +21,9 @@
           </div>
         </div>
         <div class="card-body">
-          <div class="row d-flex flex-nowrap align-items-center" v-for="user in users" :key="user.id">
+          <div class="row d-flex flex-nowrap align-items-center" v-for="(user, numUtente ) in users" :key="numUtente">
               <div class="w-10 spaces">
-                <p>{{ user.id_Utente }}</p>
+                <p>{{ numUtente + 1 }}</p>
               </div>
               <div class="w-33 mr-1 spaces">
                 <p>{{ user.nome }}</p>
@@ -40,7 +40,9 @@
                 </div>
               </div>
               <div class="w-5 d-flex justify-content-end margin-bottom">
-                <i class="bi bi-dash-circle-fill"></i>
+                <router-link to="/profilo/:id">
+                  <i class="bi bi-arrow-right-circle-fill"></i>
+                </router-link>
               </div>
           </div>
         </div>
@@ -96,7 +98,9 @@ export default {
         cognome: "",
         email: "",
         password: "",
-      }
+      },
+      numUtente: 0,
+      reloadTrigger: 0,
     };
   },
   mounted() {
@@ -199,5 +203,9 @@ export default {
 
 i {
   font-size: x-large;
+}
+
+a{
+  color: black;
 }
 </style>

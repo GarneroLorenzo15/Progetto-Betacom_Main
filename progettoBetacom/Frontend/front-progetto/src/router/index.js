@@ -13,19 +13,25 @@ const routes = [
     path: "/eventi",
     name: "eventi",
     component: () => import("../views/SceltaEventi.vue"), //dynamic import
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/eventi/:id",
     name: "DettaglioEvento",
     component: () => import("../views/EventoDettaglio.vue"), //dynamic import
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
   },
   {
     path: "/profilo",
     name: "UtenteView",
     component: () => import("../views/UtenteView.vue"), //dynamic import
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/profilo/:id",
+    name: "DettaglioProfilo",
+    component: () => import("../views/UtenteDettaglio.vue"),
+    meta: { requiresAuth: true },
   },
   {
     path: "/:catchAll(.*)",

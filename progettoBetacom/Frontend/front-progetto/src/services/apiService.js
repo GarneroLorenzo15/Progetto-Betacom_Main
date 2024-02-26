@@ -8,6 +8,9 @@ export default {
   fetchUsers() {
     return axios.get(`${API_URL}/api/utenti`);
   },
+  fetchUserDetails(id) {
+    return axios.get(`${API_URL}/api/utenti/${id}`);
+  },
   fetchProposals() {
     return axios.get(`${API_URL}/api/proposte`);
   },
@@ -23,7 +26,10 @@ export default {
   Login(Credenziali) {
     return axios.post(`${API_URL}/api/login`, Credenziali);
   },
-  addUtenti() {
-    return axios.post(`${API_URL}/api/utenti/add`);
+  addUtenti(newUtente) {
+    return axios.post(`${API_URL}/api/utenti/add`, newUtente);
+  },
+  deleteUtenti(userId) {
+    return axios.delete(`${API_URL}/api/utenti/delete`, userId);
   },
 };
