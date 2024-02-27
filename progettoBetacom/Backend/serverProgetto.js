@@ -72,16 +72,16 @@ app.get('/api/utenti/:id', async (req, res) => {
 
     try{
         const rows = await new Promise((resolve, reject) =>{
-            connection.query('SELECT * FROM utenti WHERE id = ?', [userid], (err, rows) =>{
+            connection.query('SELECT * FROM utente WHERE id_Utente = ?', [userid], (err, rows) =>{
                 if(err){
                     reject(err);
                 } else {
-                    resolve(rows);
+                    resolve(rows); 
                 }
             });   
-        });
+        }); 
 
-        res.status(200).json({message: 'OK'});
+        res.status(200).json({message: 'OK', rows});
     } catch(err){
         console.error('Error fetching users:', err);
         if(res.statusCode === 404) {
