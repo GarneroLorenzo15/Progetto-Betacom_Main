@@ -96,10 +96,10 @@ app.get('/api/utenti/:id', async (req, res) => {
 
 app.put('/api/utenti/update/:id', async (req, res) => {
     const userid = req.params.id;
-    const upadteData = req.body;
+    const updateData = req.body;
 
     try{
-        await connection.query('UPDATE utente SET ? WHERE id_Utente = ?', [upadteData, userid]);
+        await connection.query('UPDATE utente SET ? WHERE id_Utente = ?', [updateData, userid]);
 
         res.status(200).json({message: 'ok', upadteData});
     }catch(err){

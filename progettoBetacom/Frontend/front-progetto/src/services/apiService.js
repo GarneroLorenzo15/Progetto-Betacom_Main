@@ -32,7 +32,7 @@ export default {
   addUtenti(newUtente) {
     return axios.post(`${API_URL}/api/utenti/add`, newUtente);
   },
-  deleteUtenti(userId) {
-    return axios.delete(`${API_URL}/api/utenti/delete`, userId);
+  deleteUtenti(id) {
+    return axios.delete(`${API_URL}/api/utenti/delete/${id}`);
   },
 };

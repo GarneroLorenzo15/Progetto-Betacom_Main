@@ -121,8 +121,8 @@ export default {
         conasole.log(response);
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
-        console.log(this.items);
-
+        /* console.log(this.items); */
+        window.location.reload();
 
 
       } catch (error) {

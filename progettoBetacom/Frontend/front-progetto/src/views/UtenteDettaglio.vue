@@ -81,7 +81,7 @@ export default {
       try {
         const response = await apiService.updateUser(this.userDetails.rows[0].id_Utente);
         this.userDetails = response.data;
-        this.$router.push("/utenti");
+        this.$router.push("/profilo");
       } catch (e) {
         console.error(e);
       }
@@ -91,7 +91,7 @@ export default {
       try {
         const respose = await apiService.deleteUtenti(this.userDetails.rows[0].id_Utente);
         this.users = respose.data;
-        this.$router.push("/utenti")
+        this.$router.push("/profilo")
       } catch (e) {
         console.error(e);
       }
