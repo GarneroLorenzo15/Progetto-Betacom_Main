@@ -77,9 +77,9 @@ app.get('/api/utenti/:id', async (req, res) => {
                     reject(err);
                 } else {
                     resolve(rows); 
-                }
+                } 
             });   
-        }); 
+        });  
 
         res.status(200).json({message: 'OK', rows});
     } catch(err){
@@ -91,9 +91,23 @@ app.get('/api/utenti/:id', async (req, res) => {
         }else if (res.statusCode === 400){
             res.status(400).json({ error: 'Bad Request' }); 
         }
+    };
+});
+
+app.put('/api/utenti/update/:id', async (req, res) => {
+    const userid = req.params.id;
+    const upadteData = req.body;
+
+    try{
+        await connection.query('UPDATE utente SET ? WHERE id_Utente = ?', [upadteData, userid]);
+
+        res.status(200).json({message: 'ok', upadteData});
+    }catch(err){
+        console.error(err); 
+        res.status(500).json({message: 'errore del server'});
     }
 
-})
+});
 
 
 

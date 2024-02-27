@@ -16,7 +16,7 @@ body {
 }
 
 a {
-  color: #f38120;
+  color: black;
 }
 
 .w-full {

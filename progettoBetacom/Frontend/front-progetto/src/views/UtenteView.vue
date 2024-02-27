@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <div class="d-flex justify-content-center my-3">
-        <h2>Area Personale</h2>
+        <h2>Info delle Partecipazioni</h2>
       </div>
     </div>
     <div class="row d-flex justify-content-center">
@@ -40,7 +40,7 @@
                 </div>
               </div>
               <div class="w-5 d-flex justify-content-end margin-bottom">
-                <router-link to="/profilo/:id">
+                <router-link :to="'/profilo/' + user.id_Utente ">
                   <i class="bi bi-arrow-right-circle-fill"></i>
                 </router-link>
               </div>
@@ -121,6 +121,7 @@ export default {
         const response = await apiService.addUtenti(this.newUtente);
         const nuovoUtente = response.data;
         this.users.push(nuovoUtente);
+        window.location.reload();
       } catch (error) {
         console.log(error);
       }
