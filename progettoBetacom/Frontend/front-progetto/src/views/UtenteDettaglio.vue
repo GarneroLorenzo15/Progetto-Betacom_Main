@@ -31,10 +31,18 @@
             <p class="font-weight-bold my-2">Vuoi modicare i tuoi dati personali?</p>
           </div>
           <div class="d-flex justify-content-center flex-wrap my-3">
-            <div class="w-full d-flex  justify-content-center align-items-center my-2"><div class="mx-1">Nome:</div><input v-model="userDetails.rows[0].nome" type="text"></div>
-            <div class="w-full d-flex  justify-content-center align-items-center my-2"><div class="mx-1">Cognome:</div><input v-model="userDetails.rows[0].cognome" type="text"></div>
-            <div class="w-full d-flex  justify-content-center align-items-center my-2"><div class="mx-1">Email:</div><input v-model="userDetails.rows[0].email" type="email"></div>
-            <div class="w-full d-flex  justify-content-center align-items-center my-2"><div class="mx-1">Password:</div><input v-model="userDetails.rows[0].password" type="password"></div>
+            <div class="w-full d-flex  justify-content-center align-items-center my-2">
+              <div class="mx-1">Nome:</div><input v-model="userData.nome" type="text">
+            </div>
+            <div class="w-full d-flex  justify-content-center align-items-center my-2">
+              <div class="mx-1">Cognome:</div><input v-model="userData.cognome" type="text">
+            </div>
+            <div class="w-full d-flex  justify-content-center align-items-center my-2">
+              <div class="mx-1">Email:</div><input v-model="userData.email" type="email">
+            </div>
+            <div class="w-full d-flex  justify-content-center align-items-center my-2">
+              <div class="mx-1">Password:</div><input v-model="userData.password" type="password">
+            </div>
             <div class="d-flex justify-content-center flex-wrap w-full my-2">
               <button class="spaces mb-2" @click="updateUsersFromApi()">Salva le modifiche</button>
               <button class="spaces " @click="deleteUsersFromApi()">Elimina il Partecipante</button>
@@ -61,6 +69,12 @@ export default {
   data() {
     return {
       userDetails: { rows: [{}] },
+      userData: {
+        nome: "",
+        cognome: "",
+        email: "",
+        password: "",
+      }
     };
   },
   mounted() {
@@ -79,13 +93,14 @@ export default {
 
     async updateUsersFromApi() {
       try {
-        const response = await apiService.updateUser(this.userDetails.rows[0].id_Utente);
+        const id = this.userDetails.rows[0].id_Utente;
+        const response = await apiService.updateUser(id, this.userData);
         this.userDetails = response.data;
         this.$router.push("/profilo");
       } catch (e) {
         console.error(e);
       }
-    },  
+    },
 
     async deleteUsersFromApi() {
       try {
@@ -112,5 +127,4 @@ export default {
 .card {
 
   margin-bottom: 10rem;
-}
-</style>
+}</style>

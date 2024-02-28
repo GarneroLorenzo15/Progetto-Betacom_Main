@@ -11,8 +11,8 @@ export default {
   fetchUserDetails(id) {
     return axios.get(`${API_URL}/api/utenti/${id}`);
   },
-  updateUser(id) {
-    return axios.put(`${API_URL}/api/utenti/update/${id}`);
+  updateUser(id, data) {
+    return axios.put(`${API_URL}/api/utenti/update/${id}`, data);
   },
   fetchProposals() {
     return axios.get(`${API_URL}/api/proposte`);
