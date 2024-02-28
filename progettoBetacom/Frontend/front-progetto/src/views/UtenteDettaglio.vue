@@ -43,6 +43,9 @@
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
               <div class="mx-1">Password:</div><input v-model="userData.password" type="password">
             </div>
+            <div class="w-full d-flex  justify-content-center align-items-center my-2">
+              <div class="mx-1">Disponibilità:</div><button class="bg-white" :v-model="userData.disponibile" @click="changeDisponity()">✖️</button>
+            </div>
             <div class="d-flex justify-content-center flex-wrap w-full my-2">
               <button class="spaces mb-2" @click="updateUsersFromApi()">Salva le modifiche</button>
               <button class="spaces " @click="deleteUsersFromApi()">Elimina il Partecipante</button>
@@ -74,6 +77,7 @@ export default {
         cognome: "",
         email: "",
         password: "",
+        disponibile: 0,
       }
     };
   },
@@ -111,6 +115,15 @@ export default {
         console.error(e);
       }
     },
+
+    changeDisponity() {
+      if(this.userData.disponibile === 0){
+        this.userData.disponibile = 1;
+      } else if(this.userData.disponibile === 1) {
+        this.userData.disponibile = 0;
+      }
+      console.log(this.userData.disponibile);
+    }
   },
 }
 </script>
@@ -125,6 +138,8 @@ export default {
 }
 
 .card {
-
   margin-bottom: 10rem;
-}</style>
+}
+
+
+</style>

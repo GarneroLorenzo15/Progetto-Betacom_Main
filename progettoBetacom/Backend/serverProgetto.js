@@ -101,14 +101,14 @@ app.put('/api/utenti/update/:id', async (req, res) => {
     try{
         const response = await connection.query('UPDATE utente SET ? WHERE id_Utente = ?', [updateData, userid]);
 
-        res.status(200).json({message: 'ok', data: response});
-    }catch(err){
+        res.status(200).json({message: 'ok'});
+    }catch(err){ 
         console.error(err); 
         res.status(500).json({message: 'errore del server'});
     } 
  
-}); 
-  
+});   
+   
 
 
 /**

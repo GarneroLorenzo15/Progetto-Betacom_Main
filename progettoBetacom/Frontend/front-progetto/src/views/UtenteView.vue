@@ -32,10 +32,10 @@
                 <p>{{ user.cognome }}</p>
               </div>
               <div class="w-5 mr-1 d-flex justify-content-end">
-                <div class="color-green" v-if="user.disponibile === 1">
+                <div v-if="user.disponibile === 1">
                   <p>✔️</p>
                 </div>
-                <div class="color-red" v-else-if="user.disponibile === 0">
+                <div v-else-if="user.disponibile === 0">
                   <p>✖️</p>
                 </div>
               </div>
