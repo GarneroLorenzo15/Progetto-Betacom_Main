@@ -51,9 +51,9 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Aggiungi Evento</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <div type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()">
+              <span aria-hidden="true">✖️</span>
+            </div>
           </div>
           <div class="modal-body">
             <form @submit.prevent="addEventsFromApi()">
@@ -121,8 +121,8 @@ export default {
         conasole.log(response);
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
-        console.log(this.items);
-
+        /* console.log(this.items); */
+        window.location.reload();
 
 
       } catch (error) {

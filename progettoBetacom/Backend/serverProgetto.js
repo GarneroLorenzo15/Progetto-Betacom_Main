@@ -67,6 +67,49 @@ app.get('/api/utenti', async (req, res) => {
 });
 
 
+app.get('/api/utenti/:id', async (req, res) => {
+    const userid = req.params.id;
+
+    try{
+        const rows = await new Promise((resolve, reject) =>{
+            connection.query('SELECT * FROM utente WHERE id_Utente = ?', [userid], (err, rows) =>{
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(rows); 
+                } 
+            });   
+        });  
+
+        res.status(200).json({message: 'OK', rows});
+    } catch(err){
+        console.error('Error fetching users:', err);
+        if(res.statusCode === 404) {
+            res.status(404).json({ error: 'Not Found' });
+        } else if( res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    };
+});
+
+app.put('/api/utenti/update/:id', async (req, res) => {
+    const userid = req.params.id;
+    const updateData = req.body;
+    console.log(updateData, 'qui');
+    try{
+        const response = await connection.query('UPDATE utente SET ? WHERE id_Utente = ?', [updateData, userid]);
+
+        res.status(200).json({message: 'ok'});
+    }catch(err){ 
+        console.error(err); 
+        res.status(500).json({message: 'errore del server'});
+    } 
+ 
+});   
+   
+
 
 /**
  * Returns a list of all users in the database who are available
@@ -153,7 +196,7 @@ app.delete('/api/utenti/delete/:id', async (req, res) => {
         }else if (res.statusCode === 400){
             res.status(400).json({ error: 'Bad Request' }); 
         }
-    };
+    }; 
 });
 
 
@@ -174,9 +217,13 @@ app.delete('/api/utenti/delete/:id', async (req, res) => {
  * @param {Object} res - The response object
  */
 app.post('/api/utenti/add', async (req, res) => {
+
+    const { id_Utente, nome, cognome, email, password } = req.body;
+    console.log(req.body);
+
     try {
         const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password) VALUES (?,?,?,?,?)',[1, 'Sandro', 'Maffiodo','s.maffiodo','sandro'], (err, rows)=>{
+            connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password) VALUES (?,?,?,?,?)',[id_Utente, nome, cognome, email, password], (err, rows)=>{
                 if(err) {
                     reject(err);
                 } else {
@@ -210,7 +257,7 @@ app.post('/api/utenti/add', async (req, res) => {
  * @param {Object} res - The response object.
  * @returns {string} The rendered HTML for the events page.
  */
-app.get('/api/account', async (req, res) => {
+app.get('/api/account', async (req, res) => {  
     return res.render('http://localhost:8080/eventi');
 });
 
@@ -247,7 +294,7 @@ app.post('/api/login', async (req, res) => {
     } else if(rows.length <= 0){
         res.status(404).json({ error: 'Utente non trovato' });
     }
-
+ 
 
    } catch (error) {
         console.error('Error fetching users:', error);
@@ -380,7 +427,7 @@ app.get('/api/eventi/:id', async (req, res) => {
         
     } catch (err) {
         console.error('Error fetching users:', err);
-        res.status(500).json({ error: 'Server Error' }); 
+        res.status(500).json({ error: 'Server Error' });  
         res.status(400).json({ error: 'Bad Request' }); 
     };
 });
