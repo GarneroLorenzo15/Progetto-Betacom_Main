@@ -18,11 +18,13 @@
           <div class="row">
             <div class="d-flex justify-content-end flex-nowrap">
               <div class="w-50 d-flex justify-content-end align-items-center">
-                <div class="mx-2">
+                <!-- <div class="mx-2">
                   {{ eventDay }}
-                </div>
+                </div> -->
               </div>
-              <i class="bi bi-calendar-event-fill calendar"></i>
+              <router-link to="/calendar">
+                <i class="bi bi-calendar-event-fill calendar"></i>
+              </router-link>
             </div>
           </div>
           <p class="text-justify">
@@ -111,7 +113,7 @@ button {
 }
 
 .calendar {
-  font-size: smaller;
+  font-size: medium;
   color: #034ea1;
 }
 

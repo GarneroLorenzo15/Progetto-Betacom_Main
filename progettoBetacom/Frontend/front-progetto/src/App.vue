@@ -74,6 +74,9 @@ button {
   font-weight: bold;
   font-size: large;
   border-radius: 25px;
+  border: 0;
+  margin-right: 1rem;
+  margin-left: 1rem;
 }
 
 .spaces{

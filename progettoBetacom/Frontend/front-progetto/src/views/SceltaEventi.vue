@@ -35,7 +35,7 @@
               <div class="d-flex justify-content-end">
                 <div class="row">
                   <router-link :to="'/eventi/' + item.id_Evento">
-                    <button class="">VEDI DETTAGLIO</button>
+                    <button>VEDI DETTAGLIO</button>
                   </router-link>
                 </div>
               </div>
@@ -52,7 +52,7 @@
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Aggiungi Evento</h5>
             <div type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()">
-              <span aria-hidden="true">✖️</span>
+              <span aria-hidden="true"><i class="bi bi-x-circle-fill"></i></span>
             </div>
           </div>
           <div class="modal-body">
@@ -217,14 +217,6 @@ i {
   height: 100%;
 }
 
-button {
-  background-color: #034ea1;
-  color: white;
-  font-weight: bold;
-  font-size: large;
-  border-radius: 25px;
-}
-
 .card {
   width: 75%;
   height: auto;
@@ -251,6 +243,10 @@ img {
 
 .container-2:last-of-type {
   margin-bottom: 10rem;
+}
+
+h5{
+  font-size: 30px;
 }
 
 </style>
