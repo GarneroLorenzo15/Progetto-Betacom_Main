@@ -30,21 +30,26 @@
           <div class="d-flex justify-content-center">
             <p class="font-weight-bold my-2">Vuoi modicare i tuoi dati personali?</p>
           </div>
-          <div class="d-flex justify-content-center flex-wrap my-3">
+          <div class="d-flex flex-wrap my-3">
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
-              <div class="mx-1">Nome:</div><input v-model="userData.nome" type="text">
+              <div class="mx-1" style="width: 74px;">Nome:</div><input v-model="userData.nome" @input="updateSingleFieldFromApi('nome')" 
+                type="text">
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
-              <div class="mx-1">Cognome:</div><input v-model="userData.cognome" type="text">
+              <div class="mx-1" style="width: 74px;">Cognome:</div><input v-model="userData.cognome" @input="updateSingleFieldFromApi('cognome')" 
+                type="text">
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
-              <div class="mx-1">Email:</div><input v-model="userData.email" type="email">
+              <div class="mx-1" style="width: 74px;">Email:</div><input v-model="userData.email" @input="updateSingleFieldFromApi('email')"
+                type="email">
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
-              <div class="mx-1">Password:</div><input v-model="userData.password" type="password">
+              <div class="mx-1" style="width: 74px;">Password:</div><input v-model="userData.password" @input="updateSingleFieldFromApi('password')" 
+                type="password">
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
-              <div class="mx-1">Disponibilità:</div><button class="bg-white" :v-model="userData.disponibile" @click="changeDisponity()">✖️</button>
+              <div class="mx-1">Disponibilità:</div><button class="bg-white" :v-model="userData.disponibile"
+                @click="changeDisponity()">✖️</button>
             </div>
             <div class="d-flex justify-content-center flex-wrap w-full my-2">
               <button class="spaces mb-2" @click="updateUsersFromApi()">Salva le modifiche</button>
@@ -77,7 +82,7 @@ export default {
         cognome: "",
         email: "",
         password: "",
-        disponibile: 0,
+        disponibile: false,
       }
     };
   },
@@ -106,6 +111,17 @@ export default {
       }
     },
 
+    async updateSingleFieldFromApi() {
+      try {
+        const id = this.userDetails.rows[0].id_Utente;
+        const data = { [field]: this.userData[field] };
+        const response = await apiService.updateUser(id, data);
+        this.userDetails = response.data;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+
     async deleteUsersFromApi() {
       try {
         const respose = await apiService.deleteUtenti(this.userDetails.rows[0].id_Utente);
@@ -117,10 +133,10 @@ export default {
     },
 
     changeDisponity() {
-      if(this.userData.disponibile === 0){
-        this.userData.disponibile = 1;
-      } else if(this.userData.disponibile === 1) {
-        this.userData.disponibile = 0;
+      if (this.userData.disponibile === false) {
+        this.userData.disponibile = true;
+      } else if (this.userData.disponibile === true) {
+        this.userData.disponibile = false;
       }
       console.log(this.userData.disponibile);
     }
@@ -139,7 +155,4 @@ export default {
 
 .card {
   margin-bottom: 10rem;
-}
-
-
-</style>
+}</style>

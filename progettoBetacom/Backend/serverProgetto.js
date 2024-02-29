@@ -67,6 +67,13 @@ app.get('/api/utenti', async (req, res) => {
 });
 
 
+
+
+/**
+ * Returns a list of all users in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.get('/api/utenti/:id', async (req, res) => {
     const userid = req.params.id;
 
@@ -94,6 +101,13 @@ app.get('/api/utenti/:id', async (req, res) => {
     };
 });
 
+
+
+/**
+ * Returns a list of all users in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.put('/api/utenti/update/:id', async (req, res) => {
     const userid = req.params.id;
     const updateData = req.body;
