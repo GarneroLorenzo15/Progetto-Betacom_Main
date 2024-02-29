@@ -48,8 +48,8 @@
                 type="password">
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
-              <div class="mx-1">Disponibilità:</div><button class="bg-white" :v-model="userData.disponibile"
-                @click="changeDisponity()">✖️</button>
+              <div class="mx-1">Disponibilità:</div>
+              <button class="bg-white" :v-model="userData.disponibile" @click="changeDisponity()"><i style="color: black;" class="bi bi-arrow-repeat"></i></button>
             </div>
             <div class="d-flex justify-content-center flex-wrap w-full my-2">
               <button class="spaces mb-2" @click="updateUsersFromApi()">Salva le modifiche</button>
@@ -155,4 +155,8 @@ export default {
 
 .card {
   margin-bottom: 10rem;
-}</style>
+}
+
+
+
+</style>

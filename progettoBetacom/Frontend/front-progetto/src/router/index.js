@@ -34,6 +34,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/calendar",
+    name: "Calendar",
+    component: () => import("../views/SelectData.vue"), //dynamic import
+    meta: { requiresAuth: true },
+  },
+  {
     path: "/:catchAll(.*)",
     redirect: "/",
   },

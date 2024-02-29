@@ -35,7 +35,7 @@
               <div class="d-flex justify-content-end">
                 <div class="row">
                   <router-link :to="'/eventi/' + item.id_Evento">
-                    <button class="">VEDI DETTAGLIO</button>
+                    <button>VEDI DETTAGLIO</button>
                   </router-link>
                 </div>
               </div>
@@ -215,14 +215,6 @@ i {
 .object-contain {
   width: 100%;
   height: 100%;
-}
-
-button {
-  background-color: #034ea1;
-  color: white;
-  font-weight: bold;
-  font-size: large;
-  border-radius: 25px;
 }
 
 .card {
