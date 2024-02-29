@@ -104,7 +104,7 @@ export default {
       try {
         const id = this.userDetails.rows[0].id_Utente;
         const response = await apiService.updateUser(id, this.userData);
-        this.userDetails = response.data;
+        this.userDetails.rows[0] = response.config.data;
         this.$router.push("/profilo");
       } catch (e) {
         console.error(e);

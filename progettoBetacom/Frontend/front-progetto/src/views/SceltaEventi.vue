@@ -253,4 +253,8 @@ img {
   margin-bottom: 10rem;
 }
 
+h5{
+  font-size: 30px;
+}
+
 </style>
