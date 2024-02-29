@@ -52,7 +52,7 @@
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Aggiungi Evento</h5>
             <div type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()">
-              <span aria-hidden="true">✖️</span>
+              <span aria-hidden="true"><i class="bi bi-x-circle-fill"></i></span>
             </div>
           </div>
           <div class="modal-body">
