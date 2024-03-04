@@ -306,7 +306,7 @@ app.post('/api/login', async (req, res) => {
 
     if(rows.length > 0) {
         const token = jwt.sign({ id: rows[0].id_Utente }, secretKey , { expiresIn: '1h' });
-        return res.status(200).json({ token: token });
+        return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
     } else if(rows.length <= 0){
         res.status(404).json({ error: 'Utente non trovato' });
     }

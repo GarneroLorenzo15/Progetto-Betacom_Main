@@ -39,7 +39,7 @@
                   <p>✖️</p>
                 </div>
               </div>
-              <div class="w-5 d-flex justify-content-end margin-bottom">
+              <div class="w-5 d-flex justify-content-end margin-bottom" v-if="this.admin == 1 || this.utente == user.id_Utente">
                 <router-link :to="'/profilo/' + user.id_Utente ">
                   <i class="bi bi-arrow-right-circle-fill"></i>
                 </router-link>
@@ -101,6 +101,8 @@ export default {
       },
       numUtente: 0,
       reloadTrigger: 0,
+      admin: localStorage.getItem('admin'),
+      utente: localStorage.getItem('utente'),
     };
   },
   mounted() {

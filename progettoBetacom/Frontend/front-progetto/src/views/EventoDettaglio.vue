@@ -11,7 +11,7 @@
                 {{ eventDetails[0].titolo }}
               </h5>
             </div>
-            <div class="d-flex justify-content-end w-50">
+            <div class="d-flex justify-content-end w-50" v-if="this.admin == 1">
               <p @click="deleteEventFromApi()">❌</p>
             </div>
           </div>
@@ -55,6 +55,8 @@ export default {
     return {
       eventDetails: [{}],
       eventDay: "",
+      admin: localStorage.getItem('admin'),
+      utente: localStorage.getItem('utente'),
     };
   },
   mounted() {
