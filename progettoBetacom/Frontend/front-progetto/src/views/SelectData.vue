@@ -13,8 +13,8 @@
                 </div>
                 <div class="card-body d-flex justify-content-center">
                     <div class="row w-full">
-                        <div class="w-7" v-for="(day, index) in month.giorni" :key="index">
-                            {{ day }}
+                        <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in month.giorni" :key="index">
+                            <div>{{ day }}</div>
                         </div>
                     </div>
                 </div>
