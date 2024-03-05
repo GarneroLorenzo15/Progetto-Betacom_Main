@@ -13,7 +13,7 @@
             <div class=" d-flex w-50 spaces align-items-center">
               <h2>Lista Partecipanti</h2>
             </div>
-            <div class="d-flex justify-content-end  w-50 ">
+            <div class="d-flex justify-content-end  w-50 " v-if="this.admin == 1">
               <div class=" " @click="openModal()">
                 <i class="bi bi-plus-circle-fill"></i>
               </div>
