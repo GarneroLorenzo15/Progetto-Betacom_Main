@@ -1,5 +1,6 @@
+<!-- eslint-disable -->
+
 <template>
-  <!-- eslint-disable -->
     <div class="data">
         <div class="container mb-10">
             <div class="d-flex justify-content-center my-5">
@@ -13,8 +14,9 @@
                 </div>
                 <div class="card-body d-flex justify-content-center">
                     <div class="row w-full">
-                        <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in month.giorni" :key="index">
-                            <div>{{ day }}</div>
+                        <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in  daysInMonth(key)"
+                            :key="index" @click="toggleDate(day, key)">
+                            <div :class="{ 'selected': isSelected(day, key) }">{{ day }}</div>
                         </div>
                     </div>
                 </div>
@@ -38,17 +40,38 @@ export default {
             months: {
                 '06': {
                     'nome': 'Giugno',
-                    'giorni': [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
                 },
                 '07': {
                     'nome': 'Luglio',
-                    'giorni': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
                 },
-            }
+            },
+            selectedDate: [],
         }
     },
-    
+    methods: {
+        daysInMonth(month) {
+            let now = new Date()
+            now.setMonth(+month - 1)
+            return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+        },
+        toggleDate(day, month) {
+            let selected = new Date(new Date().getFullYear(), month - 1, day).toISOString().substring(0, 10);
+            const index = this.selectedDate.indexOf(selected);
+            if (index === -1) {
+                this.selectedDate.push(selected);
+            } else {
+                this.selectedDate.splice(index, 1);
+            }
+            console.table(this.selectedDate)
+        },
+        isSelected(day, month) {
+            let selected = new Date(new Date().getFullYear(), month - 1, day).toISOString().substring(0, 10);
+            return this.selectedDate.includes(selected);
+        }
+    }
 };
+
+
 
 </script>
 
@@ -64,5 +87,9 @@ export default {
 
 .mb-10 {
     margin-bottom: 10rem;
+}
+
+.selected {
+    background-color: lightblue;
 }
 </style>
