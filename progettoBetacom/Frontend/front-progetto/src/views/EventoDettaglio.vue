@@ -18,9 +18,9 @@
           <div class="row">
             <div class="d-flex justify-content-end flex-nowrap">
               <div class="w-50 d-flex justify-content-end align-items-center">
-                <!-- <div class="mx-2">
-                  {{ eventDay }}
-                </div> -->
+                <div class="mx-2">
+                  Seleziona Data
+                </div>
               </div>
               <router-link to="/calendar">
                 <i class="bi bi-calendar-event-fill calendar"></i>

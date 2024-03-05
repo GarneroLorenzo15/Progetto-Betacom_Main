@@ -32,20 +32,16 @@
           </div>
           <div class="d-flex flex-wrap my-3">
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
-              <div class="mx-1" style="width: 74px;">Nome:</div><input v-model="userData.nome" @input="updateSingleFieldFromApi('nome')" 
-                type="text">
+              <div class="mx-1" style="width: 74px;">Nome:</div><input v-model="userData.nome" type="text">
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
-              <div class="mx-1" style="width: 74px;">Cognome:</div><input v-model="userData.cognome" @input="updateSingleFieldFromApi('cognome')" 
-                type="text">
+              <div class="mx-1" style="width: 74px;">Cognome:</div><input v-model="userData.cognome" type="text">
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
-              <div class="mx-1" style="width: 74px;">Email:</div><input v-model="userData.email" @input="updateSingleFieldFromApi('email')"
-                type="email">
+              <div class="mx-1" style="width: 74px;">Email:</div><input v-model="userData.email" type="email">
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
-              <div class="mx-1" style="width: 74px;">Password:</div><input v-model="userData.password" @input="updateSingleFieldFromApi('password')" 
-                type="password">
+              <div class="mx-1" style="width: 74px;">Password:</div><input v-model="userData.password" type="password">
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
               <div class="mx-1">Disponibilità:</div>
