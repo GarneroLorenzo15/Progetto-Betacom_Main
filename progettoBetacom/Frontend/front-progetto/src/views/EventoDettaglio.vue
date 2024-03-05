@@ -40,6 +40,7 @@
     <NavBarBlue></NavBarBlue>
   </div>
 </template>
+
 <script>
 /*eslint-disable*/
 import NavBarBlue from "@/components/NavBarBlue.vue";
@@ -83,26 +84,30 @@ export default {
         console.log(error);
       }
     },
+
   },
 };
 </script>
+
 <style scoped>
-.w-full{
+.w-full {
   width: 100%;
 }
+
 .bg-white {
   background-color: white;
   height: 100vh;
 }
 
-.mr-5{
+.mr-5 {
   margin-right: 5rem;
 }
+
 .mb-20 {
   margin-bottom: 20rem;
 }
 
-.spaces{
+.spaces {
   white-space: nowrap;
 }
 
