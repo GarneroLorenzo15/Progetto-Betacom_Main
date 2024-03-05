@@ -296,7 +296,7 @@ app.post('/api/login', async (req, res) => {
         connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, rows) => {
             if(err) {
                 reject(err);
-            } else if(rows){
+            } else if(rows){ 
                 resolve(rows);
             }
         })
