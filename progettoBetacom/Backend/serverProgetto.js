@@ -296,21 +296,23 @@ app.post('/api/login', async (req, res) => {
         connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, rows) => {
             if(err) {
                 reject(err);
-            } else if(rows){
+            } else if(rows){ 
                 resolve(rows);
             }
         })
     });
-    
+     
     console.log(rows);
 
     if(rows.length > 0) {
-        const token = jwt.sign({ id: rows[0].id_Utente }, secretKey , { expiresIn: '1h' });
-        return res.status(200).json({ token: token });
+        let user = rows[0];
+        delete user.password;
+        const token = jwt.sign({ ...user }, secretKey , { expiresIn: '1h' });
+        return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
     } else if(rows.length <= 0){
-        res.status(404).json({ error: 'Utente non trovato' });
+        res.status(401).json({ error: 'Credenziali errate' });
     }
- 
+  
 
    } catch (error) {
         console.error('Error fetching users:', error);
@@ -321,6 +323,20 @@ app.post('/api/login', async (req, res) => {
         }
     } 
 
+});
+
+
+app.use(async(req, res, next) => {
+    try{
+        req.session ={
+            user:  jwt.verify(req.headers.authorization, secretKey)
+        }
+    } catch(err){
+        console.error(err);
+        return res.status(401).json({ error: 'Non autorizzato' });
+    }
+    return next();
+    
 });
 
 
@@ -470,6 +486,10 @@ app.get('/api/eventi/:id', async (req, res) => {
 app.delete('/api/eventi/delete/:id', async (req, res) => {
     const eventid = req.params.id;
 
+
+    if(!req.session.user.admin){
+        return res.status(401).json({ error: 'Non autorizzato' });
+    }
     try {
         const rows = await new Promise((resolve, reject) => {
             connection.query('DELETE FROM evento WHERE id_Evento = ?', [eventid], (err, rows) => {
@@ -791,7 +811,7 @@ app.get('/api/voti', async (req, res) => {
              res.status(404).json({ error: 'Not Found' });
         };
     } catch (err) {
-        console.error('Error fetching users:', err);
+        console.error('Error fetching votes:', err);
         if( res.statusCode === 500) {
             res.status(500).json({ error: 'Server Error' }); 
         }else if (res.statusCode === 400){
@@ -800,7 +820,36 @@ app.get('/api/voti', async (req, res) => {
     };
 });
 
-app.post('/api/voti/add')
+app.post('/api/voti/add/', async (req, res) => {
+
+    
+    const { id_Utente, id_Evento} = req.body;
+
+    try{
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('INSERT INTO voti (id_Evento, id_Utente, voto) VALUES (  ?, ?, ?)', [id_Evento, id_Utente, true], (err, rows) => {
+                if(err) {
+                    reject(err);
+                }else {
+                    resolve(rows);
+                }
+            });
+        });
+
+        if(rows.length > 0) {
+            res.status(200).json({message: 'voto inserito correttamente!'});
+        } else if (rows.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
+        }
+    }catch(err){
+        console.error('Error adding votes:', err);
+        if( res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    }
+})
 
 
 /**

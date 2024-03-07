@@ -59,8 +59,13 @@ export default {
     async login() {
       try {
         const response = await apiService.Login(this.Credenziali);
-        const { token } = await response.data
+        const token = await response.data.token;
+        const admin = await response.data.admin;
+        const utente = await response.data.utente;
         localStorage.setItem('token', token);
+        localStorage.setItem('utente', utente);
+        localStorage.setItem('admin', admin);
+        console.log(utente, admin); 
         this.$router.push('/eventi');
       } catch (error) {
         console.log(error);

@@ -11,16 +11,16 @@
                 {{ eventDetails[0].titolo }}
               </h5>
             </div>
-            <div class="d-flex justify-content-end w-50">
+            <div class="d-flex justify-content-end w-50" v-if="this.admin == 1">
               <p @click="deleteEventFromApi()">❌</p>
             </div>
           </div>
           <div class="row">
             <div class="d-flex justify-content-end flex-nowrap">
               <div class="w-50 d-flex justify-content-end align-items-center">
-                <!-- <div class="mx-2">
-                  {{ eventDay }}
-                </div> -->
+                <div class="mx-2">
+                  Seleziona Data
+                </div>
               </div>
               <router-link to="/calendar">
                 <i class="bi bi-calendar-event-fill calendar"></i>
@@ -40,6 +40,7 @@
     <NavBarBlue></NavBarBlue>
   </div>
 </template>
+
 <script>
 /*eslint-disable*/
 import NavBarBlue from "@/components/NavBarBlue.vue";
@@ -55,6 +56,8 @@ export default {
     return {
       eventDetails: [{}],
       eventDay: "",
+      admin: localStorage.getItem('admin'),
+      utente: localStorage.getItem('utente'),
     };
   },
   mounted() {
@@ -81,26 +84,30 @@ export default {
         console.log(error);
       }
     },
+
   },
 };
 </script>
+
 <style scoped>
-.w-full{
+.w-full {
   width: 100%;
 }
+
 .bg-white {
   background-color: white;
   height: 100vh;
 }
 
-.mr-5{
+.mr-5 {
   margin-right: 5rem;
 }
+
 .mb-20 {
   margin-bottom: 20rem;
 }
 
-.spaces{
+.spaces {
   white-space: nowrap;
 }
 
