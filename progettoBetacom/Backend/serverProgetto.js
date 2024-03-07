@@ -820,6 +820,13 @@ app.get('/api/voti', async (req, res) => {
     };
 });
 
+
+
+/**
+ * Adds a new vote to the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.post('/api/voti/add/', async (req, res) => {
 
     
@@ -849,6 +856,76 @@ app.post('/api/voti/add/', async (req, res) => {
             res.status(400).json({ error: 'Bad Request' }); 
         }
     }
+});
+
+
+
+/**
+ * Returns a list of all dates in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.get('api/date', async (req, res) => {
+
+    try{
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM seleziona_date', (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+
+    } catch (err) {
+        console.error('Error fetching votes:', err);
+        if( res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    }
+
+});
+
+
+
+/**
+ * Adds a new vote to the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.post('/api/date/add', async (req, res) => {
+
+    const { id_Utente, id_Evento, date} = req.body;
+
+    try{
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('INSERT INTO seleziona_date (id_Utente, id_Evento, date) VALUES (?, ?, ?)', [id_Utente, id_Evento, date], (err, rows) => {
+                if(err) {
+                    reject(err);
+                }else {
+                    resolve(rows);
+                }
+            });
+        });
+
+        if(rows.length > 0) {
+            res.status(200).json({message: 'data inserita correttamente!'});
+        } else if (rows.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
+        }
+
+    } catch(err) {
+        console.error('Error adding votes:', err);
+        if( res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    }
+
 })
 
 

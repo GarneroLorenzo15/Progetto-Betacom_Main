@@ -41,4 +41,10 @@ export default {
   deleteUtenti(id) {
     return axios.delete(`${API_URL}/api/utenti/delete/${id}`);
   },
+  fetchDate(){
+    return axios.get(`${API_URL}/api/date`);
+  },
+  addDate(SelectedDate) {
+    return axios.post(`${API_URL}/api/date/add`, SelectedDate);
+  }
 };
