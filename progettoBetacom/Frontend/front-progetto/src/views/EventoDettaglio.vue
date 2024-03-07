@@ -22,7 +22,7 @@
                   Seleziona Data
                 </div>
               </div>
-              <router-link to="/calendar">
+              <router-link :to="'/calendar/' + this.$route.params.id">
                 <i class="bi bi-calendar-event-fill calendar"></i>
               </router-link>
             </div>

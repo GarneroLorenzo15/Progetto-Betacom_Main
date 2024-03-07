@@ -44,7 +44,7 @@ export default {
   fetchDate(){
     return axios.get(`${API_URL}/api/date`);
   },
-  addDate(SelectedDate) {
-    return axios.post(`${API_URL}/api/date/add`, SelectedDate);
+  addDate(nuovaDataInserita) {
+    return axios.post(`${API_URL}/api/date/add`, nuovaDataInserita);
   }
 };

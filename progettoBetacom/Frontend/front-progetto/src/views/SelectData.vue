@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="d-flex justify-content-center my-3">
-                <button>CONFERMA SELEZIONE</button>
+                <button @click="addDateFromApi()">CONFERMA SELEZIONE</button>
             </div>
         </div>
         <NavBar></NavBar>
@@ -56,6 +56,11 @@ export default {
                 },
             },
             selectedDate: [],
+            nuovaDataInserita: {
+                id_Utente: localStorage.getItem('utente'),
+                id_Evento: this.$route.params.id,
+                date: [],
+            }
         }
     },
     methods: {
@@ -86,7 +91,9 @@ export default {
         async addDateFromApi(){
             try {
                 const response = await apiService.addDate(this.selectedDate);
-
+                console.log(response.data);
+                const nuovaData = response.data;
+                this.nuovaDataInserita.push(nuovaData);
             }catch (err){
                 console.log(err)
             }

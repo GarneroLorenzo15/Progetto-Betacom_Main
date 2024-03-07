@@ -898,11 +898,12 @@ app.get('api/date', async (req, res) => {
  */
 app.post('/api/date/add', async (req, res) => {
 
-    const { id_Utente, id_Evento, date} = req.body;
+    const { id_Utente, id_Evento} = req.body;
+    const date = req.body.date;
 
     try{
         const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO seleziona_date (id_Utente, id_Evento, date) VALUES (?, ?, ?)', [id_Utente, id_Evento, date], (err, rows) => {
+            connection.query('INSERT INTO seleziona_date (id_Utente, id_Evento, date) VALUES (?, ?, ?)', [id_Utente, id_Evento, date.map(date=>[date])], (err, rows) => {
                 if(err) {
                     reject(err);
                 }else {
@@ -918,7 +919,7 @@ app.post('/api/date/add', async (req, res) => {
         }
 
     } catch(err) {
-        console.error('Error adding votes:', err);
+        console.error('Error adding dates:', err);
         if( res.statusCode === 500) {
             res.status(500).json({ error: 'Server Error' }); 
         }else if (res.statusCode === 400){
@@ -926,9 +927,9 @@ app.post('/api/date/add', async (req, res) => {
         }
     }
 
-})
+}) 
 
-
+   
 /**
  * Starts the server and listens for incoming requests
  */
