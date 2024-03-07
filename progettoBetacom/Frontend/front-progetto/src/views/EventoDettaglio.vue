@@ -15,7 +15,7 @@
               <p @click="deleteEventFromApi()">❌</p>
             </div>
           </div>
-          <div class="row">
+          <div class="row mb-2">
             <div class="d-flex justify-content-end flex-nowrap">
               <div class="w-50 d-flex justify-content-end align-items-center">
                 <div class="mx-2">
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="d-flex justify-content-center">
-        <div class="row mb-20"><button>VOTA EVENTO</button></div>
+        <div class="row mb-20"><button @click="addVotoFromApi()">VOTA EVENTO</button></div>
       </div>
     </div>
     <NavBarBlue></NavBarBlue>
@@ -84,7 +84,15 @@ export default {
         console.log(error);
       }
     },
-
+    async addVotoFromApi(){
+      try {
+        const response = await apiService.addVoti(this.utente, this.eventDetails[0].id_Evento);
+        this.items = response.data;
+        this.$router.push("/eventi");
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
 };
 </script>
@@ -107,6 +115,9 @@ export default {
   margin-bottom: 20rem;
 }
 
+.mb-2{
+  margin-bottom: 2rem;
+}
 .spaces {
   white-space: nowrap;
 }

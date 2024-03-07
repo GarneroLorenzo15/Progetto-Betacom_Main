@@ -46,5 +46,8 @@ export default {
   },
   addDate(nuovaDataInserita) {
     return axios.post(`${API_URL}/api/date/add`, nuovaDataInserita);
+  },
+  addVoti({id_Utente, id_Evento}){
+    return axios.post(`${API_URL}/api/voti/add`, {id_Utente, id_Evento})
   }
 };

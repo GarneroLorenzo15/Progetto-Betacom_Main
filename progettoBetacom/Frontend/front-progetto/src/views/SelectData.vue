@@ -3,7 +3,12 @@
 <template>
     <div class="data">
         <div class="container mb-10">
-            <div class="d-flex justify-content-center my-5">
+            <div>
+                <router-link :to="'/eventi/' + this.$route.params.id ">
+                    <i class="bi bi-skip-backward-circle-fill"></i>
+                </router-link>
+            </div>
+            <div class="d-flex justify-content-center my-3">
                 <h1>Scegli una data</h1>
             </div>
             <div class="card container-2 my-2" v-for="(month, key) in months" :key="key">
