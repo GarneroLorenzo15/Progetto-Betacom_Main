@@ -33,7 +33,7 @@
           <p class="mb-3">Per maggiori info sul posto clicca <a :href="eventDetails[0].luogo">qui</a></p>
         </div>
       </div>
-        <div class="w-full d-flex justify-content-center  align-items-center">
+        <div class="w-full d-flex justify-content-center  align-items-center mb-20">
           <div>
             <button @click="addVotoFromApi()" :disabled="votoStorage.includes(infoVoti.id_Utente)">
               VOTA EVENTO

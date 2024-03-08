@@ -22,6 +22,113 @@ const connection = mysql.createConnection({
     database: 'databasebetacomgioco'
 });
   
+//login 
+
+
+
+/**
+ * Returns the rendered HTML for the events page.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {string} The rendered HTML for the events page.
+ */
+app.get('/api/account', async (req, res) => {  
+    return res.render('http://localhost:8080/eventi');
+});
+
+/**
+ * Returns a JSON Web Token (JWT) that can be used to authenticate the user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
+app.post('/api/login', async (req, res) => { 
+    console.log(req.body);
+    const { email, password } = req.body;
+
+    if(!email || !password) {
+        res.status(400).json({ error: 'campo obbligatorio' });
+    }
+
+    try {
+        const rows = await new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, rows) => {
+            if(err) {
+                reject(err);
+            } else if(rows){ 
+                resolve(rows);
+            }
+        })
+    });
+     
+    console.log(rows);
+
+    if(rows.length > 0) {
+        let user = rows[0];
+        delete user.password;
+        const token = jwt.sign({ ...user }, secretKey , { expiresIn: '1h' });
+        return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
+    } else if(rows.length <= 0){
+        res.status(401).json({ error: 'Credenziali errate' });
+    }
+  
+
+   } catch (error) {
+        console.error('Error fetching users:', error);
+         if( res.statusCode === 500) { 
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    } 
+
+});
+
+
+app.use(async(req, res, next) => {
+    try{
+        req.session ={
+            user:  jwt.verify(req.headers.authorization, secretKey)
+        }
+    } catch(err){
+        console.error(err);
+        return res.status(401).json({ error: 'Non autorizzato' });
+    }
+    return next();
+    
+});
+
+
+/* app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        if (!email || !password) {
+            return res.status(400).json({ error: 'Campo obbligatorio' });
+        }
+
+        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) => {
+            if (err) {
+                console.error('Errore nel recupero dell\'utente:', err);
+                return res.status(500).json({ error: 'Errore del server' });
+            }
+            
+            if (result.length === 0) {
+                return res.status(404).json({ error: 'Utente non trovato' });
+            }
+
+            // L'utente è stato trovato, genera un token JWT
+            const token = jwt.sign({ email: email }, secretKey, { expiresIn: '1h' });
+            res.status(200).json({token: token});
+            // Reindirizza alla pagina degli eventi
+            res.redirect(200, 'http://localhost:8080/eventi');
+        });
+    } catch (error) {
+        console.error('Errore durante il login:', error);
+        res.status(500).json({ error: 'Errore del server' });
+    }
+}); */
 
 //utenti   
 
@@ -262,113 +369,6 @@ app.post('/api/utenti/add', async (req, res) => {
 });
 
 
-//login 
-
-
-
-/**
- * Returns the rendered HTML for the events page.
- *
- * @param {Object} req - The request object.
- * @param {Object} res - The response object.
- * @returns {string} The rendered HTML for the events page.
- */
-app.get('/api/account', async (req, res) => {  
-    return res.render('http://localhost:8080/eventi');
-});
-
-/**
- * Returns a JSON Web Token (JWT) that can be used to authenticate the user.
- *
- * @param {Object} req - The request object.
- * @param {Object} res - The response object.
- */
-app.post('/api/login', async (req, res) => { 
-    console.log(req.body);
-    const { email, password } = req.body;
-
-    if(!email || !password) {
-        res.status(400).json({ error: 'campo obbligatorio' });
-    }
-
-    try {
-        const rows = await new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, rows) => {
-            if(err) {
-                reject(err);
-            } else if(rows){ 
-                resolve(rows);
-            }
-        })
-    });
-     
-    console.log(rows);
-
-    if(rows.length > 0) {
-        let user = rows[0];
-        delete user.password;
-        const token = jwt.sign({ ...user }, secretKey , { expiresIn: '1h' });
-        return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
-    } else if(rows.length <= 0){
-        res.status(401).json({ error: 'Credenziali errate' });
-    }
-  
-
-   } catch (error) {
-        console.error('Error fetching users:', error);
-         if( res.statusCode === 500) { 
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
-        }
-    } 
-
-});
-
-
-app.use(async(req, res, next) => {
-    try{
-        req.session ={
-            user:  jwt.verify(req.headers.authorization, secretKey)
-        }
-    } catch(err){
-        console.error(err);
-        return res.status(401).json({ error: 'Non autorizzato' });
-    }
-    return next();
-    
-});
-
-
-/* app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-        if (!email || !password) {
-            return res.status(400).json({ error: 'Campo obbligatorio' });
-        }
-
-        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, result) => {
-            if (err) {
-                console.error('Errore nel recupero dell\'utente:', err);
-                return res.status(500).json({ error: 'Errore del server' });
-            }
-            
-            if (result.length === 0) {
-                return res.status(404).json({ error: 'Utente non trovato' });
-            }
-
-            // L'utente è stato trovato, genera un token JWT
-            const token = jwt.sign({ email: email }, secretKey, { expiresIn: '1h' });
-            res.status(200).json({token: token});
-            // Reindirizza alla pagina degli eventi
-            res.redirect(200, 'http://localhost:8080/eventi');
-        });
-    } catch (error) {
-        console.error('Errore durante il login:', error);
-        res.status(500).json({ error: 'Errore del server' });
-    }
-}); */
 
   
 
@@ -894,7 +894,7 @@ app.get('/api/voti/count', async (req, res) => {
     }
 })
 
-
+//date
 
 /**
  * Returns a list of all dates in the database
