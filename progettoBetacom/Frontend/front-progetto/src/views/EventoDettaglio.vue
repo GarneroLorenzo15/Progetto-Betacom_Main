@@ -34,7 +34,8 @@
         </div>
       </div>
       <div class="d-flex justify-content-center">
-        <div class="row mb-20"><button @click="addVotoFromApi()">VOTA EVENTO</button></div>
+        <div class="row mb-20"><button @click="addVotoFromApi()" :disabled="votoStorage.includes(infoVoti.id_Utente)">VOTA
+            EVENTO</button></div>
       </div>
     </div>
     <NavBarBlue></NavBarBlue>
@@ -56,13 +57,19 @@ export default {
     return {
       eventDetails: [{}],
       eventDay: "",
+      votoStorage: [],
       admin: localStorage.getItem('admin'),
       utente: localStorage.getItem('utente'),
+      infoVoti: {
+        id_Utente: localStorage.getItem('utente'),
+        id_Evento: this.$route.params.id,
+      },
     };
   },
   mounted() {
     const id = this.$route.params.id;
     this.fetchEventsDetailsFromApi(id);
+    console.log(this.utente, this.$route.params.id);
   },
   methods: {
     async fetchEventsDetailsFromApi(id) {
@@ -84,10 +91,17 @@ export default {
         console.log(error);
       }
     },
-    async addVotoFromApi(){
+    async addVotoFromApi() {
       try {
-        const response = await apiService.addVoti(this.utente, this.eventDetails[0].id_Evento);
-        this.items = response.data;
+
+        if (this.votoStorage.includes(this.infoVoti.id_Utente)) {
+          console.log("utente ha gia votato");
+          return;
+        }
+
+        const response = await apiService.addVoti(this.infoVoti);
+        const data = response.data;
+        this.votoStorage.push(data);
         this.$router.push("/eventi");
       } catch (error) {
         console.log(error);
@@ -115,9 +129,10 @@ export default {
   margin-bottom: 20rem;
 }
 
-.mb-2{
+.mb-2 {
   margin-bottom: 2rem;
 }
+
 .spaces {
   white-space: nowrap;
 }

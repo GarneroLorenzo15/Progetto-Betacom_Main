@@ -122,7 +122,7 @@ export default {
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
         /* console.log(this.items); */
-        window.location.reload();
+        this.$router.push("/eventi");
 
 
       } catch (error) {
