@@ -40,6 +40,11 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: "/risultatosondaggi",
+    name: "Risultato",
+    component: () => import("../views/RisultatoSondaggi.vue"), //dynamic import
+  },
+  {
     path: "/:catchAll(.*)",
     redirect: "/",
   },

@@ -10,9 +10,7 @@
               <i class="bi bi-plus-circle-fill"></i>
             </div>
             <div class="w-50 d-flex justify-content-end mr-5">
-              <!-- <router-link to="/"> -->
                 <i class="bi bi-box-arrow-right colorto" @click="logout()"></i>
-              <!-- </router-link> -->
             </div>
           </div>
         </div>
@@ -121,7 +119,6 @@ export default {
         conasole.log(response);
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
-        /* console.log(this.items); */
         this.$router.push("/eventi");
 
 

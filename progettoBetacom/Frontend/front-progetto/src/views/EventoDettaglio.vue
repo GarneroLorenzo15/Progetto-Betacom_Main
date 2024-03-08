@@ -33,10 +33,18 @@
           <p class="mb-3">Per maggiori info sul posto clicca <a :href="eventDetails[0].luogo">qui</a></p>
         </div>
       </div>
-      <div class="d-flex justify-content-center">
-        <div class="row mb-20"><button @click="addVotoFromApi()" :disabled="votoStorage.includes(infoVoti.id_Utente)">VOTA
-            EVENTO</button></div>
-      </div>
+        <div class="w-full d-flex justify-content-center  align-items-center">
+          <div>
+            <button @click="addVotoFromApi()" :disabled="votoStorage.includes(infoVoti.id_Utente)">
+              VOTA EVENTO
+            </button>
+          </div>
+          <div>
+            <router-link to="/risultatosondaggi">
+              <i class="bi bi-bar-chart-line-fill"></i>
+            </router-link>
+          </div>
+        </div>
     </div>
     <NavBarBlue></NavBarBlue>
   </div>
@@ -170,5 +178,9 @@ button {
 
 img {
   border-radius: 0 0 25px 25px;
+}
+
+i{
+  color: #F38120;
 }
 </style>
