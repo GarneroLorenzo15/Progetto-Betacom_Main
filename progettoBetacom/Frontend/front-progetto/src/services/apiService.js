@@ -52,5 +52,8 @@ export default {
   },
   fetchVoti(){
     return axios.get(`${API_URL}/api/voti`);
+  },
+  countVoti(){
+    return axios.get(`${API_URL}/api/voti/count`);
   }
 };

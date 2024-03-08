@@ -14,11 +14,9 @@
                                 <div class="col-6">
                                     <p>Nome Evento</p>
                                 </div>
-                                <div class="col-6 d-flex justify-content-end">
-                                    <p>N° Voti</p>
-                                    <div v-for="result in risultati" :key="result.id">
-                                        {{  }}
-                                    </div>
+                                <div class="col-6 d-flex flex-wrap">
+                                    <p class=" w-full d-flex justify-content-end">N° Voti</p>
+                                    <div class="w-full d-flex justify-content-end" v-for="(result, index) in risultatiCount" :key="index">{{ risultatiCount.rows[0].conteggio }}</div>
                                 </div>
                             </div>
                         </div>
@@ -42,24 +40,39 @@ export default {
     },
     data() {
         return {
-            risultati: [],
+            risultati: [{}],
+            risultatiCount: [],
         }
     },
     mounted(){
         this.fetchResultsFromApi();
+        this.countVotiFromApi();
     },
     methods: {
         async fetchResultsFromApi() {
             try {
                 const response = await apiService.fetchVoti();
                 this.risultati = response.data;
-                console.log(this.risultati);
             } catch (err){
                 console.error(err);
             }   
+        },
+        
+        async countVotiFromApi() {
+            try{
+                const response = await apiService.countVoti();
+                console.log(response.data);
+                this.risultatiCount = response.data;
+            } catch (err) {
+                console.error(err);
+            }
         }
     }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.sondaggi{
+    height: 40rem;
+}
+</style>

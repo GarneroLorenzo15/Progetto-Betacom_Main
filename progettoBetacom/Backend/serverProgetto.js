@@ -859,6 +859,42 @@ app.post('/api/voti/add/', async (req, res) => {
 });
 
 
+app.get('/api/voti/count', async (req, res) => {
+
+    try{
+        const query = `
+      SELECT id_Evento, COUNT(*) AS conteggio
+      FROM voti
+      GROUP BY id_Evento
+      HAVING COUNT(*) = (SELECT COUNT(*) FROM voti)
+    `;
+        const rows = await new Promise((resolve, reject) => {
+            connection.query(query, (err, rows) => {
+                if(err) {
+                    reject(err);
+                }else {
+                    resolve(rows);
+                }
+            });
+        });
+
+        if(rows.length > 0){
+            res.status(200).json({message: 'count corretta', rows});
+        } else if(rows.length <= 0) {
+            res.status(404).json({message: 'not found'});
+        }
+
+    }catch (err){
+        console.error(err);
+        if( res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' }); 
+        }else if (res.statusCode === 400){
+            res.status(400).json({ error: 'Bad Request' }); 
+        }
+    }
+})
+
+
 
 /**
  * Returns a list of all dates in the database
