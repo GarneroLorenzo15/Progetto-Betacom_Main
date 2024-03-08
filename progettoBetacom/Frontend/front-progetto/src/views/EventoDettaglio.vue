@@ -15,14 +15,14 @@
               <p @click="deleteEventFromApi()">❌</p>
             </div>
           </div>
-          <div class="row">
+          <div class="row mb-2">
             <div class="d-flex justify-content-end flex-nowrap">
               <div class="w-50 d-flex justify-content-end align-items-center">
                 <div class="mx-2">
                   Seleziona Data
                 </div>
               </div>
-              <router-link to="/calendar">
+              <router-link :to="'/calendar/' + this.$route.params.id">
                 <i class="bi bi-calendar-event-fill calendar"></i>
               </router-link>
             </div>
@@ -34,7 +34,8 @@
         </div>
       </div>
       <div class="d-flex justify-content-center">
-        <div class="row mb-20"><button>VOTA EVENTO</button></div>
+        <div class="row mb-20"><button @click="addVotoFromApi()" :disabled="votoStorage.includes(infoVoti.id_Utente)">VOTA
+            EVENTO</button></div>
       </div>
     </div>
     <NavBarBlue></NavBarBlue>
@@ -56,13 +57,19 @@ export default {
     return {
       eventDetails: [{}],
       eventDay: "",
+      votoStorage: [],
       admin: localStorage.getItem('admin'),
       utente: localStorage.getItem('utente'),
+      infoVoti: {
+        id_Utente: localStorage.getItem('utente'),
+        id_Evento: this.$route.params.id,
+      },
     };
   },
   mounted() {
     const id = this.$route.params.id;
     this.fetchEventsDetailsFromApi(id);
+    console.log(this.utente, this.$route.params.id);
   },
   methods: {
     async fetchEventsDetailsFromApi(id) {
@@ -84,7 +91,22 @@ export default {
         console.log(error);
       }
     },
+    async addVotoFromApi() {
+      try {
 
+        if (this.votoStorage.includes(this.infoVoti.id_Utente)) {
+          console.log("utente ha gia votato");
+          return;
+        }
+
+        const response = await apiService.addVoti(this.infoVoti);
+        const data = response.data;
+        this.votoStorage.push(data);
+        this.$router.push("/eventi");
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
 };
 </script>
@@ -105,6 +127,10 @@ export default {
 
 .mb-20 {
   margin-bottom: 20rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
 }
 
 .spaces {

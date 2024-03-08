@@ -34,7 +34,7 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/calendar",
+    path: "/calendar/:id",
     name: "Calendar",
     component: () => import("../views/SelectData.vue"), //dynamic import
     meta: { requiresAuth: true },
