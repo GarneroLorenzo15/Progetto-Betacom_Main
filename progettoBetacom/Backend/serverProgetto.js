@@ -91,6 +91,10 @@ app.use(async (req, res, next) => {
         req.session = {
             user: jwt.verify(req.headers.authorization, secretKey)
         }
+
+        
+
+        
     } catch (err) {
         console.error(err);
         return res.status(401).json({ error: 'Non autorizzato' });
@@ -149,6 +153,8 @@ app.use(async (req, res, next) => {
  * @param {Object} res - The response object
  */
 app.get('/api/utenti', async (req, res) => {
+
+
     try {
         const rows = await new Promise((resolve, reject) => {
             connection.query('SELECT * FROM utente', (err, rows) => {
@@ -159,6 +165,10 @@ app.get('/api/utenti', async (req, res) => {
                 }
             });
         });
+
+        rows.map((row) => {
+            delete row.password;
+        })
 
         res.status(200).json(rows);
     } catch (err) {
@@ -183,6 +193,10 @@ app.get('/api/utenti', async (req, res) => {
  */
 app.get('/api/utenti/:id', async (req, res) => {
     const userid = req.params.id;
+
+    if(req.session.user.id_Utente != userid && req.session.user.admin == 0){
+        return  res.status(403).json('non autorizzato');       
+    }
 
     try {
         const rows = await new Promise((resolve, reject) => {
@@ -229,10 +243,15 @@ app.put('/api/utenti/update/:id', async (req, res) => {
     });
     
 
-
-    if(decoded.admin === 0){
+ 
+    if(decoded.admin === 0 ){
         updateData.admin = decoded.admin;
     }
+
+    if(req.session.user.id_Utente != userid && req.session.user.admin == 0){
+        return  res.status(403).json('non autorizzato');       
+    }
+    
 
     console.log(updateData, 'qui');
     try {
@@ -313,6 +332,10 @@ app.get('/api/utenti/partecipanti', async (req, res) => {
  */
 app.delete('/api/utenti/delete/:id', async (req, res) => {
     const userid = req.params.id;
+
+    if(req.session.user.id_Utente != userid && req.session.user.admin == 0){
+        return  res.status(403).json('non autorizzato');       
+    }
 
     try {
         const rows = await new Promise((resolve, reject) => {
