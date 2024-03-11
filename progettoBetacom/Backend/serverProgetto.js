@@ -21,7 +21,7 @@ const connection = mysql.createConnection({
     port: '3306',
     database: 'databasebetacomgioco'
 });
-  
+
 //login 
 
 
@@ -33,7 +33,7 @@ const connection = mysql.createConnection({
  * @param {Object} res - The response object.
  * @returns {string} The rendered HTML for the events page.
  */
-app.get('/api/account', async (req, res) => {  
+app.get('/api/account', async (req, res) => {
     return res.render('http://localhost:8080/eventi');
 });
 
@@ -43,60 +43,60 @@ app.get('/api/account', async (req, res) => {
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  */
-app.post('/api/login', async (req, res) => { 
+app.post('/api/login', async (req, res) => {
     console.log(req.body);
     const { email, password } = req.body;
 
-    if(!email || !password) {
+    if (!email || !password) {
         res.status(400).json({ error: 'campo obbligatorio' });
     }
 
     try {
         const rows = await new Promise((resolve, reject) => {
-        connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, rows) => {
-            if(err) {
-                reject(err);
-            } else if(rows){ 
-                resolve(rows);
-            }
-        })
-    });
-     
-    console.log(rows);
+            connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else if (rows) {
+                    resolve(rows);
+                }
+            })
+        });
 
-    if(rows.length > 0) {
-        let user = rows[0];
-        delete user.password;
-        const token = jwt.sign({ ...user }, secretKey , { expiresIn: '1h' });
-        return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
-    } else if(rows.length <= 0){
-        res.status(401).json({ error: 'Credenziali errate' });
-    }
-  
+        console.log(rows);
 
-   } catch (error) {
-        console.error('Error fetching users:', error);
-         if( res.statusCode === 500) { 
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        if (rows.length > 0) {
+            let user = rows[0];
+            delete user.password;
+            const token = jwt.sign({ ...user }, secretKey, { expiresIn: '1h' });
+            return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
+        } else if (rows.length <= 0) {
+            res.status(401).json({ error: 'Credenziali errate' });
         }
-    } 
+
+
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
+        }
+    }
 
 });
 
 
-app.use(async(req, res, next) => {
-    try{
-        req.session ={
-            user:  jwt.verify(req.headers.authorization, secretKey)
+app.use(async (req, res, next) => {
+    try {
+        req.session = {
+            user: jwt.verify(req.headers.authorization, secretKey)
         }
-    } catch(err){
+    } catch (err) {
         console.error(err);
         return res.status(401).json({ error: 'Non autorizzato' });
     }
     return next();
-    
+
 });
 
 
@@ -155,20 +155,20 @@ app.get('/api/utenti', async (req, res) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(rows);    
+                    resolve(rows);
                 }
             });
         });
 
-        res.status(200).json(rows); 
+        res.status(200).json(rows);
     } catch (err) {
         console.error('Error fetching users:', err);
-        if(res.statusCode === 404) {
+        if (res.statusCode === 404) {
             res.status(404).json({ error: 'Not Found' });
-        } else if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        } else if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     };
 });
@@ -184,26 +184,26 @@ app.get('/api/utenti', async (req, res) => {
 app.get('/api/utenti/:id', async (req, res) => {
     const userid = req.params.id;
 
-    try{
-        const rows = await new Promise((resolve, reject) =>{
-            connection.query('SELECT * FROM utente WHERE id_Utente = ?', [userid], (err, rows) =>{
-                if(err){
+    try {
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM utente WHERE id_Utente = ?', [userid], (err, rows) => {
+                if (err) {
                     reject(err);
                 } else {
-                    resolve(rows); 
-                } 
-            });   
-        });  
+                    resolve(rows);
+                }
+            });
+        });
 
-        res.status(200).json({message: 'OK', rows});
-    } catch(err){
+        res.status(200).json({ message: 'OK', rows });
+    } catch (err) {
         console.error('Error fetching users:', err);
-        if(res.statusCode === 404) {
+        if (res.statusCode === 404) {
             res.status(404).json({ error: 'Not Found' });
-        } else if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        } else if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     };
 });
@@ -218,20 +218,36 @@ app.get('/api/utenti/:id', async (req, res) => {
 app.put('/api/utenti/update/:id', async (req, res) => {
     const userid = req.params.id;
     const updateData = req.body;
+    const decoded = jwt.verify(req.headers.authorization, secretKey, (err, decoded) => {
+        if (err) {
+            console.error('Errore durante la verifica del token:', err);
+            res.status(401).json('cojone')
+            return;
+        }
+        
+        return decoded
+    });
+    
+
+
+    if(decoded.admin === 0){
+        updateData.admin = decoded.admin;
+    }
+
     console.log(updateData, 'qui');
-    try{
+    try {
         const response = await connection.query('UPDATE utente SET ? WHERE id_Utente = ?', [updateData, userid]);
 
-        res.status(200).json({message: 'ok'});
-    }catch(err){ 
-        console.error(err); 
-        res.status(500).json({message: 'errore del server'});
-    } 
- 
+        res.status(200).json({ message: 'ok' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'errore del server' });
+    }
+
 });
 
 
-   
+
 
 
 /**
@@ -250,27 +266,27 @@ app.put('/api/utenti/update/:id', async (req, res) => {
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
-app.get('/api/utenti/partecipanti', async(req, res) => {
+app.get('/api/utenti/partecipanti', async (req, res) => {
     try {
         const rows = await new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM utente WHERE disponibile = ?', [1],  (err, rows) =>{
-                if(err) {
+            connection.query('SELECT * FROM utente WHERE disponibile = ?', [1], (err, rows) => {
+                if (err) {
                     reject(err);
                 } else {
                     resolve(rows);
                 }
-            }); 
+            });
         });
         res.status(200).json(rows);
 
     } catch (err) {
         console.error('Error fetching users:', err);
-        if(res.statusCode === 404) {
+        if (res.statusCode === 404) {
             res.status(404).json({ error: 'Not Found' });
-        } else if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        } else if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     };
 });
@@ -296,7 +312,7 @@ app.get('/api/utenti/partecipanti', async(req, res) => {
  * @param {Object} res - The response object
  */
 app.delete('/api/utenti/delete/:id', async (req, res) => {
-    const userid = req.params.id; 
+    const userid = req.params.id;
 
     try {
         const rows = await new Promise((resolve, reject) => {
@@ -309,17 +325,17 @@ app.delete('/api/utenti/delete/:id', async (req, res) => {
             });
         });
 
-        res.status(200).json({message: `l'utente ${userid} è stato rimosso`, rows});
+        res.status(200).json({ message: `l'utente ${userid} è stato rimosso`, rows });
     } catch (err) {
         console.error('Error fetching users:', err);
-        if(res.statusCode === 404) {
+        if (res.statusCode === 404) {
             res.status(404).json({ error: 'Not Found' });
-        } else if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        } else if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
-    }; 
+    };
 });
 
 
@@ -346,35 +362,35 @@ app.post('/api/utenti/add', async (req, res) => {
 
     try {
         const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password) VALUES (?,?,?,?,?)',[id_Utente, nome, cognome, email, password], (err, rows)=>{
-                if(err) {
+            connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password) VALUES (?,?,?,?,?)', [id_Utente, nome, cognome, email, password], (err, rows) => {
+                if (err) {
                     reject(err);
                 } else {
                     resolve(rows);
                 }
-            }); 
+            });
         });
 
-        res.status(200).json({message: 'Utente inserito correttamente!', rows});
+        res.status(200).json({ message: 'Utente inserito correttamente!', rows });
     } catch (err) {
         console.error('Error fetching users:', err);
-        if(res.statusCode === 404) {
+        if (res.statusCode === 404) {
             res.status(404).json({ error: 'Not Found' });
-        } else if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        } else if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     };
 });
 
 
 
-  
+
 
 
 //eventi 
-  
+
 /**
  * Returns a list of all events in the database
  * @param {Object} req - The request object
@@ -391,7 +407,7 @@ app.post('/api/utenti/add', async (req, res) => {
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
-app.get('/api/eventi', async(req, res) => {
+app.get('/api/eventi', async (req, res) => {
     try {
         const rows = await new Promise((resolve, reject) => {
             connection.query('SELECT * FROM evento', (err, rows) => {
@@ -406,16 +422,16 @@ app.get('/api/eventi', async(req, res) => {
         res.status(200).json(rows);
     } catch (err) {
         console.error('Error fetching users:', err);
-        if(res.statusCode === 404) {
+        if (res.statusCode === 404) {
             res.status(404).json({ error: 'Not Found' });
-        } else if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        } else if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
-    };  
+    };
 });
-  
+
 
 
 /**
@@ -450,17 +466,17 @@ app.get('/api/eventi/:id', async (req, res) => {
             });
         });
 
-        if(rows.length > 0){
+        if (rows.length > 0) {
             res.status(200).json(rows);
-        }else if(rows.length <= 0){
-             res.status(404).json({ error: 'Not Found' });
+        } else if (rows.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
         }
 
-        
+
     } catch (err) {
         console.error('Error fetching users:', err);
-        res.status(500).json({ error: 'Server Error' });  
-        res.status(400).json({ error: 'Bad Request' }); 
+        res.status(500).json({ error: 'Server Error' });
+        res.status(400).json({ error: 'Bad Request' });
     };
 });
 
@@ -487,7 +503,7 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
     const eventid = req.params.id;
 
 
-    if(!req.session.user.admin){
+    if (!req.session.user.admin) {
         return res.status(401).json({ error: 'Non autorizzato' });
     }
     try {
@@ -499,21 +515,21 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
                     resolve(rows);
                 }
             });
-        }); 
-        
-        res.status(200).json({message: `l'evento ${eventid} è stato rimosso`, rows});
+        });
+
+        res.status(200).json({ message: `l'evento ${eventid} è stato rimosso`, rows });
     } catch (err) {
         console.error('Error fetching users:', err);
-        if(res.statusCode === 404) {
+        if (res.statusCode === 404) {
             res.status(404).json({ error: 'Not Found' });
-        } else if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        } else if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     };
 });
- 
+
 
 /**
  * Adds a new event to the database
@@ -532,10 +548,49 @@ app.delete('/api/eventi/delete/:id', async (req, res) => {
  * @param {Object} res - The response object
  *//* 
 app.post('/api/eventi/add', async (req, res) => {
-    
+   
+   try {
+       const rows = await new Promise((resolve, reject) => {
+           connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES ( ?, ?, ?, ?, ?, ?)',[5, 'piscina', '2024-04-21', 'Luogo molto divertente ma anche rilassante.', '', ''], (err, rows) => {
+               if (err) {
+                   reject(err);
+               } else {
+                   resolve(rows);
+               }
+           });
+       });
+
+       res.status(200).json(rows);
+   } catch (err) {
+       console.error('Error fetching users:', err);
+       if(res.statusCode === 404) {
+           res.status(404).json({ error: 'Not Found' });
+       } else if( res.statusCode === 500) {
+           res.status(500).json({ error: 'Server Error' }); 
+       }else if (res.statusCode === 400){
+           res.status(400).json({ error: 'Bad Request' }); 
+       }
+   };
+});
+*/
+/**
+ * Adds a new event to the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.post('/api/eventi/add', async (req, res) => {
     try {
+        console.log(req.body);
+        const { titolo, data, descrizione, luogo, immagine_evento } = req.body;
+
+        if (!titolo || !descrizione) {
+            res.status(400).json({ error: 'Il campo fornito è obbliogatorio' });
+        }
+
+
+
         const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO evento (id_Evento, titolo, data, descrizione, luogo, immagine_evento) VALUES ( ?, ?, ?, ?, ?, ?)',[5, 'piscina', '2024-04-21', 'Luogo molto divertente ma anche rilassante.', '', ''], (err, rows) => {
+            connection.query('INSERT INTO evento ( titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?)', [titolo, data, descrizione, luogo, immagine_evento], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -544,51 +599,12 @@ app.post('/api/eventi/add', async (req, res) => {
             });
         });
 
-        res.status(200).json(rows);
-    } catch (err) {
-        console.error('Error fetching users:', err);
-        if(res.statusCode === 404) {
-            res.status(404).json({ error: 'Not Found' });
-        } else if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
-        }
-    };
-});
- */
-/**
- * Adds a new event to the database
- * @param {Object} req - The request object
- * @param {Object} res - The response object
- */
-app.post('/api/eventi/add', async (req, res) => {
-    try {
-        console.log(req.body); 
-        const { titolo, data, descrizione, luogo, immagine_evento } = req.body;
 
-        if(!titolo || !descrizione  ){ 
-            res.status(400).json({ error: 'Il campo fornito è obbliogatorio' });
-        }
-  
- 
-    
-        const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO evento ( titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?)', [ titolo, data, descrizione, luogo, immagine_evento], (err, rows) => {
-                if (err) { 
-                    reject(err);       
-                } else {
-                    resolve(rows);
-                }
-            });
-        });
- 
-         
-        if(res.length > 0) {
+        if (res.length > 0) {
             res.status(200).json(rows);
-        } else if(res.length <= 0) {
+        } else if (res.length <= 0) {
             res.status(404).json({ error: 'Not Found' });
-        } 
+        }
 
     } catch (err) {
         console.error('Errore durante l\'inserimento dell\'evento:', err);
@@ -597,7 +613,7 @@ app.post('/api/eventi/add', async (req, res) => {
         } else {
             res.status(500).json({ error: 'Si è verificato un errore durante l\'elaborazione della richiesta' });
         }
-    } 
+    }
 });
 
 /* app.post('/api/eventi/add', async (req, res) => {
@@ -652,7 +668,7 @@ app.post('/api/eventi/add', async (req, res) => {
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
-app.get('/api/proposte', async (req, res)=> {
+app.get('/api/proposte', async (req, res) => {
     try {
         const rows = await new Promise((resolve, reject) => {
             connection.query('SELECT * FROM proposte', (err, rows) => {
@@ -664,19 +680,19 @@ app.get('/api/proposte', async (req, res)=> {
             });
         });
 
-        if(rows.length > 0) {
-           res.status(200).json(rows); 
-        } else if(rows.length <= 0){
-             res.status(404).json({ error: 'Not Found' });
+        if (rows.length > 0) {
+            res.status(200).json(rows);
+        } else if (rows.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
         }
-        
-        
+
+
     } catch (err) {
         console.error('Error fetching users:', err);
-        if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     };
 });
@@ -689,9 +705,9 @@ app.get('/api/proposte', async (req, res)=> {
  */
 app.delete('/api/proposte/delete/:id', (req, res) => {
     const proposteid = req.params.id;
-    connection.query('DELETE FROM proposte WHERE id_Proposta = ?', [proposteid],  (err, rows) => {
+    connection.query('DELETE FROM proposte WHERE id_Proposta = ?', [proposteid], (err, rows) => {
         if (err) throw err;
-        res.json({message: `la proposta ${proposteid} è stato rimosso`});
+        res.json({ message: `la proposta ${proposteid} è stato rimosso` });
     });
 });
 /**
@@ -738,7 +754,7 @@ app.delete('/api/proposte/delete/:id', (req, res) => {
 app.delete('/api/proposte/delete', (req, res) => {
     connection.query('TRUNCATE TABLE proposte', (err, rows) => {
         if (err) throw err;
-        res.json({message: `tabella svuotata`});
+        res.json({ message: `tabella svuotata` });
     });
 });
 
@@ -749,9 +765,9 @@ app.delete('/api/proposte/delete', (req, res) => {
  * @param {Object} res - The response object
  */
 app.post('/api/proposte/add', (req, res) => {
-    connection.query('INSERT INTO proposte (id_Proposta, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)',[5, 'piscina', '2024-04-21', 'Luogo molto divertente ma anche rilassante.', '', ''], (err, rows) => {
-        if (err) throw err; 
-        res.json({message: 'proposta inserita correttamente!'});
+    connection.query('INSERT INTO proposte (id_Proposta, titolo, data, descrizione, luogo, immagine_evento) VALUES (?, ?, ?, ?, ?, ?)', [5, 'piscina', '2024-04-21', 'Luogo molto divertente ma anche rilassante.', '', ''], (err, rows) => {
+        if (err) throw err;
+        res.json({ message: 'proposta inserita correttamente!' });
     });
 });
 /**
@@ -805,17 +821,17 @@ app.get('/api/voti', async (req, res) => {
             });
         });
 
-        if(rows.length > 0) {
-           res.status(200).json(rows); 
-        } else if(rows.length <= 0){
-             res.status(404).json({ error: 'Not Found' });
+        if (rows.length > 0) {
+            res.status(200).json(rows);
+        } else if (rows.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
         };
     } catch (err) {
         console.error('Error fetching votes:', err);
-        if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     };
 });
@@ -829,31 +845,31 @@ app.get('/api/voti', async (req, res) => {
  */
 app.post('/api/voti/add/', async (req, res) => {
 
-    
-    const { id_Utente, id_Evento} = req.body;
 
-    try{
+    const { id_Utente, id_Evento } = req.body;
+
+    try {
         const rows = await new Promise((resolve, reject) => {
             connection.query('INSERT INTO voti (id_Evento, id_Utente, voto) VALUES (  ?, ?, ?)', [id_Evento, id_Utente, true], (err, rows) => {
-                if(err) {
+                if (err) {
                     reject(err);
-                }else {
+                } else {
                     resolve(rows);
                 }
             });
         });
 
-        if(rows.length > 0) {
-            res.status(200).json({message: 'voto inserito correttamente!'});
+        if (rows.length > 0) {
+            res.status(200).json({ message: 'voto inserito correttamente!' });
         } else if (rows.length <= 0) {
             res.status(404).json({ error: 'Not Found' });
         }
-    }catch(err){
+    } catch (err) {
         console.error('Error adding votes:', err);
-        if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 });
@@ -861,7 +877,7 @@ app.post('/api/voti/add/', async (req, res) => {
 
 app.get('/api/voti/count', async (req, res) => {
 
-    try{
+    try {
         const query = `
       SELECT id_Evento, COUNT(*) AS conteggio
       FROM voti
@@ -870,26 +886,26 @@ app.get('/api/voti/count', async (req, res) => {
     `;
         const rows = await new Promise((resolve, reject) => {
             connection.query(query, (err, rows) => {
-                if(err) {
+                if (err) {
                     reject(err);
-                }else {
+                } else {
                     resolve(rows);
                 }
             });
         });
 
-        if(rows.length > 0){
-            res.status(200).json({message: 'count corretta', rows});
-        } else if(rows.length <= 0) {
-            res.status(404).json({message: 'not found'});
+        if (rows.length > 0) {
+            res.status(200).json({ message: 'count corretta', rows });
+        } else if (rows.length <= 0) {
+            res.status(404).json({ message: 'not found' });
         }
 
-    }catch (err){
+    } catch (err) {
         console.error(err);
-        if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 })
@@ -903,7 +919,7 @@ app.get('/api/voti/count', async (req, res) => {
  */
 app.get('api/date', async (req, res) => {
 
-    try{
+    try {
         const rows = await new Promise((resolve, reject) => {
             connection.query('SELECT * FROM seleziona_date', (err, rows) => {
                 if (err) {
@@ -916,10 +932,10 @@ app.get('api/date', async (req, res) => {
 
     } catch (err) {
         console.error('Error fetching votes:', err);
-        if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
@@ -934,42 +950,42 @@ app.get('api/date', async (req, res) => {
  */
 app.post('/api/date/add', async (req, res) => {
 
-    const { id_Utente, id_Evento} = req.body;
+    const { id_Utente, id_Evento } = req.body;
     const date = req.body.date;
 
-    try{
+    try {
         const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO seleziona_date (id_Utente, id_Evento, date) VALUES (?, ?, ?)', [id_Utente, id_Evento, date.map(date=>[date])], (err, rows) => {
-                if(err) {
+            connection.query('INSERT INTO seleziona_date (id_Utente, id_Evento, date) VALUES (?, ?, ?)', [id_Utente, id_Evento, date.map(date => [date])], (err, rows) => {
+                if (err) {
                     reject(err);
-                }else {
+                } else {
                     resolve(rows);
                 }
             });
         });
 
-        if(rows.length > 0) {
-            res.status(200).json({message: 'data inserita correttamente!'});
+        if (rows.length > 0) {
+            res.status(200).json({ message: 'data inserita correttamente!' });
         } else if (rows.length <= 0) {
             res.status(404).json({ error: 'Not Found' });
         }
 
-    } catch(err) {
+    } catch (err) {
         console.error('Error adding dates:', err);
-        if( res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' }); 
-        }else if (res.statusCode === 400){
-            res.status(400).json({ error: 'Bad Request' }); 
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
-}) 
+})
 
-   
+
 /**
  * Starts the server and listens for incoming requests
  */
-app.listen(port, () =>{
+app.listen(port, () => {
     /**
    * Logs a message to the console indicating that the server is running on the specified port
    * @param {number} port - The port on which the server is listening
