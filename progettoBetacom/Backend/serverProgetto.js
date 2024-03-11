@@ -90,11 +90,7 @@ app.use(async (req, res, next) => {
     try {
         req.session = {
             user: jwt.verify(req.headers.authorization, secretKey)
-        }
-
-        
-
-        
+        }        
     } catch (err) {
         console.error(err);
         return res.status(401).json({ error: 'Non autorizzato' });
@@ -898,6 +894,12 @@ app.post('/api/voti/add/', async (req, res) => {
 });
 
 
+
+/**
+ * Returns a count of the number of unique votes for each event
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.get('/api/voti/count', async (req, res) => {
 
     try {
