@@ -27,24 +27,29 @@
               </router-link>
             </div>
           </div>
-          <p class="text-justify">
-            {{ eventDetails[0].descrizione }}
-          </p>
-          <p class="mb-3">Per maggiori info sul posto clicca <a :href="eventDetails[0].luogo">qui</a></p>
+          <!-- <div class="row w-full d-flex justify-content-center">
+            <div class="w-full"> -->
+                <p class="text-justify">
+                  {{ eventDetails[0].descrizione }}
+                </p>
+                <p class="mb-3">Per maggiori info sul posto clicca <a :href="eventDetails[0].luogo">qui</a></p>
+           <!--  </div>
+          </div> -->
         </div>
       </div>
-        <div class="w-full d-flex justify-content-center  align-items-center mb-20">
-          <div>
-            <button @click="addVotoFromApi()" :disabled="votoStorage.includes(infoVoti.id_Utente)">
-              VOTA EVENTO
-            </button>
-          </div>
-          <div>
-            <router-link to="/risultatosondaggi">
-              <i class="bi bi-bar-chart-line-fill"></i>
-            </router-link>
-          </div>
+      <div class="w-full d-flex justify-content-center align-items-center">
+        <div>
+          <button @click="addVotoFromApi()" :disabled="votoStorage.includes(infoVoti.id_Utente)">
+            VOTA EVENTO
+          </button>
         </div>
+        <div>
+          <router-link to="/risultatosondaggi">
+            <i class="bi bi-bar-chart-line-fill"></i>
+          </router-link>
+        </div>
+        <div class="mb-20"></div>
+      </div>
     </div>
     <NavBarBlue></NavBarBlue>
   </div>
@@ -135,6 +140,10 @@ export default {
 
 .mb-20 {
   margin-bottom: 20rem;
+}
+
+.mb-30{
+  margin-bottom: 30rem;
 }
 
 .mb-2 {

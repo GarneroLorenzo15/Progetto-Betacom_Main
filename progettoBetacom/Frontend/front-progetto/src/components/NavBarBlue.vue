@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div class="w-full h-92 border-nav" style="background-color: #034ea1">
+  <div class="w-full h-92 border-nav mt-10" style="background-color: #034ea1">
     <nav class="row d-flex flex-nowrap justify-content-between">
       <div class="d-flex w-50 justify-content-center">
         <div class="active">
@@ -52,4 +52,6 @@ i {
   height: 2px;
   background-color: white; 
 }
+
+
 </style>
