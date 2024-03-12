@@ -82,7 +82,6 @@ export default {
   mounted() {
     const id = this.$route.params.id;
     this.fetchEventsDetailsFromApi(id);
-    console.log(this.utente, this.$route.params.id);
   },
   methods: {
     async fetchEventsDetailsFromApi(id) {
@@ -107,7 +106,7 @@ export default {
     async addVotoFromApi() {
       try {
 
-        if (this.votoStorage.includes(this.infoVoti.id_Utente)) {
+        if (this.infoVoti.id_Utente == this.infoVoti.id_Utente) {
           console.log("utente ha gia votato");
           return;
         }
