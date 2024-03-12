@@ -67,7 +67,7 @@ app.post('/api/login', async (req, res) => {
         if (rows.length > 0) {
             let user = rows[0];
             delete user.password;
-            const token = jwt.sign({ ...user }, secretKey, { expiresIn: '1h' });
+            const token = jwt.sign({ ...user }, secretKey, { expiresIn: '10h' });
             return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
         } else if (rows.length <= 0) {
             res.status(401).json({ error: 'Credenziali errate' });
@@ -907,7 +907,6 @@ app.get('/api/voti/count', async (req, res) => {
       SELECT id_Evento, COUNT(*) AS conteggio
       FROM voti
       GROUP BY id_Evento
-      HAVING COUNT(*) = (SELECT COUNT(*) FROM voti)
     `;
         const rows = await new Promise((resolve, reject) => {
             connection.query(query, (err, rows) => {
@@ -974,37 +973,50 @@ app.get('api/date', async (req, res) => {
  * @param {Object} res - The response object
  */
 app.post('/api/date/add', async (req, res) => {
-
     const { id_Utente, id_Evento } = req.body;
-    const date = req.body.date;
-
+    const date = req.body.date; // Assicurati che i dati siano passati come un array denominato "dates"
+    console.log(req.body.date);
     try {
-        const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO seleziona_date (id_Utente, id_Evento, date) VALUES (?, ?, ?)', [id_Utente, id_Evento, date.map(date => [date])], (err, rows) => {
+        // Prima, eliminiamo tutti i record dalla tabella
+        await new Promise((resolve, reject) => {
+            connection.query('DELETE FROM seleziona_date', (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(rows);
+                    resolve(result);
                 }
             });
         });
 
-        if (rows.length > 0) {
-            res.status(200).json({ message: 'data inserita correttamente!' });
-        } else if (rows.length <= 0) {
-            res.status(404).json({ error: 'Not Found' });
-        }
+        // Dopodiché, inseriamo i nuovi record
+        const insertValues = date.map(date => [id_Utente, id_Evento, date]);
+
+        await new Promise((resolve, reject) => {
+            connection.query('INSERT INTO seleziona_date (id_Utente, id_Evento, date) VALUES ?', [insertValues], (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        // Se tutto è andato bene, invia una risposta di successo
+        res.status(200).json({ message: 'Dati inseriti correttamente!' });
 
     } catch (err) {
-        console.error('Error adding dates:', err);
-        if (res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' });
-        } else if (res.statusCode === 400) {
-            res.status(400).json({ error: 'Bad Request' });
+        console.error('Errore durante l\'aggiunta delle date:', err);
+        // In caso di errore, gestisci il codice di stato e invia una risposta appropriata
+        if (err.statusCode === 500) {
+            res.status(500).json({ error: 'Errore del server' });
+        } else if (err.statusCode === 400) {
+            res.status(400).json({ error: 'Richiesta non valida' });
+        } else {
+            res.status(500).json({ error: 'Errore sconosciuto' });
         }
     }
+});
 
-})
 
 
 /**

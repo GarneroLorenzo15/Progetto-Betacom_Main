@@ -95,10 +95,9 @@ export default {
         },
         async addDateFromApi(){
             try {
-                const response = await apiService.addDate(this.selectedDate);
+                const response = await apiService.addDate(this.nuovaDataInserita);
                 console.log(response.data);
-                const nuovaData = response.data;
-                this.nuovaDataInserita.push(nuovaData);
+                
             }catch (err){
                 console.log(err)
             }
