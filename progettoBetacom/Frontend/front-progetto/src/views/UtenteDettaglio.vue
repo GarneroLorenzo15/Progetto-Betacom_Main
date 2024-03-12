@@ -125,8 +125,9 @@ export default {
 
     async deleteUsersFromApi() {
       try {
-        const respose = await apiService.deleteUtenti(this.userDetails.rows[0].id_Utente);
+        const respose = await apiService.deleteUtenti(this.$route.params.id);
         this.users = respose.data;
+        console.log(this.users);
         this.$router.push("/profilo")
       } catch (e) {
         console.error(e);
@@ -134,10 +135,10 @@ export default {
     },
 
     changeDisponibility() {
-      if (this.userData.disponibile === false) {
-        this.userData.disponibile = true;
-      } else if (this.userData.disponibile === true) {
-        this.userData.disponibile = false;
+      if (this.userData.disponibile === 0) {
+        this.userData.disponibile = 1;
+      } else if (this.userData.disponibile === 1) {
+        this.userData.disponibile = 0;
       }
       console.log(this.userData.disponibile);
     }

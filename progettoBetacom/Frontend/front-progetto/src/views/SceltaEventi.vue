@@ -58,7 +58,6 @@
               <div class="container">
                 <div class="row d-flex justify-content-around flex-wrap m-1">
                   <input class="mb-2" type="text" v-model="newEvent.titolo" placeholder="Titolo dell'evento" required>
-                  <input class="mb-2" type="date" v-model="newEvent.data" required>
                   <textarea class="mb-2" v-model="newEvent.descrizione" placeholder="Descrizione dell'evento"></textarea>
                   <input class="mb-2" type="text" v-model="newEvent.luogo" placeholder="URL Luogo dell'evento">
                   <input class="mb-2" type="text" v-model="newEvent.immagine_evento"

@@ -4,7 +4,7 @@
     <div class="data">
         <div class="container mb-10">
             <div>
-                <router-link :to="'/eventi/' + this.$route.params.id ">
+                <router-link :to="'/eventi/' + this.$route.params.id">
                     <i class="bi bi-skip-backward-circle-fill"></i>
                 </router-link>
             </div>
@@ -23,7 +23,7 @@
                         <div class="w-7" v-for="n in month.blankDays" :key="`empty-${n}`"></div>
                         <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in  daysInMonth(key)"
                             :key="index" @click="toggleDate(day, key)">
-                            <div :class="{ 'selected': isSelected(day +1, key) }">{{ day }}</div>
+                            <div :class="{ 'selected': isSelected(day + 1, key) }">{{ day }}</div>
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@ export default {
                 '06': {
                     'nome': 'Giugno',
                     'blankDays': this.calculateBlankDays(6),
-                    'daysign': ['lun', 'mar' , 'mer', 'gio', 'ven', 'sab', 'dom']
+                    'daysign': ['lun', 'mar', 'mer', 'gio', 'ven', 'sab', 'dom']
                 },
                 '07': {
                     'nome': 'Luglio',
@@ -60,7 +60,6 @@ export default {
                     'daysign': ['lun', 'mar', 'mer', 'gio', 'ven', 'sab', 'dom']
                 },
             },
-            selectedDate: [],
             nuovaDataInserita: {
                 id_Utente: localStorage.getItem('utente'),
                 id_Evento: this.$route.params.id,
@@ -72,7 +71,7 @@ export default {
         calculateBlankDays(month) {
             const date = new Date(new Date().getFullYear(), month - 1, 1);
             const startDay = getDay(startOfMonth(date)); // Ottieni il giorno della settimana in cui inizia il mese
-            return startDay === 0 ? 6 : startDay -1; // Se è Domenica (0), restituisci 6; altrimenti sottrai 1
+            return startDay === 0 ? 6 : startDay - 1; // Se è Domenica (0), restituisci 6; altrimenti sottrai 1
         },
         daysInMonth(month) {
             let now = new Date()
@@ -81,24 +80,28 @@ export default {
         },
         toggleDate(day, month) {
             let selected = new Date(new Date().getFullYear(), month - 1, day + 1).toISOString().substring(0, 10);
-            const index = this.selectedDate.indexOf(selected);
+            const index = this.nuovaDataInserita.date.indexOf(selected);
             if (index === -1) {
-                this.selectedDate.push(selected);
+                this.nuovaDataInserita.date.push(selected);
             } else {
-                this.selectedDate.splice(index, 1);
+                this.nuovaDataInserita.date.splice(index, 1);
             }
-            console.table(this.selectedDate)
+            console.table(this.nuovaDataInserita)
         },
         isSelected(day, month) {
             let selected = new Date(new Date().getFullYear(), month - 1, day).toISOString().substring(0, 10);
-            return this.selectedDate.includes(selected);
+            return this.nuovaDataInserita.date.includes(selected);
+
         },
-        async addDateFromApi(){
+        async addDateFromApi() {
+            console.log(this.nuovaDataInserita);
             try {
                 const response = await apiService.addDate(this.nuovaDataInserita);
+                const nuovaData = response.data;
                 console.log(response.data);
-                
-            }catch (err){
+                this.nuovaDataInserita.data.push(nuovaData);
+                this.$router.push("/eventi");
+            } catch (err) {
                 console.log(err)
             }
         }

@@ -10,15 +10,16 @@
                 <div class="my-5">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row">
+                            <div class="row d-flex align-items-center">
+                                <p class="w-50 spaces">Nome Evento</p>
+                                <p class=" w-50 d-flex justify-content-end">N° Voti</p>
+                            </div>
+                            <div class="row" v-for="risultati in risultatiCount.rows" :key="risultati">
                                 <div class="col-6 d-flex felx-wrap">
-                                    <p class="spaces">Nome Evento</p>
-                                    <div class="w-full"></div>
+                                    <div class="w-full ">{{risultati.titolo }}</div>
                                 </div>
                                 <div class="col-6 d-flex flex-wrap">
-                                    <p class=" w-full d-flex justify-content-end">N° Voti</p>
-                                    <div class="w-full d-flex justify-content-end" v-for="index in risultatiCount"
-                                        :key="index">{{ risultatiCount.rows[0].conteggio }}</div>
+                                    <div class="w-full d-flex justify-content-end">{{risultati.conteggio}}</div>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +47,7 @@ export default {
             risultatiCount: [],
         }
     },
-    mounted(){
+    mounted() {
         this.fetchResultsFromApi();
         this.countVotiFromApi();
     },
@@ -56,13 +57,13 @@ export default {
                 const response = await apiService.fetchVoti();
                 this.risultati = response.data;
                 console.log(this.risultati);
-            } catch (err){
+            } catch (err) {
                 console.error(err);
-            }   
+            }
         },
-        
+
         async countVotiFromApi() {
-            try{
+            try {
                 const response = await apiService.countVoti();
                 console.log(response.data);
                 this.risultatiCount = response.data;
@@ -75,7 +76,7 @@ export default {
 </script>
 
 <style scoped>
-.sondaggi{
+.sondaggi {
     height: 40rem;
 }
 </style>
