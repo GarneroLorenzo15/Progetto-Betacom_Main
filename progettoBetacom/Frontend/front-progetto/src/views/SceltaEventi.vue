@@ -118,8 +118,7 @@ export default {
         conasole.log(response);
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
-        this.$router.push("/eventi");
-
+        window.location.reload();
 
       } catch (error) {
         console.log(error);
