@@ -3,6 +3,11 @@
 <template>
     <div class="sondaggi">
         <div class="container">
+            <div>
+                <router-link :to="'/eventi/' + this.$route.params.id">
+                    <i class="bi bi-skip-backward-circle-fill"></i>
+                </router-link>
+            </div>
             <div class="row">
                 <div class="d-flex justify-content-center my-5">
                     <h2>Risultato Sondaggi</h2>

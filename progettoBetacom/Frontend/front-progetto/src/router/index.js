@@ -30,7 +30,7 @@ const routes = [
   {
     path: "/profilo/:id",
     name: "DettaglioProfilo",
-    component: () => import("../views/UtenteDettaglio.vue"),
+    component: () => import("../views/UtenteDettaglio.vue"), //dynamic import
     meta: { requiresAuth: true },
   },
   {
@@ -40,9 +40,10 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: "/risultatosondaggi",
+    path: "/risultatosondaggi/:id",
     name: "Risultato",
     component: () => import("../views/RisultatoSondaggi.vue"), //dynamic import
+    meta: { requiresAuth: true },
   },
   {
     path: "/:catchAll(.*)",

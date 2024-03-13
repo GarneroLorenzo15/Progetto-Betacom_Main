@@ -352,7 +352,7 @@ app.delete('/api/utenti/delete/:id', async (req, res) => {
         } else if (res.statusCode === 500) {
             res.status(500).json({ error: 'Server Error' });
         } else if (res.statusCode === 400) {
-            res.status(400).json({ error: 'Bad Request' });
+            res.status(400).json({ error: 'Bad Request' }); 
         }
     };
 });

@@ -29,22 +29,22 @@
           </div>
           <!-- <div class="row w-full d-flex justify-content-center">
             <div class="w-full"> -->
-                <p class="text-justify">
-                  {{ eventDetails[0].descrizione }}
-                </p>
-                <p class="mb-3">Per maggiori info sul posto clicca <a :href="eventDetails[0].luogo">qui</a></p>
-           <!--  </div>
+          <p class="text-justify">
+            {{ eventDetails[0].descrizione }}
+          </p>
+          <p class="mb-3">Per maggiori info sul posto clicca <a :href="eventDetails[0].luogo">qui</a></p>
+          <!--  </div>
           </div> -->
         </div>
       </div>
       <div class="w-full d-flex justify-content-center align-items-center">
         <div>
-          <button @click="addVotoFromApi()" :disabled="votoStorage.includes(infoVoti.id_Utente)">
+          <button @click="addVotoFromApi()" :disabled="votoGiaInviato">
             VOTA EVENTO
           </button>
         </div>
         <div>
-          <router-link to="/risultatosondaggi">
+          <router-link :to="'/risultatosondaggi/' + this.$route.params.id">
             <i class="bi bi-bar-chart-line-fill"></i>
           </router-link>
         </div>
@@ -77,12 +77,19 @@ export default {
         id_Utente: localStorage.getItem('utente'),
         id_Evento: this.$route.params.id,
       },
+      votoGiaInviato: false,
     };
   },
   mounted() {
     const id = this.$route.params.id;
     this.fetchEventsDetailsFromApi(id);
     console.log(this.utente, this.$route.params.id, this.votoStorage.id_Utente);
+  },
+  created() {
+    const votoGiaInviato = sessionStorage.getItem('votoGiaInviato');
+    if (votoGiaInviato) {
+      this.votoGiaInviato = true;
+    }
   },
   methods: {
     async fetchEventsDetailsFromApi(id) {
@@ -106,15 +113,13 @@ export default {
     },
     async addVotoFromApi() {
       try {
-
-        if (this.infoVoti.id_Utente == this.infoVoti.id_Utente) {
-          console.log("utente ha gia votato");
-          return;
-        }
-
         const response = await apiService.addVoti(this.infoVoti);
         const data = response.data;
         this.votoStorage.push(data);
+        if (!this.votoGiaInviato) {
+          this.votoGiaInviato = true;
+          sessionStorage.setItem('votoGiaInviato', true);
+        }
         this.$router.push("/eventi");
       } catch (error) {
         console.log(error);
@@ -142,7 +147,7 @@ export default {
   margin-bottom: 20rem;
 }
 
-.mb-30{
+.mb-30 {
   margin-bottom: 30rem;
 }
 
@@ -189,7 +194,7 @@ img {
   border-radius: 0 0 25px 25px;
 }
 
-i{
+i {
   color: #F38120;
 }
 </style>
