@@ -10,7 +10,9 @@
             </div>
             <div class="row">
                 <div class="d-flex justify-content-center">
-                    <h2>Risultato Sondaggio</h2>
+                    <div class="w-50">
+                        <h2>Risultato Sondaggio</h2>
+                    </div>
                 </div>
                 <div class="my-5">
                     <div class="card">
@@ -109,12 +111,7 @@ export default {
                     datasets: [{
                         data: count,
                         backgroundColor: [
-                            'rgba(255, 152, 0, 0.5)',   // Arancione scuro
-                            'rgba(100, 181, 246, 0.5)', // Blu chiaro
-                            'rgba(33, 150, 243, 0.5)',  // Blu
-                            'rgba(255, 193, 7, 0.5)',   // Arancione
-                            'rgba(63, 81, 181, 0.5)',   // Blu scuro
-                            'rgba(255, 224, 130, 0.5)',
+                            
                         ]
                     }]
                 },
