@@ -932,6 +932,36 @@ app.get('/api/voti/count', async (req, res) => {
             res.status(400).json({ error: 'Bad Request' });
         }
     }
+});
+
+
+app.delete('/api/voti/delete', async (req, res) => {
+
+    try{
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('DELETE * FROM voti', (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+
+        if(rows.length > 0) {
+            res.status(200).json({ message: 'voti eliminati correttamente!' });
+        } else if (res.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
+        }
+
+    } catch (err){
+        console.error(err);
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
+        }
+    }
 })
 
 //date
