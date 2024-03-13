@@ -82,6 +82,7 @@ export default {
   mounted() {
     const id = this.$route.params.id;
     this.fetchEventsDetailsFromApi(id);
+    console.log(this.utente, this.$route.params.id, this.votoStorage.id_Utente);
   },
   methods: {
     async fetchEventsDetailsFromApi(id) {
