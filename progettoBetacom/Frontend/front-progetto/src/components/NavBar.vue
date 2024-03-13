@@ -12,7 +12,7 @@
       <div class="d-flex w-50 justify-content-center">
         <router-link to="/profilo" @click="currentTab = 'profilo'">
           <div :class="{ active: currentTab.includes('profilo') }">
-            <i class="bi bi-person"></i>
+            <i class="bi bi-people-fill"></i>
           </div>
         </router-link>
       </div>
