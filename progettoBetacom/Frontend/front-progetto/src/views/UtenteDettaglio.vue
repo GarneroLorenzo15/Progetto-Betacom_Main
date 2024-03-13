@@ -15,13 +15,13 @@
         </div>
         <div class="row d-flex flex-wrap">
           <div class="w-full d-flex justify-content-center">
-            <p>{{ userDetails.rows[0].nome }}</p>
+            <p>{{ userData.nome }}</p>
           </div>
           <div class="w-full d-flex justify-content-center">
-            <p>{{ userDetails.rows[0].cognome }}</p>
+            <p>{{ userData.cognome }}</p>
           </div>
           <div class="w-full d-flex justify-content-center">
-            <p>{{ userDetails.rows[0].email }}</p>
+            <p>{{ userData.email }}</p>
           </div>
         </div>
       </div>
@@ -45,7 +45,8 @@
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
               <div class="mx-1">Disponibilità:</div>
-              <button class="bg-white" :v-model="userData.disponibile" @click="changeDisponity()"><i style="color: black;" class="bi bi-arrow-repeat"></i></button>
+              <button class="bg-white" :v-model="userData.disponibile" @click="changeDisponibility()"><i
+                  style="color: black;" class="bi bi-arrow-repeat"></i></button>
             </div>
             <div class="d-flex justify-content-center flex-wrap w-full my-2">
               <button class="spaces mb-2" @click="updateUsersFromApi()">Salva le modifiche</button>
@@ -78,19 +79,20 @@ export default {
         cognome: "",
         email: "",
         password: "",
-        disponibile: false,
+        disponibile: true,
       }
     };
   },
   mounted() {
     const id = this.$route.params.id;
     this.fetchUsersDetailsFromApi(id);
+
   },
   methods: {
     async fetchUsersDetailsFromApi(id) {
       try {
         const response = await apiService.fetchUserDetails(id);
-        this.userDetails = response.data;
+        this.userData = response.data.rows[0]
       } catch (e) {
         console.error(e);
       }
@@ -98,9 +100,12 @@ export default {
 
     async updateUsersFromApi() {
       try {
-        const id = this.userDetails.rows[0].id_Utente;
+        const id = this.userData.id_Utente;
+        this.userData.admin = true;
+        console.log(this.userData)
         const response = await apiService.updateUser(id, this.userData);
         this.userDetails.rows[0] = response.config.data;
+        console.log(response.config.data);
         this.$router.push("/profilo");
       } catch (e) {
         console.error(e);
@@ -120,19 +125,20 @@ export default {
 
     async deleteUsersFromApi() {
       try {
-        const respose = await apiService.deleteUtenti(this.userDetails.rows[0].id_Utente);
+        const respose = await apiService.deleteUtenti(this.$route.params.id);
         this.users = respose.data;
+        console.log(this.users);
         this.$router.push("/profilo")
       } catch (e) {
         console.error(e);
       }
     },
 
-    changeDisponity() {
-      if (this.userData.disponibile === false) {
-        this.userData.disponibile = true;
-      } else if (this.userData.disponibile === true) {
-        this.userData.disponibile = false;
+    changeDisponibility() {
+      if (this.userData.disponibile === 0) {
+        this.userData.disponibile = 1;
+      } else if (this.userData.disponibile === 1) {
+        this.userData.disponibile = 0;
       }
       console.log(this.userData.disponibile);
     }
@@ -152,7 +158,4 @@ export default {
 .card {
   margin-bottom: 10rem;
 }
-
-
-
 </style>

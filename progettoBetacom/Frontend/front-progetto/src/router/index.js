@@ -30,13 +30,19 @@ const routes = [
   {
     path: "/profilo/:id",
     name: "DettaglioProfilo",
-    component: () => import("../views/UtenteDettaglio.vue"),
+    component: () => import("../views/UtenteDettaglio.vue"), //dynamic import
     meta: { requiresAuth: true },
   },
   {
     path: "/calendar/:id",
     name: "Calendar",
     component: () => import("../views/SelectData.vue"), //dynamic import
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/risultatosondaggi/:id",
+    name: "Risultato",
+    component: () => import("../views/RisultatoSondaggi.vue"), //dynamic import
     meta: { requiresAuth: true },
   },
   {
