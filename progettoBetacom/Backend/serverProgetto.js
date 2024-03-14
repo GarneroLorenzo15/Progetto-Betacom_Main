@@ -14,16 +14,16 @@ app.use(express.json()); //per tradurre i json in arrivo nei pacchetti destinati
 
 const secretKey = '1234';
 
-
+    
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     port: '3306',
     database: 'databasebetacomgioco'
-});
+});  
 
 //login 
-
+    
 
 
 /**

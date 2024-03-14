@@ -39,7 +39,7 @@
       </div>
       <div class="w-full d-flex justify-content-center align-items-center">
         <div>
-          <button @click="addVotoFromApi()" :disabled="this.votoGiaInviato">
+          <button @click="addVotoFromApi()" :disabled="this.votoGiaInviato === true">
             VOTA EVENTO
           </button>
         </div>
@@ -116,7 +116,7 @@ export default {
         const response = await apiService.addVoti(this.infoVoti);
         const data = response.data;
         this.votoStorage.push(data);
-        if (!this.votoGiaInviato) {
+        if (this.votoGiaInviato === false) {
           this.votoGiaInviato = true;
           sessionStorage.setItem('votoGiaInviato', true);
         }

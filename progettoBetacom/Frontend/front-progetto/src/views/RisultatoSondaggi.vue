@@ -111,7 +111,16 @@ export default {
                     datasets: [{
                         data: count,
                         backgroundColor: [
-                            
+                            'rgba(25, 118, 210, 0.5)',    // Blu scuro
+                            'rgba(255, 152, 0, 0.5)',     // Arancione scuro
+                            'rgba(41, 121, 255, 0.5)',    // Blu
+                            'rgba(255, 171, 64, 0.5)',    // Arancione
+                            'rgba(92, 133, 255, 0.5)',    // Blu chiaro
+                            'rgba(255, 193, 7, 0.5)',     // Arancione vivace
+                            'rgba(0, 70, 153, 0.5)',      // Blu navy
+                            'rgba(255, 210, 121, 0.5)',   // Arancione chiaro
+                            'rgba(0, 145, 234, 0.5)',     // Blu vivace
+                            'rgba(255, 235, 179, 0.5)' 
                         ]
                     }]
                 },
