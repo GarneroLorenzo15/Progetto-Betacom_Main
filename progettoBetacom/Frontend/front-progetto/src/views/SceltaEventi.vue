@@ -116,8 +116,8 @@ export default {
         conasole.log(response);
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
-        console.log("qui add events from api");
-        window.location.reload();
+        await this.fetchEventsFromApi();
+        
       } catch (error) {
         console.log(error);
       }
