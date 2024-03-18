@@ -1040,6 +1040,42 @@ app.get('api/date', async (req, res) => {
 
 
 /**
+ * Returns a list of all dates for a specific user in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.get('api/date/:id', (req, res) => {
+    const userid= req.params.id;
+    try{
+        const rows = new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM seleziona_date WHERE id_Utente =?', [userid], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+
+        if(rows.length > 0) {
+            res.status(200).json({ message: 'voti del utente ' + userid + rows});
+        }else if (rows.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
+        }
+
+    }catch(err){
+        console.error(err);
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
+        }
+    }
+})
+
+
+
+/**
  * Adds a new vote to the database
  * @param {Object} req - The request object
  * @param {Object} res - The response object
@@ -1050,7 +1086,7 @@ app.post('/api/date/add', async (req, res) => {
     console.log(req.body.date);
     try {
         await new Promise((resolve, reject) => {
-            connection.query('DELETE FROM seleziona_date', (err, result) => {
+            connection.query('DELETE FROM seleziona_date WHERE id_Utente = ?', [id_Utente], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
