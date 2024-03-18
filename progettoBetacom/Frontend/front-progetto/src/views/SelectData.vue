@@ -75,8 +75,8 @@ export default {
         },
         daysInMonth(month) {
             let now = new Date()
-            now.setMonth(+month)
-            return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            now.setMonth(month)
+            return new Date(now.getFullYear(), now.getMonth(), 0).getDate();
         },
         toggleDate(day, month) {
             let selected = new Date(new Date().getFullYear(), month - 1, day + 1).toISOString().substring(0, 10);
@@ -91,7 +91,6 @@ export default {
         isSelected(day, month) {
             let selected = new Date(new Date().getFullYear(), month - 1, day).toISOString().substring(0, 10);
             return this.nuovaDataInserita.date.includes(selected);
-
         },
         async addDateFromApi() {
             console.log(this.nuovaDataInserita);
