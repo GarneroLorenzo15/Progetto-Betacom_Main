@@ -55,5 +55,8 @@ export default {
   },
   countVoti(){
     return axios.get(`${API_URL}/api/voti/count`);
+  },
+  deleteVoti(){
+    return axios.delete(`${API_URL}/api/voti/delete`);
   }
 };

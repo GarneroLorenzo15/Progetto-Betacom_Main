@@ -2,26 +2,34 @@
   <!-- eslint-disable -->
   <div class="container">
     <div class="row">
-      <div class="d-flex justify-content-center my-3">
-        <h2>Info delle Partecipazioni</h2>
+        <div class="w-50">
+
+        </div>
+        <div class="w-50 d-flex justify-content-end">
+          <i class="bi bi-box-arrow-right colorto font-i" @click="logout()"></i>
+        </div>
       </div>
-    </div>
-    <div class="row d-flex justify-content-center">
-      <div class="card">
-        <div class="card-header">
-          <div class="row d-flex flex-nowrap justify-content-between ">
-            <div class=" d-flex w-50 spaces align-items-center">
-              <h2>Lista Partecipanti</h2>
-            </div>
-            <div class="d-flex justify-content-end  w-50 " v-if="this.admin == 1">
-              <div class=" " @click="openModal()">
-                <i class="bi bi-plus-circle-fill"></i>
+      <div class="row">
+        <div class="d-flex justify-content-center my-3">
+          <h2>Info delle Partecipazioni</h2>
+        </div>
+      </div>
+      <div class="row d-flex justify-content-center">
+        <div class="card">
+          <div class="card-header">
+            <div class="row d-flex flex-nowrap justify-content-between ">
+              <div class=" d-flex w-50 spaces align-items-center">
+                <h2>Lista Partecipanti</h2>
+              </div>
+              <div class="d-flex justify-content-end  w-50 " v-if="this.admin == 1">
+                <div class=" " @click="openModal()">
+                  <i class="bi bi-plus-circle-fill"></i>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="card-body">
-          <div class="row d-flex flex-nowrap align-items-center" v-for="(user, numUtente ) in users" :key="numUtente">
+          <div class="card-body">
+            <div class="row d-flex flex-nowrap align-items-center" v-for="(user, numUtente ) in users" :key="numUtente">
               <div class="w-10 spaces">
                 <p>{{ numUtente + 1 }}</p>
               </div>
@@ -39,16 +47,17 @@
                   <p>✖️</p>
                 </div>
               </div>
-              <div class="w-5 d-flex justify-content-end margin-bottom" v-if="this.admin == 1 || this.utente == user.id_Utente">
-                <router-link :to="'/profilo/' + user.id_Utente ">
+              <div class="w-5 d-flex justify-content-end margin-bottom"
+                v-if="this.admin == 1 || this.utente == user.id_Utente">
+                <router-link :to="'/profilo/' + user.id_Utente">
                   <i class="bi bi-arrow-right-circle-fill"></i>
                 </router-link>
               </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- Modale di aggiunta utenti -->
+      <!-- Modale di aggiunta utenti -->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -75,8 +84,8 @@
           </div>
         </div>
       </div>
-  </div>
-  <NavBar></NavBar>
+    </div>
+    <NavBar></NavBar>
 </template>
 
 <script>
@@ -145,6 +154,11 @@ export default {
         modal.style.display = 'none';
       }
     },
+
+    logout() {
+      localStorage.removeItem('token');
+      this.$router.push('/login');
+    },
   }
 };
 
@@ -163,11 +177,11 @@ export default {
   width: 10%;
 }
 
-.w-5{
+.w-5 {
   width: 5%;
 }
 
-.w-20{
+.w-20 {
   width: 20%;
 }
 
@@ -192,8 +206,12 @@ export default {
   margin-bottom: 10rem;
 }
 
-.color-red{
+.color-red {
   color: red;
+}
+
+.font-i{
+  font-size: 3rem;
 }
 
 .color-green {
@@ -208,7 +226,7 @@ i {
   font-size: x-large;
 }
 
-a{
+a {
   color: black;
 }
 </style>

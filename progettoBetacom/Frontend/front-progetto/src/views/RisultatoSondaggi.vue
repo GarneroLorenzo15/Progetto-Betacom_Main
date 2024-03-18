@@ -9,8 +9,10 @@
                 </router-link>
             </div>
             <div class="row">
-                <div class="d-flex justify-content-center my-5">
-                    <h2>Risultato Sondaggi</h2>
+                <div class="d-flex justify-content-center">
+                    <div class="w-50">
+                        <h2>Risultato Sondaggio</h2>
+                    </div>
                 </div>
                 <div class="my-5">
                     <div class="card">
@@ -21,15 +23,19 @@
                             </div>
                             <div class="row" v-for="risultati in risultatiCount.rows" :key="risultati">
                                 <div class="col-6 d-flex felx-wrap">
-                                    <div class="w-full ">{{risultati.titolo }}</div>
+                                    <div class="w-full ">{{ risultati.titolo }}</div>
                                 </div>
                                 <div class="col-6 d-flex flex-wrap">
-                                    <div class="w-full d-flex justify-content-end">{{risultati.conteggio}}</div>
+                                    <div class="w-full d-flex justify-content-end">{{ risultati.conteggio }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="card ">
+                <p class=" d-flex justify-content-center my-2">Grafico Sondaggio</p>
+                <canvas class="my-3" id="pieChart" width="400" height="400"></canvas>
             </div>
         </div>
         <NavBar></NavBar>
@@ -41,6 +47,8 @@
 /* eslint-disable */
 import NavBar from '@/components/NavBar.vue';
 import apiService from '@/services/apiService';
+import Chart from 'chart.js/auto';
+
 
 export default {
     components: {
@@ -72,9 +80,54 @@ export default {
                 const response = await apiService.countVoti();
                 console.log(response.data);
                 this.risultatiCount = response.data;
+                this.generatePieChart();
             } catch (err) {
                 console.error(err);
             }
+        },
+
+        async deleteVotiFromApi() {
+            try {
+                const response = await apiService.deleteVoti();
+                this.$router.push("/eventi");
+            } catch (err) {
+                console.error(err);
+            }
+        },
+
+        generatePieChart() {
+            const labels = this.risultatiCount.rows.map(risultati => risultati.titolo);
+            const count = this.risultatiCount.rows.map(risultati => risultati.conteggio);
+
+            if (this.pieChart) {
+                this.pieChart.destroy();
+            }
+
+
+            this.pieChart = new Chart(document.getElementById('pieChart'), {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: count,
+                        backgroundColor: [
+                            'rgba(25, 118, 210, 0.5)',    // Blu scuro
+                            'rgba(255, 152, 0, 0.5)',     // Arancione scuro
+                            'rgba(41, 121, 255, 0.5)',    // Blu
+                            'rgba(255, 171, 64, 0.5)',    // Arancione
+                            'rgba(92, 133, 255, 0.5)',    // Blu chiaro
+                            'rgba(255, 193, 7, 0.5)',     // Arancione vivace
+                            'rgba(0, 70, 153, 0.5)',      // Blu navy
+                            'rgba(255, 210, 121, 0.5)',   // Arancione chiaro
+                            'rgba(0, 145, 234, 0.5)',     // Blu vivace
+                            'rgba(255, 235, 179, 0.5)' 
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                }
+            });
         }
     }
 }
@@ -82,6 +135,6 @@ export default {
 
 <style scoped>
 .sondaggi {
-    height: 40rem;
+    height: 150vh;
 }
 </style>

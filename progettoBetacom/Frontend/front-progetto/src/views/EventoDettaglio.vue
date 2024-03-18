@@ -39,7 +39,7 @@
       </div>
       <div class="w-full d-flex justify-content-center align-items-center">
         <div>
-          <button @click="addVotoFromApi()" :disabled="votoGiaInviato">
+          <button @click="addVotoFromApi()" :disabled="this.votoGiaInviato == true">
             VOTA EVENTO
           </button>
         </div>
@@ -70,7 +70,6 @@ export default {
     return {
       eventDetails: [{}],
       eventDay: "",
-      votoStorage: [],
       admin: localStorage.getItem('admin'),
       utente: localStorage.getItem('utente'),
       infoVoti: {
@@ -83,13 +82,7 @@ export default {
   mounted() {
     const id = this.$route.params.id;
     this.fetchEventsDetailsFromApi(id);
-    console.log(this.utente, this.$route.params.id, this.votoStorage.id_Utente);
-  },
-  created() {
-    const votoGiaInviato = sessionStorage.getItem('votoGiaInviato');
-    if (votoGiaInviato) {
-      this.votoGiaInviato = true;
-    }
+    console.log(this.utente, this.$route.params.id);
   },
   methods: {
     async fetchEventsDetailsFromApi(id) {
@@ -116,15 +109,10 @@ export default {
         const response = await apiService.addVoti(this.infoVoti);
         const data = response.data;
         this.votoStorage.push(data);
-        if (!this.votoGiaInviato) {
-          this.votoGiaInviato = true;
-          sessionStorage.setItem('votoGiaInviato', true);
-        }
-        this.$router.push("/eventi");
       } catch (error) {
         console.log(error);
       }
-    }
+    },
   },
 };
 </script>
