@@ -111,15 +111,13 @@ export default {
     },
 
     async addEventsFromApi() {
-
       try {
-
         const response = await apiService.addEvents(this.newEvent);
         conasole.log(response);
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
+        console.log("qui add events from api");
         window.location.reload();
-
       } catch (error) {
         console.log(error);
       }

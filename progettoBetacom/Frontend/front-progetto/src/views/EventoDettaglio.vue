@@ -83,13 +83,13 @@ export default {
   mounted() {
     const id = this.$route.params.id;
     this.fetchEventsDetailsFromApi(id);
-    console.log(this.utente, this.$route.params.id, this.votoStorage.id_Utente);
+    console.log(this.utente, this.$route.params.id, this.votoStorage);
   },
   created() {
-    const votoGiaInviato = sessionStorage.setItem('votoGiaInviato', this.votoGiaInviato);
+    /* const votoGiaInviato = sessionStorage.setItem('votoGiaInviato', this.votoGiaInviato);
     if (votoGiaInviato == false) {
       this.votoGiaInviato = true;
-    }
+    } */
   },
   methods: {
     async fetchEventsDetailsFromApi(id) {
@@ -112,15 +112,14 @@ export default {
       }
     },
     async addVotoFromApi() {
+      if (this.votoGiaInviato === false) {
+        this.votoGiaInviato = true;
+        sessionStorage.setItem('votoGiaInviato', true);
+      }
       try {
         const response = await apiService.addVoti(this.infoVoti);
         const data = response.data;
         this.votoStorage.push(data);
-        if (this.votoGiaInviato === false) {
-          this.votoGiaInviato = true;
-          sessionStorage.setItem('votoGiaInviato', true);
-        }
-        this.$router.push("/eventi");
       } catch (error) {
         console.log(error);
       }

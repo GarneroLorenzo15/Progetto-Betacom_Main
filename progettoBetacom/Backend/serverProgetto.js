@@ -862,7 +862,7 @@ app.get('/api/voti', async (req, res) => {
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
-app.post('/api/voti/add/', async (req, res) => {
+/* app.post('/api/voti/add/', async (req, res) => {
 
 
     const { id_Utente, id_Evento } = req.body;
@@ -891,7 +891,49 @@ app.post('/api/voti/add/', async (req, res) => {
             res.status(400).json({ error: 'Bad Request' });
         }
     }
+}); */
+app.post('/api/voti/add/', async (req, res) => {
+
+    const { id_Utente, id_Evento } = req.body;
+
+    try {
+        // Check if the id_Evento is already associated with id_Utente in the database
+        const existingVote = await new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM voti WHERE id_Evento = ? AND id_Utente = ?', [id_Evento, id_Utente], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+
+        if (existingVote.length > 0) {
+            res.status(400).json({ error: 'Vote already exists for this user and event' });
+            return; // Stop execution here if the vote already exists
+        }
+
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('INSERT INTO voti (id_Evento, id_Utente, voto) VALUES (?, ?, ?)', [id_Evento, id_Utente, true], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+
+        if (rows.affectedRows > 0) {
+            res.status(200).json({ message: 'Vote inserted successfully!' });
+        } else {
+            res.status(404).json({ error: 'Not Found' });
+        }
+    } catch (err) {
+        console.error('Error adding votes:', err);
+        res.status(500).json({ error: 'Server Error' });
+    }
 });
+
 
 
 
