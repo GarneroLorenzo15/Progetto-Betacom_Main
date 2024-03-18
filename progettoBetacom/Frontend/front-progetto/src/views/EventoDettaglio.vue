@@ -70,7 +70,6 @@ export default {
     return {
       eventDetails: [{}],
       eventDay: "",
-      votoStorage: [],
       admin: localStorage.getItem('admin'),
       utente: localStorage.getItem('utente'),
       infoVoti: {
@@ -83,13 +82,7 @@ export default {
   mounted() {
     const id = this.$route.params.id;
     this.fetchEventsDetailsFromApi(id);
-    console.log(this.utente, this.$route.params.id, this.votoStorage);
-  },
-  created() {
-    /* const votoGiaInviato = sessionStorage.setItem('votoGiaInviato', this.votoGiaInviato);
-    if (votoGiaInviato == false) {
-      this.votoGiaInviato = true;
-    } */
+    console.log(this.utente, this.$route.params.id);
   },
   methods: {
     async fetchEventsDetailsFromApi(id) {
@@ -112,10 +105,6 @@ export default {
       }
     },
     async addVotoFromApi() {
-      if (this.votoGiaInviato === false) {
-        this.votoGiaInviato = true;
-        sessionStorage.setItem('votoGiaInviato', true);
-      }
       try {
         const response = await apiService.addVoti(this.infoVoti);
         const data = response.data;
