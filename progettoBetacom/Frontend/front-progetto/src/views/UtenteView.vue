@@ -6,7 +6,7 @@
 
         </div>
         <div class="w-50 d-flex justify-content-end">
-          <i class="bi bi-box-arrow-right colorto" @click="logout()"></i>
+          <i class="bi bi-box-arrow-right colorto font-i" @click="logout()"></i>
         </div>
       </div>
       <div class="row">
@@ -208,6 +208,10 @@ export default {
 
 .color-red {
   color: red;
+}
+
+.font-i{
+  font-size: 3rem;
 }
 
 .color-green {

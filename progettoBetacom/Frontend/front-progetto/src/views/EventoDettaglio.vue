@@ -39,7 +39,7 @@
       </div>
       <div class="w-full d-flex justify-content-center align-items-center">
         <div>
-          <button @click="addVotoFromApi()" :disabled="this.votoGiaInviato === true">
+          <button @click="addVotoFromApi()" :disabled="this.votoGiaInviato == true">
             VOTA EVENTO
           </button>
         </div>
@@ -86,8 +86,8 @@ export default {
     console.log(this.utente, this.$route.params.id, this.votoStorage.id_Utente);
   },
   created() {
-    const votoGiaInviato = sessionStorage.getItem('votoGiaInviato');
-    if (votoGiaInviato) {
+    const votoGiaInviato = sessionStorage.setItem('votoGiaInviato', this.votoGiaInviato);
+    if (votoGiaInviato == false) {
       this.votoGiaInviato = true;
     }
   },
