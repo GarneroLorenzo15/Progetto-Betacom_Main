@@ -1044,10 +1044,15 @@ app.get('api/date', async (req, res) => {
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
-app.get('api/date/:id', (req, res) => {
+app.get('/api/date/:id', async (req, res) => {
     const userid= req.params.id;
+
+    response = []
+    Object.values(rows).forEach(row => {response.push(row.date)})
+
+    
     try{
-        const rows = new Promise((resolve, reject) => {
+        const rows = await new Promise((resolve, reject) => {
             connection.query('SELECT * FROM seleziona_date WHERE id_Utente =?', [userid], (err, rows) => {
                 if (err) {
                     reject(err);
@@ -1056,9 +1061,9 @@ app.get('api/date/:id', (req, res) => {
                 }
             });
         });
-
+        
         if(rows.length > 0) {
-            res.status(200).json({ message: 'voti del utente ' + userid + rows});
+            res.status(200).json({ message: 'voti del utente ' + userid, date : response });
         }else if (rows.length <= 0) {
             res.status(404).json({ error: 'Not Found' });
         }
