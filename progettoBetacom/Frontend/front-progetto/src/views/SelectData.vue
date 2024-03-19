@@ -23,7 +23,7 @@
                         <div class="w-7" v-for="n in month.blankDays" :key="`empty-${n}`"></div>
                         <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in  daysInMonth(key)"
                             :key="index" @click="toggleDate(day, key)">
-                            <div :class="{ 'selected': isSelected(day + 1, key) }">{{ day }}</div>
+                            <div :class="{ 'selected': isSelected(day, key) }">{{ day }}</div>
                         </div>
                     </div>
                 </div>
@@ -67,11 +67,14 @@ export default {
             }
         }
     },
+    created() {
+        this.fetchDateFromApi()
+    },
     methods: {
         calculateBlankDays(month) {
             const date = new Date(new Date().getFullYear(), month - 1, 1);
             const startDay = getDay(startOfMonth(date)); // Ottieni il giorno della settimana in cui inizia il mese
-            return startDay === 0 ? 6 : startDay - 1; // Se è Domenica (0), restituisci 6; altrimenti sottrai 1
+            return startDay === 0 ? 6 : startDay -1  ; // Se è Domenica (0), restituisci 6; altrimenti sottrai 1
         },
         daysInMonth(month) {
             let now = new Date()
@@ -79,7 +82,7 @@ export default {
             return new Date(now.getFullYear(), now.getMonth(), 0).getDate();
         },
         toggleDate(day, month) {
-            let selected = new Date(new Date().getFullYear(), month - 1, day + 1).toISOString().substring(0, 10);
+            let selected = new Date(new Date().getFullYear(), month - 1, day).toISOString().substring(0, 10);
             const index = this.nuovaDataInserita.date.indexOf(selected);
             if (index === -1) {
                 this.nuovaDataInserita.date.push(selected);
@@ -91,6 +94,14 @@ export default {
         isSelected(day, month) {
             let selected = new Date(new Date().getFullYear(), month - 1, day).toISOString().substring(0, 10);
             return this.nuovaDataInserita.date.includes(selected);
+        },
+        async fetchDateFromApi() {
+            try {
+                const response = await apiService.fetchDateId(this.nuovaDataInserita.id_Utente);
+                this.nuovaDataInserita.date = response.data.date.map(date => new Date(date).toISOString().substring(0, 10));
+            } catch (err) {
+                console.log(err)
+            }
         },
         async addDateFromApi() {
             console.log(this.nuovaDataInserita);
