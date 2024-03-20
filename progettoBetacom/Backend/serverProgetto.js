@@ -1046,9 +1046,6 @@ app.get('api/date', async (req, res) => {
  */
 app.get('/api/date/:id', async (req, res) => {
     const userid= req.params.id;
-
-    
-
     
     try{
         const rows = await new Promise((resolve, reject) => {
