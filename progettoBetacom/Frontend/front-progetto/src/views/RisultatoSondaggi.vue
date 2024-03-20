@@ -9,10 +9,8 @@
                 </router-link>
             </div>
             <div class="row">
-                <div class="d-flex justify-content-center">
-                    <div class="w-50">
-                        <h2>Risultato Sondaggio</h2>
-                    </div>
+                <div class="w-full d-flex justify-content-center">
+                    <h2>Risultato Sondaggio</h2>
                 </div>
                 <div class="my-5">
                     <div class="card">
@@ -136,5 +134,9 @@ export default {
 <style scoped>
 .sondaggi {
     height: 150vh;
+}
+
+.mr-5{
+    margin-right: 5rem;
 }
 </style>

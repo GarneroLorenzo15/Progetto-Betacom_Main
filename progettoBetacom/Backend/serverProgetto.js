@@ -1047,8 +1047,7 @@ app.get('api/date', async (req, res) => {
 app.get('/api/date/:id', async (req, res) => {
     const userid= req.params.id;
 
-    response = []
-    Object.values(rows).forEach(row => {response.push(row.date)})
+    
 
     
     try{
@@ -1062,6 +1061,9 @@ app.get('/api/date/:id', async (req, res) => {
             });
         });
         
+        let response = []
+        Object.values(rows).forEach(row => {response.push(row.date)})
+
         if(rows.length > 0) {
             res.status(200).json({ message: 'voti del utente ' + userid, date : response });
         }else if (rows.length <= 0) {

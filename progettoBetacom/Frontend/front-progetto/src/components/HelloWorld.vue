@@ -3,7 +3,7 @@
   <div class="hello">
     <div class="container margin-top h-auto">
       <div class="row" style="height: 200px">
-        <figure class="w-full d-flex justify-content-center mx-3">
+        <figure class="w-full d-flex justify-content-center">
           <i class="bi bi-person"></i>
         </figure>
       </div>
