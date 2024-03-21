@@ -22,7 +22,8 @@
                         <div class="w-7 spaces" v-for="days in month.daysign" :key="days">{{ days }}</div>
                         <div class="w-7" v-for="n in month.blankDays" :key="`empty-${n}`"></div>
                         <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in  daysInMonth(key)"
-                            :key="index" @click="toggleDate(day, key)" :class="{ 'selected': isSelected(day, key) }">
+                            :key="index" @click="toggleDate(day, key)"
+                            :class="{ 'selected': isSelected(day, key) }">
                             <div>{{ day }}</div>
                         </div>
                     </div>
@@ -86,6 +87,7 @@ export default {
             const index = this.nuovaDataInserita.date.indexOf(selected);
             if (index === -1) {
                 this.nuovaDataInserita.date.push(selected);
+                console.log(this.nuovaDataInserita.date, "toggle date");
             } else {
                 this.nuovaDataInserita.date.splice(index, 1);
             }
@@ -99,16 +101,17 @@ export default {
             try {
                 const response = await apiService.fetchDateId(this.nuovaDataInserita.id_Utente);
                 this.nuovaDataInserita.date = response.data.date.map(date => new Date(date).toISOString().substring(0, 10));
+                console.log(this.nuovaDataInserita.date, "fetch date");
             } catch (err) {
                 console.log(err)
             }
         },
         async addDateFromApi() {
-            console.log(this.nuovaDataInserita);
             try {
                 const response = await apiService.addDate(this.nuovaDataInserita);
+                console.log(response);
                 const nuovaData = response.data;
-                console.log(response.data);
+                console.log(response.data, "add date");
                 this.nuovaDataInserita.data.push(nuovaData);
                 this.$router.push("/eventi");
             } catch (err) {

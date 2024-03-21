@@ -1037,56 +1037,13 @@ app.get('api/date', async (req, res) => {
 
 });
 
-
-
-/**
- * Returns a list of all dates for a specific user in the database
- * @param {Object} req - The request object
- * @param {Object} res - The response object
- */
-app.get('/api/date/:id', async (req, res) => {
-    const userid= req.params.id;
-    
-    try{
-        const rows = await new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM seleziona_date WHERE id_Utente =?', [userid], (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(rows);
-                }
-            });
-        });
-        
-        let response = []
-        Object.values(rows).forEach(row => {response.push(row.date)})
-
-        if(rows.length > 0) {
-            res.status(200).json({ message: 'voti del utente ' + userid, date : response });
-        }else if (rows.length <= 0) {
-            res.status(404).json({ error: 'Not Found' });
-        }
-
-    }catch(err){
-        console.error(err);
-        if (res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' });
-        } else if (res.statusCode === 400) {
-            res.status(400).json({ error: 'Bad Request' });
-        }
-    }
-})
-
-
-
 /**
  * Adds a new vote to the database
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
 app.post('/api/date/add', async (req, res) => {
-    const { id_Utente, id_Evento } = req.body;
-    const date = req.body.date; 
+    const { id_Utente, id_Evento, date } = req.body;
     console.log(req.body.date);
     try {
         await new Promise((resolve, reject) => {
@@ -1130,7 +1087,49 @@ app.post('/api/date/add', async (req, res) => {
 });
 
 
+/**
+ * Returns a list of all dates for a specific user in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.get('/api/date/:id', async (req, res) => {
+    const userid= req.params.id;
+    
+    try{
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM seleziona_date WHERE id_Utente =?', [userid], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+        
+        let response = []
+        Object.values(rows).forEach(row => {response.push(row.date)})
 
+        if(rows.length > 0) {
+            res.status(200).json({ message: 'voti del utente ' + userid, date : response });
+        }else if (rows.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
+        }
+
+    }catch(err){
+        console.error(err);
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
+        }
+    }
+})
+
+
+
+
+
+  
 /**
  * Starts the server and listens for incoming requests
  */

@@ -64,7 +64,6 @@
 /* eslint-disable */
 import NavBar from '@/components/NavBar.vue';
 import apiService from '@/services/apiService';
-/* import moment from 'moment'; */
 
 export default {
   name: "UtenteDettaglio",
