@@ -66,7 +66,7 @@
                   <label for="immagine">Immagine Evento:</label>
                   <input id="immagine" class="mb-2" type="text" v-model="newEvent.immagine_evento"
                     placeholder="URL dell'immagine dell'evento">
-                  <button class="my-2"ype="submit" @click="closeModal(), fetchEventsFromApi()">Aggiungi evento</button>
+                  <button class="my-2" type="submit" @click="closeModal()">Aggiungi evento</button>
                 </div>
               </div>
             </form>
@@ -107,9 +107,9 @@ export default {
   },
   created(){
   },
-  updated(){
+  /* updated(){
     this.fetchEventsFromApi();
-  },
+  }, */
   mounted() {
     this.fetchEventsFromApi();
   },
@@ -126,10 +126,7 @@ export default {
     async addEventsFromApi() {
       try {
         const response = await apiService.addEvents(this.newEvent);
-        console.log(response);
-        const nuovoEvento = response.data;
-        this.items.push(nuovoEvento);
-
+        this.closeModal();
         this.fetchEventsFromApi();
         
       } catch (error) {

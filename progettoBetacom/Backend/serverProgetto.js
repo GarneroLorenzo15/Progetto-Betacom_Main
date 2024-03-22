@@ -862,6 +862,8 @@ app.get('/api/voti', async (req, res) => {
 
 
 
+
+
 /**
  * Adds a new vote to the database
  * @param {Object} req - The request object
@@ -1041,6 +1043,50 @@ app.get('api/date', async (req, res) => {
     }
 
 });
+
+
+/* SELECT d.date, COUNT(*) AS voti
+FROM seleziona_date d
+GROUP BY d.date
+HAVING COUNT(*) = (
+    SELECT MAX(cnt)
+    FROM (
+        SELECT COUNT(*) AS cnt
+        FROM seleziona_date
+        GROUP BY date
+    ) AS counts
+) */
+
+
+app.get('/api/date/deciding', async (req, res) => {
+
+    try{
+
+        const rows = await new Promise ((resolve, reject) => {
+            connection.query('SELECT d.date, COUNT(*) AS voti FROM seleziona_date d GROUP BY d.date HAVING COUNT(*) = (SELECT MAX(cnt) FROM ( SELECT COUNT(*) AS cnt FROM seleziona_date GROUP BY date) AS counts)', (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            })
+        });
+
+        if(rows.length > 0) {
+            res.status(200).json({ message: 'voti eliminati correttamente!', rows });
+        } else if (res.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
+        }
+
+    }catch (err) {
+        console.error(err);
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
+        }
+    }
+})
 
 /**
  * Adds a new vote to the database

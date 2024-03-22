@@ -32,6 +32,19 @@
             <div class="d-flex justify-content-center my-3">
                 <button @click="addDateFromApi()">CONFERMA SELEZIONE</button>
             </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-center">
+                        <h3>Giornata con più voti</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row d-flex justify-content-between flex-nowrap">
+                        <div class="w-50">{{  }}</div>
+                        <div class="w-50">{{ }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
         <NavBar></NavBar>
     </div>
@@ -71,7 +84,7 @@ export default {
         }
     },
     created() {
-        this.fetchDateFromApi()
+        this.fetchDateFromApi();
     },
     methods: {
         calculateBlankDays(month) {
@@ -104,6 +117,7 @@ export default {
                 const response = await apiService.fetchDateId(this.nuovaDataInserita.id_Utente);
                 this.nuovaDataInserita.date = response.data.date.map(date => new Date(date).toISOString().substring(0, 10));
                 console.log(this.nuovaDataInserita.date, "fetch date");
+                this.dateDeciding();
             } catch (err) {
                 console.log(err);
             }
@@ -116,6 +130,19 @@ export default {
                 this.nuovaDataInserita.date.push(nuovaData);
                 this.$router.push("/eventi");
             } catch (err) {
+                console.log(err);
+            }
+        },
+        async dateDeciding(){
+            try{
+                const response = await apiService.fetchMaxVotedDate();
+                console.log(response.data);
+                const maxCount = response.data.rows[0].voti;
+                console.log(maxCount);
+                const maxDate = response.data.rows[0].date.substring(0, 10);
+                console.log(maxDate);
+                return maxCount, maxDate;
+            }catch (err) {
                 console.log(err);
             }
         },

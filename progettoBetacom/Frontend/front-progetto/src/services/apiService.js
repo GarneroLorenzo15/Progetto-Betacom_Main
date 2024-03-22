@@ -50,6 +50,9 @@ export default {
   addDate(nuovaDataInserita) {
     return axios.post(`${API_URL}/api/date/add`, nuovaDataInserita);
   },
+  fetchMaxVotedDate(){
+    return axios.get(`${API_URL}/api/date/deciding`);
+  },
   addVoti(infoVoti){
     return axios.post(`${API_URL}/api/voti/add`, infoVoti);
   },
