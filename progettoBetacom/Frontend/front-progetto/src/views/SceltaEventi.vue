@@ -107,6 +107,9 @@ export default {
   },
   created(){
   },
+  updated(){
+    this.fetchEventsFromApi();
+  },
   mounted() {
     this.fetchEventsFromApi();
   },
@@ -123,9 +126,10 @@ export default {
     async addEventsFromApi() {
       try {
         const response = await apiService.addEvents(this.newEvent);
-        conasole.log(response);
+        console.log(response);
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
+
         this.fetchEventsFromApi();
         
       } catch (error) {
@@ -155,6 +159,16 @@ export default {
         modal.style.display = 'none';
       }
     },
+    eventAddConfirm(){
+      Swal.fire({
+        icon:'success',
+        title: 'Evento aggiunto con successo',
+        showConfirmButton: false,
+        confirmButtonColor: '#034ea1',
+        timer: 1500
+      })
+    },
+    
   },
 
 };

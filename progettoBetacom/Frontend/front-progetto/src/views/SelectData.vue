@@ -105,21 +105,27 @@ export default {
                 this.nuovaDataInserita.date = response.data.date.map(date => new Date(date).toISOString().substring(0, 10));
                 console.log(this.nuovaDataInserita.date, "fetch date");
             } catch (err) {
-                console.log(err)
+                console.log(err);
             }
         },
         async addDateFromApi() {
             try {
+                this.addDateDone();
                 const response = await apiService.addDate(this.nuovaDataInserita);
-
-                console.log(response);
                 const nuovaData = response.data;
-                console.log(response.data, "add date");
-                this.nuovaDataInserita.data.push(nuovaData);
+                this.nuovaDataInserita.date.push(nuovaData);
                 this.$router.push("/eventi");
             } catch (err) {
-                console.log(err)
+                console.log(err);
             }
+        },
+        addDateDone(){
+            Swal.fire({
+                icon:'success',
+                title: 'Data aggiunta con successo',
+                showConfirmButton: false,
+                timer: 1500
+            })
         }
     }
 };

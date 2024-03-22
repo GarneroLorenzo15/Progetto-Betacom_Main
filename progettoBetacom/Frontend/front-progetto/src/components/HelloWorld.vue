@@ -108,12 +108,14 @@ export default {
       Swal.fire({
         icon: "success",
         title: "Accesso effettuato con successo!",
+        confirmButtonColor: '#034ea1',
       });
     },
     accessDenied() {
       Swal.fire({
         icon: "error",
         title: "Accesso negato!",
+        confirmButtonColor: '#034ea1',
       });
     }
 
