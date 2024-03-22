@@ -64,7 +64,8 @@
 /* eslint-disable */
 import NavBar from '@/components/NavBar.vue';
 import apiService from '@/services/apiService';
-/* import moment from 'moment'; */
+import Swal from 'sweetalert2';
+
 
 export default {
   name: "UtenteDettaglio",
@@ -83,10 +84,12 @@ export default {
       }
     };
   },
+  created(){
+    this.scrollToTop();
+  },
   mounted() {
     const id = this.$route.params.id;
     this.fetchUsersDetailsFromApi(id);
-
   },
   methods: {
     async fetchUsersDetailsFromApi(id) {
@@ -141,6 +144,9 @@ export default {
         this.userData.disponibile = 0;
       }
       console.log(this.userData.disponibile);
+    }, 
+    scrollToTop() {
+      window.scrollTo(0, 0);
     }
   },
 }

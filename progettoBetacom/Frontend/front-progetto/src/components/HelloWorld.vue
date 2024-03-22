@@ -3,7 +3,7 @@
   <div class="hello">
     <div class="container margin-top h-auto">
       <div class="row" style="height: 200px">
-        <figure class="w-full d-flex justify-content-center mx-3">
+        <figure class="w-full d-flex justify-content-center">
           <i class="bi bi-person"></i>
         </figure>
       </div>
@@ -13,9 +13,9 @@
         <div class="w-full d-flex justify-content-end">
           <div class="hover-info" @click="toggleInfoMessage()"><i class="bi bi-info-circle-fill font-i"></i>
             <div width="50px" heigth="50px" class="hover-content" v-if="showInfoMessage">
-              <div class="text-justify">La password di default è impostata sul nome del titolare dell'account tutto in
-                minuscolo, si ricorda che
-                per aumentare la sicurezza è consigliato modificare la password nella pripria area personale</div>
+              <div class="text-justify">La password di default è impostata sul nome del titolare dell'account con la prima lettera
+                maiscola, si ricorda che
+                per aumentare la sicurezza è consigliato modificare la password nella propria area personale</div>
             </div>
           </div>
         </div>
@@ -76,8 +76,8 @@ export default {
         localStorage.setItem('token', token);
         localStorage.setItem('utente', utente);
         localStorage.setItem('admin', admin);
-        console.log(utente, admin);
         this.$router.push('/eventi');
+        this.accessCorrect();
       } catch (error) {
         console.log(error);
       }
@@ -103,6 +103,20 @@ export default {
           footer: '<a href="#">Why do I have this issue?</a>'
         });
       }
+    },
+    accessCorrect() {
+      Swal.fire({
+        icon: "success",
+        title: "Accesso effettuato con successo!",
+        confirmButtonColor: '#034ea1',
+      });
+    },
+    accessDenied() {
+      Swal.fire({
+        icon: "error",
+        title: "Accesso negato!",
+        confirmButtonColor: '#034ea1',
+      });
     }
 
   }

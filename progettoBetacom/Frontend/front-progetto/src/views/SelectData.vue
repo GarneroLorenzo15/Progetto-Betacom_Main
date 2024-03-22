@@ -22,8 +22,9 @@
                         <div class="w-7 spaces" v-for="days in month.daysign" :key="days">{{ days }}</div>
                         <div class="w-7" v-for="n in month.blankDays" :key="`empty-${n}`"></div>
                         <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in  daysInMonth(key)"
-                            :key="index" @click="toggleDate(day, key)">
-                            <div :class="{ 'selected': isSelected(day, key) }">{{ day }}</div>
+                            :key="index" @click="toggleDate(day, key)"
+                            :class="{ 'selected': isSelected(day, key) }">
+                            <div>{{ day }}</div>
                         </div>
                     </div>
                 </div>
@@ -41,6 +42,8 @@
 import NavBar from '@/components/NavBar.vue';
 import { getDaysInMonth, startOfMonth, getDay } from 'date-fns';
 import apiService from '@/services/apiService';
+import Swal from 'sweetalert2';
+
 
 export default {
     components: {
@@ -74,11 +77,11 @@ export default {
         calculateBlankDays(month) {
             const date = new Date(new Date().getFullYear(), month - 1, 1);
             const startDay = getDay(startOfMonth(date)); // Ottieni il giorno della settimana in cui inizia il mese
-            return startDay === 0 ? 6 : startDay -1  ; // Se è Domenica (0), restituisci 6; altrimenti sottrai 1
+            return startDay === 0 ? 6 : startDay - 1; // Se è Domenica (0), restituisci 6; altrimenti sottrai 1
         },
         daysInMonth(month) {
             let now = new Date()
-            now.setMonth(month)
+            now.setMonth(+month)
             return new Date(now.getFullYear(), now.getMonth(), 0).getDate();
         },
         toggleDate(day, month) {
@@ -86,6 +89,7 @@ export default {
             const index = this.nuovaDataInserita.date.indexOf(selected);
             if (index === -1) {
                 this.nuovaDataInserita.date.push(selected);
+                console.log(this.nuovaDataInserita.date, "toggle date");
             } else {
                 this.nuovaDataInserita.date.splice(index, 1);
             }
@@ -99,21 +103,29 @@ export default {
             try {
                 const response = await apiService.fetchDateId(this.nuovaDataInserita.id_Utente);
                 this.nuovaDataInserita.date = response.data.date.map(date => new Date(date).toISOString().substring(0, 10));
+                console.log(this.nuovaDataInserita.date, "fetch date");
             } catch (err) {
-                console.log(err)
+                console.log(err);
             }
         },
         async addDateFromApi() {
-            console.log(this.nuovaDataInserita);
             try {
+                this.addDateDone();
                 const response = await apiService.addDate(this.nuovaDataInserita);
                 const nuovaData = response.data;
-                console.log(response.data);
-                this.nuovaDataInserita.data.push(nuovaData);
+                this.nuovaDataInserita.date.push(nuovaData);
                 this.$router.push("/eventi");
             } catch (err) {
-                console.log(err)
+                console.log(err);
             }
+        },
+        addDateDone(){
+            Swal.fire({
+                icon:'success',
+                title: 'Data aggiunta con successo',
+                showConfirmButton: false,
+                timer: 1500
+            })
         }
     }
 };
@@ -140,6 +152,6 @@ export default {
     background-color: #034ea1;
     border-radius: 100%;
     color: white;
-    padding: 6px;
+    padding: 8px;
 }
 </style>

@@ -57,12 +57,16 @@
             <form @submit.prevent="addEventsFromApi()">
               <div class="container">
                 <div class="row d-flex justify-content-around flex-wrap m-1">
-                  <input class="mb-2" type="text" v-model="newEvent.titolo" placeholder="Titolo dell'evento" required>
-                  <textarea class="mb-2" v-model="newEvent.descrizione" placeholder="Descrizione dell'evento"></textarea>
-                  <input class="mb-2" type="text" v-model="newEvent.luogo" placeholder="URL Luogo dell'evento">
-                  <input class="mb-2" type="text" v-model="newEvent.immagine_evento"
+                  <label for="titolo">Titolo:</label>
+                  <input id="titolo" class="mb-2" type="text" v-model="newEvent.titolo" placeholder="Titolo dell'evento" required>
+                  <label for="descrizione">Descrizione:</label>
+                  <textarea id="descrizione" class="mb-2" v-model="newEvent.descrizione" placeholder="Descrizione dell'evento"></textarea>
+                  <label for="luogo">Luogo Evento:</label>
+                  <input id="luogo" class="mb-2" type="text" v-model="newEvent.luogo" placeholder="URL Luogo dell'evento">
+                  <label for="immagine">Immagine Evento:</label>
+                  <input id="immagine" class="mb-2" type="text" v-model="newEvent.immagine_evento"
                     placeholder="URL dell'immagine dell'evento">
-                  <button type="submit" @click="closeModal(), fetchEventsFromApi()">Aggiungi evento</button>
+                  <button class="my-2"ype="submit" @click="closeModal(), fetchEventsFromApi()">Aggiungi evento</button>
                 </div>
               </div>
             </form>
@@ -77,7 +81,11 @@
 <script>
 /*eslint-disable*/
 import NavBar from "@/components/NavBar.vue";
+import Swal from 'sweetalert2';
 import apiService from "../services/apiService.js";
+
+
+
 
 export default {
   name: "SceltaEventi",
@@ -97,6 +105,11 @@ export default {
       }
     };
   },
+  created(){
+  },
+  updated(){
+    this.fetchEventsFromApi();
+  },
   mounted() {
     this.fetchEventsFromApi();
   },
@@ -113,10 +126,11 @@ export default {
     async addEventsFromApi() {
       try {
         const response = await apiService.addEvents(this.newEvent);
-        conasole.log(response);
+        console.log(response);
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
-        await this.fetchEventsFromApi();
+
+        this.fetchEventsFromApi();
         
       } catch (error) {
         console.log(error);
@@ -145,6 +159,16 @@ export default {
         modal.style.display = 'none';
       }
     },
+    eventAddConfirm(){
+      Swal.fire({
+        icon:'success',
+        title: 'Evento aggiunto con successo',
+        showConfirmButton: false,
+        confirmButtonColor: '#034ea1',
+        timer: 1500
+      })
+    },
+    
   },
 
 };

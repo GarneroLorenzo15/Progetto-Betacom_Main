@@ -59,6 +59,7 @@
 /*eslint-disable*/
 import NavBarBlue from "@/components/NavBarBlue.vue";
 import apiService from "@/services/apiService";
+import Swal from 'sweetalert2';
 import moment from "moment";
 
 export default {
@@ -76,7 +77,6 @@ export default {
         id_Utente: localStorage.getItem('utente'),
         id_Evento: this.$route.params.id,
       },
-      votoGiaInviato: false,
     };
   },
   mounted() {
@@ -100,6 +100,7 @@ export default {
         const response = await apiService.deleteEvent(this.eventDetails[0].id_Evento);
         this.items = response.data;
         this.$router.push("/eventi");
+        this.eventDeleteConfirm();
       } catch (error) {
         console.log(error);
       }
@@ -108,11 +109,29 @@ export default {
       try {
         const response = await apiService.addVoti(this.infoVoti);
         const data = response.data;
-        this.votoStorage.push(data);
+        this.confirmVoto()
       } catch (error) {
         console.log(error);
       }
     },
+    confirmVoto(){
+      Swal.fire({
+        title: 'Hai votato!',
+        text: 'Il voto è stato registrato con successo',
+        icon:'success',
+        confirmButtonText: 'Chiudi',
+        confirmButtonColor: '#034ea1',
+      })
+    },
+    eventDeleteConfirm() {
+      Swal.fire({
+        icon: 'error',
+        title: 'Evento eliminato con successo',
+        showConfirmButton: false,
+        confirmButtonColor: '#034ea1',
+        timer: 1500
+      })
+    }
   },
 };
 </script>
@@ -135,8 +154,7 @@ export default {
   margin-bottom: 20rem;
 }
 
-.mb-30 {
-  margin-bottom: 30rem;
+.mb-30 { margin-bottom: 30rem;
 }
 
 .mb-2 {

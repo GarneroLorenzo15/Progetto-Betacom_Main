@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const { addDays } = require('date-fns');
 const port = 3000;
 
 const app = express();
@@ -53,7 +54,7 @@ app.post('/api/login', async (req, res) => {
 
     try {
         const rows = await new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, rows) => {
+            connection.query('SELECT * FROM utente WHERE email = ? AND password = SHA2( ?, 512)', [email, password], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else if (rows) {
@@ -70,7 +71,7 @@ app.post('/api/login', async (req, res) => {
             const token = jwt.sign({ ...user }, secretKey, { expiresIn: '10h' });
             return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
         } else if (rows.length <= 0) {
-            res.status(401).json({ error: 'Credenziali errate' });
+            res.status(401).json({ error: 'Non autorizzato' });
         }
 
 
@@ -358,6 +359,8 @@ app.delete('/api/utenti/delete/:id', async (req, res) => {
 });
 
 
+
+
 /**
  * Adds a new user to the database
  * @param {Object} req - The request object
@@ -379,9 +382,11 @@ app.post('/api/utenti/add', async (req, res) => {
     const { id_Utente, nome, cognome, email, password } = req.body;
     console.log(req.body);
 
+
+
     try {
         const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password) VALUES (?,?,?,?,?)', [id_Utente, nome, cognome, email, password], (err, rows) => {
+            connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password, admin) VALUES (?,?,?,?,SHA2( ?, 512), 0)', [id_Utente, nome, cognome, email, password], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -1037,57 +1042,13 @@ app.get('api/date', async (req, res) => {
 
 });
 
-
-
-/**
- * Returns a list of all dates for a specific user in the database
- * @param {Object} req - The request object
- * @param {Object} res - The response object
- */
-app.get('/api/date/:id', async (req, res) => {
-    const userid= req.params.id;
-
-    response = []
-    Object.values(rows).forEach(row => {response.push(row.date)})
-
-    
-    try{
-        const rows = await new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM seleziona_date WHERE id_Utente =?', [userid], (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(rows);
-                }
-            });
-        });
-        
-        if(rows.length > 0) {
-            res.status(200).json({ message: 'voti del utente ' + userid, date : response });
-        }else if (rows.length <= 0) {
-            res.status(404).json({ error: 'Not Found' });
-        }
-
-    }catch(err){
-        console.error(err);
-        if (res.statusCode === 500) {
-            res.status(500).json({ error: 'Server Error' });
-        } else if (res.statusCode === 400) {
-            res.status(400).json({ error: 'Bad Request' });
-        }
-    }
-})
-
-
-
 /**
  * Adds a new vote to the database
  * @param {Object} req - The request object
  * @param {Object} res - The response object
  */
 app.post('/api/date/add', async (req, res) => {
-    const { id_Utente, id_Evento } = req.body;
-    const date = req.body.date; 
+    const { id_Utente, id_Evento, date } = req.body;
     console.log(req.body.date);
     try {
         await new Promise((resolve, reject) => {
@@ -1100,7 +1061,15 @@ app.post('/api/date/add', async (req, res) => {
             });
         });
 
-        const insertValues = date.map(date => [id_Utente, id_Evento, date]);
+/*         const insertValues = date.map(date => [id_Utente, id_Evento, date]);
+ */
+
+
+        const insertValues = date.map(date => {
+            const nextDay = addDays(new Date(date), 1); // Aggiungi un giorno a ciascuna data
+            return [id_Utente, id_Evento, nextDay];
+        });
+
 
         const result = await new Promise((resolve, reject) => {
             connection.query('INSERT INTO seleziona_date (id_Utente, id_Evento, date) VALUES ?', [insertValues], (err, resp) => {
@@ -1131,7 +1100,49 @@ app.post('/api/date/add', async (req, res) => {
 });
 
 
+/**
+ * Returns a list of all dates for a specific user in the database
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
+app.get('/api/date/:id', async (req, res) => {
+    const userid= req.params.id;
+    
+    try{
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM seleziona_date WHERE id_Utente =?', [userid], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
+        
+        let response = []
+        Object.values(rows).forEach(row => {response.push(row.date)})
 
+        if(rows.length > 0) {
+            res.status(200).json({ message: 'voti del utente ' + userid, date : response });
+        }else if (rows.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
+        }
+
+    }catch(err){
+        console.error(err);
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
+        }
+    }
+})
+
+
+
+
+
+  
 /**
  * Starts the server and listens for incoming requests
  */
