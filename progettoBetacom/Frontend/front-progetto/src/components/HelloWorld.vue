@@ -13,8 +13,8 @@
         <div class="w-full d-flex justify-content-end">
           <div class="hover-info" @click="toggleInfoMessage()"><i class="bi bi-info-circle-fill font-i"></i>
             <div width="50px" heigth="50px" class="hover-content" v-if="showInfoMessage">
-              <div class="text-justify">La password di default è impostata sul nome del titolare dell'account tutto in
-                minuscolo, si ricorda che
+              <div class="text-justify">La password di default è impostata sul nome del titolare dell'account con la prima lettera
+                maiscola, si ricorda che
                 per aumentare la sicurezza è consigliato modificare la password nella propria area personale</div>
             </div>
           </div>

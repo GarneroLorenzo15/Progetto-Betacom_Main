@@ -46,6 +46,8 @@
 import NavBar from '@/components/NavBar.vue';
 import apiService from '@/services/apiService';
 import Chart from 'chart.js/auto';
+import Swal from 'sweetalert2';
+
 
 
 export default {

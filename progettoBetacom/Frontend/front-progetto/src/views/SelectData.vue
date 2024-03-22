@@ -42,6 +42,8 @@
 import NavBar from '@/components/NavBar.vue';
 import { getDaysInMonth, startOfMonth, getDay } from 'date-fns';
 import apiService from '@/services/apiService';
+import Swal from 'sweetalert2';
+
 
 export default {
     components: {
@@ -109,7 +111,7 @@ export default {
         async addDateFromApi() {
             try {
                 const response = await apiService.addDate(this.nuovaDataInserita);
-                
+
                 console.log(response);
                 const nuovaData = response.data;
                 console.log(response.data, "add date");

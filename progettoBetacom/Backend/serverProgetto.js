@@ -54,7 +54,7 @@ app.post('/api/login', async (req, res) => {
 
     try {
         const rows = await new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM utente WHERE email = ? AND password = ?', [email, password], (err, rows) => {
+            connection.query('SELECT * FROM utente WHERE email = ? AND password = SHA2( ?, 512)', [email, password], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else if (rows) {
@@ -359,6 +359,8 @@ app.delete('/api/utenti/delete/:id', async (req, res) => {
 });
 
 
+
+
 /**
  * Adds a new user to the database
  * @param {Object} req - The request object
@@ -380,9 +382,11 @@ app.post('/api/utenti/add', async (req, res) => {
     const { id_Utente, nome, cognome, email, password } = req.body;
     console.log(req.body);
 
+
+
     try {
         const rows = await new Promise((resolve, reject) => {
-            connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password) VALUES (?,?,?,?,?)', [id_Utente, nome, cognome, email, password], (err, rows) => {
+            connection.query('INSERT INTO utente (id_Utente, nome, cognome, email, password, admin) VALUES (?,?,?,?,SHA2( ?, 512), 0)', [id_Utente, nome, cognome, email, password], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {

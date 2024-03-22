@@ -64,6 +64,8 @@
 /* eslint-disable */
 import NavBar from '@/components/NavBar.vue';
 import apiService from '@/services/apiService';
+import Swal from 'sweetalert2';
+
 
 export default {
   name: "UtenteDettaglio",

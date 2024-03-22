@@ -59,6 +59,7 @@
 /*eslint-disable*/
 import NavBarBlue from "@/components/NavBarBlue.vue";
 import apiService from "@/services/apiService";
+import Swal from 'sweetalert2';
 import moment from "moment";
 
 export default {

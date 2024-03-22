@@ -81,8 +81,10 @@
 <script>
 /*eslint-disable*/
 import NavBar from "@/components/NavBar.vue";
+import Swal from 'sweetalert2';
 import apiService from "../services/apiService.js";
-import Swal from 'sweetalert2'
+
+
 
 
 export default {
@@ -124,7 +126,7 @@ export default {
         conasole.log(response);
         const nuovoEvento = response.data;
         this.items.push(nuovoEvento);
-        await this.fetchEventsFromApi();
+        this.fetchEventsFromApi();
         
       } catch (error) {
         console.log(error);
