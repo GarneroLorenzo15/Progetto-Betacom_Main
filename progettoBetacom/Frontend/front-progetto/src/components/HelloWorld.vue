@@ -15,7 +15,7 @@
             <div width="50px" heigth="50px" class="hover-content" v-if="showInfoMessage">
               <div class="text-justify">La password di default è impostata sul nome del titolare dell'account tutto in
                 minuscolo, si ricorda che
-                per aumentare la sicurezza è consigliato modificare la password nella pripria area personale</div>
+                per aumentare la sicurezza è consigliato modificare la password nella propria area personale</div>
             </div>
           </div>
         </div>
@@ -76,8 +76,8 @@ export default {
         localStorage.setItem('token', token);
         localStorage.setItem('utente', utente);
         localStorage.setItem('admin', admin);
-        console.log(utente, admin);
         this.$router.push('/eventi');
+        this.accessCorrect();
       } catch (error) {
         console.log(error);
       }
@@ -103,6 +103,18 @@ export default {
           footer: '<a href="#">Why do I have this issue?</a>'
         });
       }
+    },
+    accessCorrect() {
+      Swal.fire({
+        icon: "success",
+        title: "Accesso effettuato con successo!",
+      });
+    },
+    accessDenied() {
+      Swal.fire({
+        icon: "error",
+        title: "Accesso negato!",
+      });
     }
 
   }

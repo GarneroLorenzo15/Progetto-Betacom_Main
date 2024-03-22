@@ -82,10 +82,12 @@ export default {
       }
     };
   },
+  created(){
+    this.scrollToTop();
+  },
   mounted() {
     const id = this.$route.params.id;
     this.fetchUsersDetailsFromApi(id);
-
   },
   methods: {
     async fetchUsersDetailsFromApi(id) {
@@ -140,6 +142,9 @@ export default {
         this.userData.disponibile = 0;
       }
       console.log(this.userData.disponibile);
+    }, 
+    scrollToTop() {
+      window.scrollTo(0, 0);
     }
   },
 }

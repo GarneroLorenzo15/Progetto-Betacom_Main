@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
+const { addDays } = require('date-fns');
 const port = 3000;
 
 const app = express();
@@ -70,7 +71,7 @@ app.post('/api/login', async (req, res) => {
             const token = jwt.sign({ ...user }, secretKey, { expiresIn: '10h' });
             return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
         } else if (rows.length <= 0) {
-            res.status(401).json({ error: 'Credenziali errate' });
+            res.status(401).json({ error: 'Non autorizzato' });
         }
 
 
@@ -1056,7 +1057,15 @@ app.post('/api/date/add', async (req, res) => {
             });
         });
 
-        const insertValues = date.map(date => [id_Utente, id_Evento, date]);
+/*         const insertValues = date.map(date => [id_Utente, id_Evento, date]);
+ */
+
+
+        const insertValues = date.map(date => {
+            const nextDay = addDays(new Date(date), 1); // Aggiungi un giorno a ciascuna data
+            return [id_Utente, id_Evento, nextDay];
+        });
+
 
         const result = await new Promise((resolve, reject) => {
             connection.query('INSERT INTO seleziona_date (id_Utente, id_Evento, date) VALUES ?', [insertValues], (err, resp) => {

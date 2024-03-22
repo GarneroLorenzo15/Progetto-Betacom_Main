@@ -108,7 +108,6 @@ export default {
       try {
         const response = await apiService.addVoti(this.infoVoti);
         const data = response.data;
-        this.votoStorage.push(data);
       } catch (error) {
         console.log(error);
       }
