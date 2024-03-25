@@ -10,7 +10,7 @@
               <i class="bi bi-plus-circle-fill"></i>
             </div>
             <div class="w-50 d-flex justify-content-end mr-5">
-                <i class="bi bi-box-arrow-right colorto" @click="logout()"></i>
+                <i class="bi bi-box-arrow-right colorto" @click="logoutConfirm()"></i>
             </div>
           </div>
         </div>
@@ -127,7 +127,8 @@ export default {
       try {
         const response = await apiService.addEvents(this.newEvent);
         this.closeModal();
-        this.fetchEventsFromApi();
+        this.eventAddConfirm();
+        window.location.reload();
         
       } catch (error) {
         console.log(error);
@@ -137,6 +138,21 @@ export default {
     logout(){
       localStorage.removeItem('token');
       this.$router.push('/login');
+    },
+
+    logoutConfirm(){
+      Swal.fire({
+        title: 'Sei sicuro di voler uscire?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, uscire!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.logout();
+        }
+      })
     },
 
     openModal() {
@@ -165,6 +181,8 @@ export default {
         timer: 1500
       })
     },
+
+    
     
   },
 

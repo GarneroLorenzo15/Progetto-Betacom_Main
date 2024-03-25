@@ -12,7 +12,7 @@
               </h5>
             </div>
             <div class="d-flex justify-content-end w-50" v-if="this.admin == 1">
-              <p @click="deleteEventFromApi()">❌</p>
+              <p @click="eventDeleteConfirm()">❌</p>
             </div>
           </div>
           <div class="row mb-2">
@@ -100,7 +100,6 @@ export default {
         const response = await apiService.deleteEvent(this.eventDetails[0].id_Evento);
         this.items = response.data;
         this.$router.push("/eventi");
-        this.eventDeleteConfirm();
       } catch (error) {
         console.log(error);
       }
@@ -125,13 +124,27 @@ export default {
     },
     eventDeleteConfirm() {
       Swal.fire({
-        icon: 'error',
-        title: 'Evento eliminato con successo',
-        showConfirmButton: false,
+        title: 'Sei sicuro di voler eliminare questo evento?',
+        text: "Questa azione non può essere annullata!",
+        icon: 'warning',
+        showCancelButton: true,
         confirmButtonColor: '#034ea1',
-        timer: 1500
-      })
-    }
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sì, elimina!',
+        cancelButtonText: 'Annulla'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteEventFromApi();
+          Swal.fire({
+            icon: 'error',
+            title: 'Evento eliminato con successo',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
+  })
+}
+
   },
 };
 </script>

@@ -39,8 +39,18 @@
                 </div>
                 <div class="card-body">
                     <div class="row d-flex justify-content-between flex-nowrap">
-                        <div class="w-50">{{ }}</div>
-                        <div class="w-50">{{ }}</div>
+                        <div class="w-50">
+                            <div class="row">
+                                <p class="spaces">Data</p>
+                                <p>{{  }}</p>
+                            </div>
+                        </div>
+                        <div class="w-50">
+                            <div class="row">
+                                <p class="d-flex justify-content-end spaces">Numero di voti</p>
+                                <p>{{  }}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -115,8 +125,7 @@ export default {
         async fetchDateFromApi() {
             try {
                 const response = await apiService.fetchDateId(this.nuovaDataInserita.id_Utente);
-                console.log("DATE GIà IMPOSTATE:", response.data)
-                this.nuovaDataInserita.date = response.data.date.map(date => utils.dateToString(date));
+                this.nuovaDataInserita.date = response.data.date.map(date => utils.datePadString(date));
                 this.dateDeciding();
             } catch (err) {
                 console.log(err);
@@ -137,10 +146,9 @@ export default {
         async dateDeciding() {
             try {
                 const response = await apiService.fetchMaxVotedDate();
-                console.log(response.data);
                 const maxCount = response.data.rows[0].voti;
                 console.log(maxCount);
-                const maxDate = utils.dateToString(response.data.rows[0].date)
+                const maxDate = utils.datePadString(response.data.rows[0].date)
                 console.log("MAX DATE", maxDate);
                 return maxCount, maxDate;
             } catch (err) {

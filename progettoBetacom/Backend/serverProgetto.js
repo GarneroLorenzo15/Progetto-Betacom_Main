@@ -624,9 +624,9 @@ app.post('/api/eventi/add', async (req, res) => {
         });
 
 
-        if (res.length > 0) {
+        if (rows.affectedRows > 0) {
             res.status(200).json(rows);
-        } else if (res.length <= 0) {
+        } else if (rows.affectedRows <= 0) {
             res.status(404).json({ error: 'Not Found' });
         }
 
@@ -906,7 +906,7 @@ app.post('/api/voti/add/', async (req, res) => {
     try {
         // Check if the id_Evento is already associated with id_Utente in the database
         const existingVote = await new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM voti WHERE id_Evento = ? AND id_Utente = ?', [id_Evento, id_Utente], (err, rows) => {
+            connection.query('SELECT * FROM voti WHERE id_Evento = ? AND id_Utente = ?', [id_Evento, req.session.user.id_Utente], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -1104,7 +1104,7 @@ app.post('/api/date/add', async (req, res) => {
     console.log(req.body.date);
     try {
         const del = await new Promise((resolve, reject) => {
-            connection.query('DELETE FROM seleziona_date WHERE id_Utente = ?', [id_Utente], (err, result) => {
+            connection.query('DELETE FROM seleziona_date WHERE id_Utente = ?', [req.session.user.id_Utente], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
