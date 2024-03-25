@@ -13,7 +13,8 @@
         <div class="w-full d-flex justify-content-end">
           <div class="hover-info" @click="toggleInfoMessage()"><i class="bi bi-info-circle-fill font-i"></i>
             <div width="50px" heigth="50px" class="hover-content" v-if="showInfoMessage">
-              <div class="text-justify">La password di default è impostata sul nome del titolare dell'account con la prima lettera
+              <div class="text-justify">La password di default è impostata sul nome del titolare dell'account con la
+                prima lettera
                 maiscola, si ricorda che
                 per aumentare la sicurezza è consigliato modificare la password nella propria area personale</div>
             </div>
@@ -70,14 +71,25 @@ export default {
     async login() {
       try {
         const response = await apiService.Login(this.Credenziali);
-        const token = await response.data.token;
-        const admin = await response.data.admin;
-        const utente = await response.data.utente;
-        localStorage.setItem('token', token);
-        localStorage.setItem('utente', utente);
-        localStorage.setItem('admin', admin);
-        this.$router.push('/eventi');
-        this.accessCorrect();
+        console.log(response);
+        if (!this.Credenziali.email || !this.Credenziali.password){
+          this.showNoCredenziali();
+          return;
+        }
+
+        if(response.status === 200){
+          const token = await response.data.token;
+          const admin = await response.data.admin;
+          const utente = await response.data.utente;
+          localStorage.setItem('token', token);
+          localStorage.setItem('utente', utente);
+          localStorage.setItem('admin', admin);
+          this.$router.push('/eventi');
+          this.accessCorrect();
+        } else if(response.status === 401){
+          this.accessDenied();
+        }
+        
       } catch (error) {
         console.log(error);
       }

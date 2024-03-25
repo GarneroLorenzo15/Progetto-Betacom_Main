@@ -86,7 +86,9 @@ app.post('/api/login', async (req, res) => {
 
 });
 
-
+/* 
+ *   Creation session
+ */
 app.use(async (req, res, next) => {
     try {
         req.session = {
