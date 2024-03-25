@@ -107,9 +107,6 @@ export default {
   },
   created(){
   },
-  /* updated(){
-    this.fetchEventsFromApi();
-  }, */
   mounted() {
     this.fetchEventsFromApi();
   },

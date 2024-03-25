@@ -6,7 +6,7 @@
 
         </div>
         <div class="w-50 d-flex justify-content-end">
-          <i class="bi bi-box-arrow-right colorto font-i" @click="logout()"></i>
+          <i class="bi bi-box-arrow-right colorto font-i" @click="logoutConfirm()"></i>
         </div>
       </div>
       <div class="row">
@@ -160,6 +160,21 @@ export default {
     logout() {
       localStorage.removeItem('token');
       this.$router.push('/login');
+    },
+
+    logoutConfirm() {
+      Swal.fire({
+        title: 'Sei sicuro di voler uscire?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, uscire!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.logout();
+        }
+      })
     },
   }
 };

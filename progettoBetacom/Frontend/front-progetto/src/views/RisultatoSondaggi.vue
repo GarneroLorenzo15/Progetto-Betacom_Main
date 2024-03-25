@@ -46,7 +46,7 @@
 import NavBar from '@/components/NavBar.vue';
 import apiService from '@/services/apiService';
 import Chart from 'chart.js/auto';
-import Swal from 'sweetalert2';
+
 
 
 
@@ -59,6 +59,9 @@ export default {
             risultati: [{}],
             risultatiCount: [],
         }
+    },
+    created() {
+        this.scrollToTop();
     },
     mounted() {
         this.fetchResultsFromApi();
@@ -93,6 +96,10 @@ export default {
             } catch (err) {
                 console.error(err);
             }
+        },
+
+        scrollToTop() {
+            window.scrollTo(0, 0);
         },
 
         generatePieChart() {
