@@ -984,6 +984,12 @@ app.get('/api/voti/count', async (req, res) => {
 });
 
 
+
+/**
+ * Deletes all rows from the votes table
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.delete('/api/voti/delete', async (req, res) => {
 
     try{
@@ -1073,7 +1079,7 @@ app.get('/api/date/deciding', async (req, res) => {
         });
 
         if(rows.length > 0) {
-            res.status(200).json({ message: 'voti eliminati correttamente!', rows });
+            res.status(200).json({ message: 'voti maxvoti!', rows });
         } else if (res.length <= 0) {
             res.status(404).json({ error: 'Not Found' });
         }
@@ -1097,7 +1103,7 @@ app.post('/api/date/add', async (req, res) => {
     const { id_Utente, id_Evento, date } = req.body;
     console.log(req.body.date);
     try {
-        await new Promise((resolve, reject) => {
+        const del = await new Promise((resolve, reject) => {
             connection.query('DELETE FROM seleziona_date WHERE id_Utente = ?', [id_Utente], (err, result) => {
                 if (err) {
                     reject(err);
@@ -1107,14 +1113,14 @@ app.post('/api/date/add', async (req, res) => {
             });
         });
 
-/*         const insertValues = date.map(date => [id_Utente, id_Evento, date]);
- */
+        const insertValues = date.map(date => [id_Utente, id_Evento, date]);
 
 
-        const insertValues = date.map(date => {
+
+        /* const insertValues = date.map(date => {
             const nextDay = addDays(new Date(date), 1); // Aggiungi un giorno a ciascuna data
             return [id_Utente, id_Evento, nextDay];
-        });
+        }); */
 
 
         const result = await new Promise((resolve, reject) => {
@@ -1124,12 +1130,12 @@ app.post('/api/date/add', async (req, res) => {
                 } else {
                     resolve(resp);
                 }
-            });
+            }); 
         });
 
-        if(result.length > 0) {
+        if(result.affectedRows > 0) {
             res.status(200).json({ message: 'Dati inseriti correttamente!' });
-        } else if(result.length <= 0) {
+        } else {
             res.status(404).json({ error: 'Non inserito' });
         }
 
@@ -1156,7 +1162,7 @@ app.get('/api/date/:id', async (req, res) => {
     
     try{
         const rows = await new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM seleziona_date WHERE id_Utente =?', [userid], (err, rows) => {
+            connection.query('SELECT * FROM seleziona_date WHERE id_Utente = ?', [userid], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {

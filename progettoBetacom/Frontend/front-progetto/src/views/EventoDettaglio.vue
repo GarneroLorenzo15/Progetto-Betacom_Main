@@ -39,7 +39,7 @@
       </div>
       <div class="w-full d-flex justify-content-center align-items-center">
         <div>
-          <button @click="addVotoFromApi()" :disabled="this.votoGiaInviato == true">
+          <button @click="addVotoFromApi()">
             VOTA EVENTO
           </button>
         </div>

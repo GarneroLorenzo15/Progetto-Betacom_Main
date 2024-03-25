@@ -22,8 +22,7 @@
                         <div class="w-7 spaces" v-for="days in month.daysign" :key="days">{{ days }}</div>
                         <div class="w-7" v-for="n in month.blankDays" :key="`empty-${n}`"></div>
                         <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in  daysInMonth(key)"
-                            :key="index" @click="toggleDate(day, key)"
-                            :class="{ 'selected': isSelected(day, key) }">
+                            :key="index" @click="toggleDate(day, key)" :class="{ 'selected': isSelected(day, key) }">
                             <div>{{ day }}</div>
                         </div>
                     </div>
@@ -40,7 +39,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row d-flex justify-content-between flex-nowrap">
-                        <div class="w-50">{{  }}</div>
+                        <div class="w-50">{{ }}</div>
                         <div class="w-50">{{ }}</div>
                     </div>
                 </div>
@@ -56,6 +55,7 @@ import NavBar from '@/components/NavBar.vue';
 import { getDaysInMonth, startOfMonth, getDay } from 'date-fns';
 import apiService from '@/services/apiService';
 import Swal from 'sweetalert2';
+import utils from '@/services/utilsService';
 
 
 export default {
@@ -98,7 +98,8 @@ export default {
             return new Date(now.getFullYear(), now.getMonth(), 0).getDate();
         },
         toggleDate(day, month) {
-            let selected = new Date(new Date().getFullYear(), month - 1, day).toISOString().substring(0, 10);
+            let selected = new Date().getFullYear() + "-" + ("" + month).padStart(2, "0") + "-" + ("" + day).padStart(2, "0")
+            console.log(selected);
             const index = this.nuovaDataInserita.date.indexOf(selected);
             if (index === -1) {
                 this.nuovaDataInserita.date.push(selected);
@@ -106,17 +107,16 @@ export default {
             } else {
                 this.nuovaDataInserita.date.splice(index, 1);
             }
-            console.table(this.nuovaDataInserita)
         },
         isSelected(day, month) {
-            let selected = new Date(new Date().getFullYear(), month - 1, day).toISOString().substring(0, 10);
+            let selected = new Date().getFullYear() + "-" + ("" + month).padStart(2, "0") + "-" + ("" + day).padStart(2, "0")
             return this.nuovaDataInserita.date.includes(selected);
         },
         async fetchDateFromApi() {
             try {
                 const response = await apiService.fetchDateId(this.nuovaDataInserita.id_Utente);
-                this.nuovaDataInserita.date = response.data.date.map(date => new Date(date).toISOString().substring(0, 10));
-                console.log(this.nuovaDataInserita.date, "fetch date");
+                console.log("DATE GIà IMPOSTATE:", response.data)
+                this.nuovaDataInserita.date = response.data.date.map(date => utils.dateToString(date));
                 this.dateDeciding();
             } catch (err) {
                 console.log(err);
@@ -124,8 +124,9 @@ export default {
         },
         async addDateFromApi() {
             try {
-                this.addDateDone();
+                console.log(this.nuovaDataInserita)
                 const response = await apiService.addDate(this.nuovaDataInserita);
+                this.addDateDone();
                 const nuovaData = response.data;
                 this.nuovaDataInserita.date.push(nuovaData);
                 this.$router.push("/eventi");
@@ -133,22 +134,22 @@ export default {
                 console.log(err);
             }
         },
-        async dateDeciding(){
-            try{
+        async dateDeciding() {
+            try {
                 const response = await apiService.fetchMaxVotedDate();
                 console.log(response.data);
                 const maxCount = response.data.rows[0].voti;
                 console.log(maxCount);
-                const maxDate = response.data.rows[0].date.substring(0, 10);
-                console.log(maxDate);
+                const maxDate = utils.dateToString(response.data.rows[0].date)
+                console.log("MAX DATE", maxDate);
                 return maxCount, maxDate;
-            }catch (err) {
+            } catch (err) {
                 console.log(err);
             }
         },
-        addDateDone(){
+        addDateDone() {
             Swal.fire({
-                icon:'success',
+                icon: 'success',
                 title: 'Data aggiunta con successo',
                 showConfirmButton: false,
                 timer: 1500
