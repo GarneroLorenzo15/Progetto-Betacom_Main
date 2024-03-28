@@ -2,22 +2,22 @@
   <!-- eslint-disable -->
   <div class="eventi">
 
-    <div class="container text-center">
-      <div class="row d-flex justify-content-between flex-nowrap align-items-center ">
-        <div class="col-6">
-          <button class="btn " @click="openModal()" :title="'aggiungi eventi'">
+    <div class="container text-center d-flex justify-content-center flex-wrap">
+      <div class="row w-full flex-nowrap align-items-center ">
+        <div class="col-6  d-flex justify-content-start">
+          <div class="btn" @click="openModal()" :title="'aggiungi eventi'">
             <i class="bi bi-plus-circle-fill"></i>
-          </button>
+          </div>
         </div>
-        <div class="col-6">
-          <div class="d-flex justify-content-end mr-5">
+        <div class="col-6 d-flex justify-content-end">
+          <div class="d-flex">
             <i class="bi bi-box-arrow-right colorto" @click="logoutConfirm()"></i>
           </div>
         </div>
         <!-- Bottone per aprire la modale di aggiunta eventi -->
       </div>
       <div class="row my-3">
-        <h1 class="d-flex justify-content-center">Scegli un Evento</h1>
+        <h1 class="d-flex w-full justify-content-center">Scegli un Evento</h1>
       </div>
     </div>
     <div class="container-fluid  mt-5 mb-5 mx-auto">
@@ -32,7 +32,7 @@
               </p>
               <div class="d-flex justify-content-end">
                 <router-link :to="'/eventi/' + item.id_Evento">
-                  <button class="btn btn-primary">
+                  <button class="">
                     VEDI DETTAGLIO
                   </button>
                 </router-link>
@@ -152,7 +152,7 @@ export default {
         confirmButtonText: 'Si, uscire!'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.logout();
+          this.apiService.logout()
         }
       })
     },

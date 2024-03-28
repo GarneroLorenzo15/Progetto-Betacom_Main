@@ -172,7 +172,7 @@ export default {
         confirmButtonText: 'Si, uscire!'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.logout();
+          this.apiService.logout()
         }
       })
     },

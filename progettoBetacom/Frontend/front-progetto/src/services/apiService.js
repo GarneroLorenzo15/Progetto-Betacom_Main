@@ -1,29 +1,29 @@
 import { API_URL } from "../../api.config";
 import axios from "axios";
+import router from "@/router";
 /* eslint-disable */
 axios.interceptors.request.use(function (config) {
     const token = localStorage.getItem('token');
     config.headers.Authorization =  token;
     return config;
-},
-  function (error) {
-    if(error.request.status === 401){
-      localStorage.removeItem('token');
-      this.$router.push('/login');
+}),
+  
+
+
+axios.interceptors.response.use(function (response) {
+  return response;
+  }, error => {
+    if(error.response.status === 401) {
+      logout()
     }
-   return Promise.reject(error);
+    return Promise.reject(error);
   });
 
 
-/* axios.interceptors.response.use(function (response) {
-  return response;
-  },
-  function (error) {
-    if(error.response.status === 401) {
-      logout();
-    }
-    return Promise.reject(error);
-  }); */
+function logout() {
+    localStorage.removeItem('token');
+    router.push('/login');
+  }
 
 export default {
   fetchEvents() {
@@ -83,8 +83,5 @@ export default {
   deleteVoti(){
     return axios.delete(`${API_URL}/api/voti/delete`);
   },
-  logout() {
-      localStorage.removeItem('token');
-      this.$router.push('/login');
-    },
+  logout
 };
