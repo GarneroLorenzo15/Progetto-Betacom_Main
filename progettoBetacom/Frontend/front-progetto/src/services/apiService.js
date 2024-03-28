@@ -5,7 +5,25 @@ axios.interceptors.request.use(function (config) {
     const token = localStorage.getItem('token');
     config.headers.Authorization =  token;
     return config;
-});
+},
+  function (error) {
+    if(error.request.status === 401){
+      localStorage.removeItem('token');
+      this.$router.push('/login');
+    }
+   return Promise.reject(error);
+  });
+
+
+/* axios.interceptors.response.use(function (response) {
+  return response;
+  },
+  function (error) {
+    if(error.response.status === 401) {
+      logout();
+    }
+    return Promise.reject(error);
+  }); */
 
 export default {
   fetchEvents() {
@@ -64,5 +82,9 @@ export default {
   },
   deleteVoti(){
     return axios.delete(`${API_URL}/api/voti/delete`);
-  }
+  },
+  logout() {
+      localStorage.removeItem('token');
+      this.$router.push('/login');
+    },
 };
