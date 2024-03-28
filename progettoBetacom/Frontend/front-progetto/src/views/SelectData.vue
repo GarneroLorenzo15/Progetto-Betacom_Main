@@ -42,13 +42,13 @@
                         <div class="w-50">
                             <div class="row">
                                 <p class="spaces">Data</p>
-                                <p>{{  }}</p>
+                                <p>{{ maxDate }}</p>
                             </div>
                         </div>
                         <div class="w-50">
                             <div class="row">
-                                <p class="d-flex justify-content-end spaces">Numero di voti</p>
-                                <p>{{  }}</p>
+                                <p class="spaces">Numero di voti</p>
+                                <p>{{ maxCount }}</p>
                             </div>
                         </div>
                     </div>
@@ -90,7 +90,9 @@ export default {
                 id_Utente: localStorage.getItem('utente'),
                 id_Evento: this.$route.params.id,
                 date: [],
-            }
+            },
+            maxDate: '',
+            maxCount: 0,
         }
     },
     created() {
@@ -146,11 +148,8 @@ export default {
         async dateDeciding() {
             try {
                 const response = await apiService.fetchMaxVotedDate();
-                const maxCount = response.data.rows[0].voti;
-                console.log(maxCount);
-                const maxDate = utils.datePadString(response.data.rows[0].date)
-                console.log("MAX DATE", maxDate);
-                return maxCount, maxDate;
+                this.maxCount = response.data.rows[0].voti;
+                this.maxDate = utils.datePadString(response.data.rows[0].date)
             } catch (err) {
                 console.log(err);
             }

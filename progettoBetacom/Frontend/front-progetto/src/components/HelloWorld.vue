@@ -71,8 +71,8 @@ export default {
     async login() {
       try {
         const response = await apiService.Login(this.Credenziali);
-        console.log(response);
-        if (!this.Credenziali.email || !this.Credenziali.password){
+        console.log(response.status);
+        if (!this.Credenziali.email || !this.Credenziali.password || response.status === 400){
           this.showNoCredenziali();
           return;
         }
@@ -89,7 +89,6 @@ export default {
         } else if(response.status === 401){
           this.accessDenied();
         }
-        
       } catch (error) {
         console.log(error);
       }
