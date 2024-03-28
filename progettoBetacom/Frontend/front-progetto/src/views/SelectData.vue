@@ -28,10 +28,14 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center my-3">
-                <button @click="addDateFromApi()">CONFERMA SELEZIONE</button>
+
+            <div class="fab-wrapper">
+                <button class="fab-button" @click="addDateFromApi()" v-if="showConfirm">
+                    <i class="bi bi-check"></i>
+                </button>
             </div>
-            <div class="card">
+
+            <div class="card my-3">
                 <div class="card-header">
                     <div class="d-flex justify-content-center">
                         <h3>Giornata con più voti</h3>
@@ -74,6 +78,8 @@ export default {
     },
     data() {
         return {
+            originalDates: [],
+            showConfirm: false,
             months: {
                 '06': {
                     'nome': 'Giugno',
@@ -98,7 +104,26 @@ export default {
     created() {
         this.fetchDateFromApi();
     },
+    computed: {
+    },
     methods: {
+        showConfirmButton() {
+            if (this.originalDates && this.nuovaDataInserita?.date) {
+                this.showConfirm = !this.arraysEqual(this.originalDates, this.nuovaDataInserita.date);
+                return
+            }
+            this.showConfirm = false;
+        },
+        arraysEqual(a, b) {
+            if (a === b) return true;
+            if (a == null || b == null) return false;
+            if (a.length !== b.length) return false;
+
+            for (var i = 0; i < a.length; ++i) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        },
         calculateBlankDays(month) {
             const date = new Date(new Date().getFullYear(), month - 1, 1);
             const startDay = getDay(startOfMonth(date)); // Ottieni il giorno della settimana in cui inizia il mese
@@ -110,6 +135,7 @@ export default {
             return new Date(now.getFullYear(), now.getMonth(), 0).getDate();
         },
         toggleDate(day, month) {
+            // this.showConfirmButton = true;
             let selected = new Date().getFullYear() + "-" + ("" + month).padStart(2, "0") + "-" + ("" + day).padStart(2, "0")
             console.log(selected);
             const index = this.nuovaDataInserita.date.indexOf(selected);
@@ -119,6 +145,7 @@ export default {
             } else {
                 this.nuovaDataInserita.date.splice(index, 1);
             }
+            this.showConfirmButton()
         },
         isSelected(day, month) {
             let selected = new Date().getFullYear() + "-" + ("" + month).padStart(2, "0") + "-" + ("" + day).padStart(2, "0")
@@ -128,6 +155,7 @@ export default {
             try {
                 const response = await apiService.fetchDateId(this.nuovaDataInserita.id_Utente);
                 this.nuovaDataInserita.date = response.data.date.map(date => utils.datePadString(date));
+                this.originalDates = [].concat(this.nuovaDataInserita.date);
                 this.dateDeciding();
             } catch (err) {
                 console.log(err);
@@ -149,7 +177,7 @@ export default {
             try {
                 const response = await apiService.fetchMaxVotedDate();
                 this.maxCount = response.data.rows[0].voti;
-                this.maxDate = utils.datePadString(response.data.rows[0].date)
+                this.maxDate = utils.dateMaxPadString(response.data.rows[0].date);
             } catch (err) {
                 console.log(err);
             }
@@ -188,5 +216,29 @@ export default {
     border-radius: 100%;
     color: white;
     padding: 8px;
+}
+
+.fab-wrapper {
+    position: fixed;
+    right: 1rem;
+    bottom: 8rem;
+    z-index: 5;
+    display: flex;
+    flex-direction: center;
+    align-items: center;
+}
+
+
+.fab-button {
+    width: 70px;
+    height: 70px;
+    background-color: #f38120;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease-in-out;
 }
 </style>

@@ -62,6 +62,8 @@ router.beforeEach((to, from, next) =>{
 
   if(to.meta.requiresAuth && !token){
     next({ name: 'login'});
+  } else if(to.name == "login" && token){
+    next({ name: 'eventi'});
   } else {
     next();
   }

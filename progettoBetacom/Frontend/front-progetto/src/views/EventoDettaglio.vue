@@ -16,14 +16,12 @@
             </div>
           </div>
           <div class="row mb-2">
-            <div class="d-flex justify-content-end flex-nowrap">
-              <div class="w-50 d-flex justify-content-end align-items-center">
-                <div class="mx-2">
-                  Seleziona Data
-                </div>
-              </div>
+            <div class="d-flex justify-content-end">
               <router-link :to="'/calendar/' + this.$route.params.id">
-                <i class="bi bi-calendar-event-fill calendar"></i>
+                <div>
+                  Seleziona Data
+                  <i class="ms-1 bi bi-calendar-event-fill calendar "></i>
+                </div>
               </router-link>
             </div>
           </div>
@@ -113,11 +111,11 @@ export default {
         console.log(error);
       }
     },
-    confirmVoto(){
+    confirmVoto() {
       Swal.fire({
         title: 'Hai votato!',
         text: 'Il voto è stato registrato con successo',
-        icon:'success',
+        icon: 'success',
         confirmButtonText: 'Chiudi',
         confirmButtonColor: '#034ea1',
       })
@@ -142,8 +140,8 @@ export default {
             timer: 1500
           })
         }
-  })
-}
+      })
+    }
 
   },
 };
@@ -167,7 +165,8 @@ export default {
   margin-bottom: 20rem;
 }
 
-.mb-30 { margin-bottom: 30rem;
+.mb-30 {
+  margin-bottom: 30rem;
 }
 
 .mb-2 {
