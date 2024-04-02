@@ -12,32 +12,31 @@
                 <div class="w-full d-flex justify-content-center">
                     <h2>Risultato Sondaggio</h2>
                 </div>
-                <div class="my-5">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row d-flex align-items-center">
-                                <p class="w-50 spaces">Nome Evento</p>
-                                <p class=" w-50 d-flex justify-content-end">N° Voti</p>
+                <div class="card my-5">
+                    <div class="card-body">
+                        <div class="row d-flex align-items-center">
+                            <p class="w-50 spaces">Nome Evento</p>
+                            <p class=" w-50 d-flex justify-content-end">N° Voti</p>
+                        </div>
+                        <div class="row" v-for="risultati in risultatiCount.rows" :key="risultati">
+                            <div class="col-6 d-flex felx-wrap">
+                                <div class="w-full ">{{ risultati.titolo }}</div>
                             </div>
-                            <div class="row" v-for="risultati in risultatiCount.rows" :key="risultati">
-                                <div class="col-6 d-flex felx-wrap">
-                                    <div class="w-full ">{{ risultati.titolo }}</div>
-                                </div>
-                                <div class="col-6 d-flex flex-wrap">
-                                    <div class="w-full d-flex justify-content-end">{{ risultati.conteggio }}</div>
-                                </div>
+                            <div class="col-6 d-flex flex-wrap">
+                                <div class="w-full d-flex justify-content-end">{{ risultati.conteggio }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card ">
-                <p class=" d-flex justify-content-center my-2">Grafico Sondaggio</p>
-                <canvas class="my-3" id="pieChart" width="400" height="400"></canvas>
-            </div>
+                <div class="card">
+                    <p class=" d-flex justify-content-center my-2">Grafico Sondaggio</p>
+                    <canvas class="my-3" id="pieChart"></canvas>
+                </div>
         </div>
-        <NavBar></NavBar>
     </div>
+    <div class="h-92"></div>
+    <NavBar></NavBar>
+</div>
 
 </template>
 
@@ -46,7 +45,7 @@
 import NavBar from '@/components/NavBar.vue';
 import apiService from '@/services/apiService';
 import Chart from 'chart.js/auto';
-import Swal from 'sweetalert2';
+
 
 
 
@@ -59,6 +58,9 @@ export default {
             risultati: [{}],
             risultatiCount: [],
         }
+    },
+    created() {
+        this.scrollToTop();
     },
     mounted() {
         this.fetchResultsFromApi();
@@ -95,6 +97,10 @@ export default {
             }
         },
 
+        scrollToTop() {
+            window.scrollTo(0, 0);
+        },
+
         generatePieChart() {
             const labels = this.risultatiCount.rows.map(risultati => risultati.titolo);
             const count = this.risultatiCount.rows.map(risultati => risultati.conteggio);
@@ -120,7 +126,7 @@ export default {
                             'rgba(0, 70, 153, 0.5)',      // Blu navy
                             'rgba(255, 210, 121, 0.5)',   // Arancione chiaro
                             'rgba(0, 145, 234, 0.5)',     // Blu vivace
-                            'rgba(255, 235, 179, 0.5)' 
+                            'rgba(255, 235, 179, 0.5)'
                         ]
                     }]
                 },
@@ -138,7 +144,14 @@ export default {
     height: 150vh;
 }
 
-.mr-5{
+.mr-5 {
     margin-right: 5rem;
+}
+
+template{
+    background-image: linear-gradient(to top, #034ea1, #f38120);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: auto;
 }
 </style>

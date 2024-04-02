@@ -22,15 +22,41 @@
                         <div class="w-7 spaces" v-for="days in month.daysign" :key="days">{{ days }}</div>
                         <div class="w-7" v-for="n in month.blankDays" :key="`empty-${n}`"></div>
                         <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in  daysInMonth(key)"
-                            :key="index" @click="toggleDate(day, key)"
-                            :class="{ 'selected': isSelected(day, key) }">
+                            :key="index" @click="toggleDate(day, key)" :class="{ 'selected': isSelected(day, key) }">
                             <div>{{ day }}</div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="d-flex justify-content-center my-3">
-                <button @click="addDateFromApi()">CONFERMA SELEZIONE</button>
+
+            <div class="fab-wrapper">
+                <button class="fab-button" @click="addDateFromApi()" v-if="showConfirm">
+                    <i class="bi bi-check"></i>
+                </button>
+            </div>
+
+            <div class="card my-3">
+                <div class="card-header">
+                    <div class="d-flex justify-content-center">
+                        <h3>Giornata con più voti</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row d-flex justify-content-between flex-nowrap">
+                        <div class="w-50">
+                            <div class="row">
+                                <p class="spaces">Data</p>
+                                <p>{{ maxDate }}</p>
+                            </div>
+                        </div>
+                        <div class="w-50">
+                            <div class="row">
+                                <p class="spaces">Numero di voti</p>
+                                <p>{{ maxCount }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <NavBar></NavBar>
@@ -43,6 +69,7 @@ import NavBar from '@/components/NavBar.vue';
 import { getDaysInMonth, startOfMonth, getDay } from 'date-fns';
 import apiService from '@/services/apiService';
 import Swal from 'sweetalert2';
+import utils from '@/services/utilsService';
 
 
 export default {
@@ -51,6 +78,8 @@ export default {
     },
     data() {
         return {
+            originalDates: [],
+            showConfirm: false,
             months: {
                 '06': {
                     'nome': 'Giugno',
@@ -67,13 +96,34 @@ export default {
                 id_Utente: localStorage.getItem('utente'),
                 id_Evento: this.$route.params.id,
                 date: [],
-            }
+            },
+            maxDate: '',
+            maxCount: 0,
         }
     },
     created() {
-        this.fetchDateFromApi()
+        this.fetchDateFromApi();
+    },
+    computed: {
     },
     methods: {
+        showConfirmButton() {
+            if (this.originalDates && this.nuovaDataInserita?.date) {
+                this.showConfirm = !this.arraysEqual(this.originalDates, this.nuovaDataInserita.date);
+                return
+            }
+            this.showConfirm = false;
+        },
+        arraysEqual(a, b) {
+            if (a === b) return true;
+            if (a == null || b == null) return false;
+            if (a.length !== b.length) return false;
+
+            for (var i = 0; i < a.length; ++i) {
+                if (a[i] !== b[i]) return false;
+            }
+            return true;
+        },
         calculateBlankDays(month) {
             const date = new Date(new Date().getFullYear(), month - 1, 1);
             const startDay = getDay(startOfMonth(date)); // Ottieni il giorno della settimana in cui inizia il mese
@@ -85,7 +135,9 @@ export default {
             return new Date(now.getFullYear(), now.getMonth(), 0).getDate();
         },
         toggleDate(day, month) {
-            let selected = new Date(new Date().getFullYear(), month - 1, day).toISOString().substring(0, 10);
+            // this.showConfirmButton = true;
+            let selected = new Date().getFullYear() + "-" + ("" + month).padStart(2, "0") + "-" + ("" + day).padStart(2, "0")
+            console.log(selected);
             const index = this.nuovaDataInserita.date.indexOf(selected);
             if (index === -1) {
                 this.nuovaDataInserita.date.push(selected);
@@ -93,25 +145,27 @@ export default {
             } else {
                 this.nuovaDataInserita.date.splice(index, 1);
             }
-            console.table(this.nuovaDataInserita)
+            this.showConfirmButton()
         },
         isSelected(day, month) {
-            let selected = new Date(new Date().getFullYear(), month - 1, day).toISOString().substring(0, 10);
+            let selected = new Date().getFullYear() + "-" + ("" + month).padStart(2, "0") + "-" + ("" + day).padStart(2, "0")
             return this.nuovaDataInserita.date.includes(selected);
         },
         async fetchDateFromApi() {
             try {
                 const response = await apiService.fetchDateId(this.nuovaDataInserita.id_Utente);
-                this.nuovaDataInserita.date = response.data.date.map(date => new Date(date).toISOString().substring(0, 10));
-                console.log(this.nuovaDataInserita.date, "fetch date");
+                this.nuovaDataInserita.date = response.data.date.map(date => utils.datePadString(date));
+                this.originalDates = [].concat(this.nuovaDataInserita.date);
+                this.dateDeciding();
             } catch (err) {
                 console.log(err);
             }
         },
         async addDateFromApi() {
             try {
-                this.addDateDone();
+                console.log(this.nuovaDataInserita)
                 const response = await apiService.addDate(this.nuovaDataInserita);
+                this.addDateDone();
                 const nuovaData = response.data;
                 this.nuovaDataInserita.date.push(nuovaData);
                 this.$router.push("/eventi");
@@ -119,9 +173,18 @@ export default {
                 console.log(err);
             }
         },
-        addDateDone(){
+        async dateDeciding() {
+            try {
+                const response = await apiService.fetchMaxVotedDate();
+                this.maxCount = response.data.rows[0].voti;
+                this.maxDate = utils.dateMaxPadString(response.data.rows[0].date);
+            } catch (err) {
+                console.log(err);
+            }
+        },
+        addDateDone() {
             Swal.fire({
-                icon:'success',
+                icon: 'success',
                 title: 'Data aggiunta con successo',
                 showConfirmButton: false,
                 timer: 1500
@@ -153,5 +216,29 @@ export default {
     border-radius: 100%;
     color: white;
     padding: 8px;
+}
+
+.fab-wrapper {
+    position: fixed;
+    right: 1rem;
+    bottom: 8rem;
+    z-index: 5;
+    display: flex;
+    flex-direction: center;
+    align-items: center;
+}
+
+
+.fab-button {
+    width: 70px;
+    height: 70px;
+    background-color: #f38120;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease-in-out;
 }
 </style>

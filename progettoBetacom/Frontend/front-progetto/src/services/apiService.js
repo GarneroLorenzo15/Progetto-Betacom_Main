@@ -1,11 +1,29 @@
 import { API_URL } from "../../api.config";
 import axios from "axios";
+import router from "@/router";
 /* eslint-disable */
 axios.interceptors.request.use(function (config) {
     const token = localStorage.getItem('token');
     config.headers.Authorization =  token;
     return config;
-});
+}),
+  
+
+
+axios.interceptors.response.use(function (response) {
+  return response;
+  }, error => {
+    if(error.response.status === 401) {
+      logout()
+    }
+    return Promise.reject(error);
+  });
+
+
+function logout() {
+    localStorage.removeItem('token');
+    router.push('/login');
+  }
 
 export default {
   fetchEvents() {
@@ -50,6 +68,9 @@ export default {
   addDate(nuovaDataInserita) {
     return axios.post(`${API_URL}/api/date/add`, nuovaDataInserita);
   },
+  fetchMaxVotedDate(){
+    return axios.get(`${API_URL}/api/date/deciding`);
+  },
   addVoti(infoVoti){
     return axios.post(`${API_URL}/api/voti/add`, infoVoti);
   },
@@ -61,5 +82,6 @@ export default {
   },
   deleteVoti(){
     return axios.delete(`${API_URL}/api/voti/delete`);
-  }
+  },
+  logout
 };

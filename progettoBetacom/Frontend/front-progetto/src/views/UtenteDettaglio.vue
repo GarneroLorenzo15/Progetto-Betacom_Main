@@ -49,8 +49,8 @@
                   style="color: black;" class="bi bi-arrow-repeat"></i></button>
             </div>
             <div class="d-flex justify-content-center flex-wrap w-full my-2">
-              <button class="spaces mb-2" @click="updateUsersFromApi()">Salva le modifiche</button>
-              <button class="spaces " @click="deleteUsersFromApi()">Elimina il Partecipante</button>
+              <button class="spaces mb-2" @click="updateConfirm()">Salva le modifiche</button>
+              <button class="spaces " @click="deleteConfirm()">Elimina il Partecipante</button>
             </div>
           </div>
         </div>
@@ -147,6 +147,35 @@ export default {
     }, 
     scrollToTop() {
       window.scrollTo(0, 0);
+    },
+    deleteConfirm(){
+      Swal.fire({
+        title: 'Sei sicuro di voler eliminare questo utente?',
+        text: "Non è possibile recuperarlo!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, cancella!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.deleteUsersFromApi();
+        }
+      })
+    },
+    updateConfirm(){
+      Swal.fire({
+        title: 'Sei sicuro di voler modificare questo utente?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, modifica!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.updateUsersFromApi();
+        }
+      })
     }
   },
 }

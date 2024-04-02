@@ -34,9 +34,9 @@ const connection = mysql.createConnection({
  * @param {Object} res - The response object.
  * @returns {string} The rendered HTML for the events page.
  */
-app.get('/api/account', async (req, res) => {
+/* app.get('/api/account', async (req, res) => {
     return res.render('http://localhost:8080/eventi');
-});
+}); */
 
 /**
  * Returns a JSON Web Token (JWT) that can be used to authenticate the user.
@@ -63,7 +63,7 @@ app.post('/api/login', async (req, res) => {
             })
         });
 
-        console.log(rows);
+   
 
         if (rows.length > 0) {
             let user = rows[0];
@@ -83,10 +83,12 @@ app.post('/api/login', async (req, res) => {
             res.status(400).json({ error: 'Bad Request' });
         }
     }
-
+ 
 });
 
-
+/* 
+ *   Creation session
+ */
 app.use(async (req, res, next) => {
     try {
         req.session = {
@@ -208,6 +210,11 @@ app.get('/api/utenti/:id', async (req, res) => {
             });
         });
 
+
+        rows.map((row) => {
+            delete row.password;
+        })
+
         res.status(200).json({ message: 'OK', rows });
     } catch (err) {
         console.error('Error fetching users:', err);
@@ -230,7 +237,7 @@ app.get('/api/utenti/:id', async (req, res) => {
  */
 app.put('/api/utenti/update/:id', async (req, res) => {
     const userid = req.params.id;
-    const updateData = req.body;
+    const {nome, cognome, email, password, disponibile} = req.body;
     const decoded = jwt.verify(req.headers.authorization, secretKey, (err, decoded) => {
         if (err) {
             console.error('Errore durante la verifica del token:', err);
@@ -249,24 +256,23 @@ app.put('/api/utenti/update/:id', async (req, res) => {
 
     if(req.session.user.id_Utente != userid && req.session.user.admin == 0){
         return  res.status(403).json('non autorizzato');       
-    }
+    } 
     
 
-    console.log(updateData, 'qui');
     try {
-        const response = await connection.query('UPDATE utente SET ? WHERE id_Utente = ?', [updateData, userid]);
+        const response = await connection.query('UPDATE utente SET nome= ? , cognome = ?, email = ?, password = SHA2(?, 512), disponibile = ?, admin = 0  WHERE id_Utente = ?', [nome, cognome, email, password, disponibile, userid]);
 
         res.status(200).json({ message: 'ok' });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'errore del server' });
+        res.status(500).json({ message: 'errore del server'  });
     }
 
-});
+}); 
 
 
-
-
+ 
+ 
 
 /**
  * Returns a list of all users in the database who are available
@@ -626,9 +632,9 @@ app.post('/api/eventi/add', async (req, res) => {
         });
 
 
-        if (res.length > 0) {
+        if (rows.affectedRows > 0) {
             res.status(200).json(rows);
-        } else if (res.length <= 0) {
+        } else if (rows.affectedRows <= 0) {
             res.status(404).json({ error: 'Not Found' });
         }
 
@@ -864,6 +870,8 @@ app.get('/api/voti', async (req, res) => {
 
 
 
+
+
 /**
  * Adds a new vote to the database
  * @param {Object} req - The request object
@@ -906,7 +914,7 @@ app.post('/api/voti/add/', async (req, res) => {
     try {
         // Check if the id_Evento is already associated with id_Utente in the database
         const existingVote = await new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM voti WHERE id_Evento = ? AND id_Utente = ?', [id_Evento, id_Utente], (err, rows) => {
+            connection.query('SELECT * FROM voti WHERE id_Evento = ? AND id_Utente = ?', [id_Evento, req.session.user.id_Utente], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -984,6 +992,12 @@ app.get('/api/voti/count', async (req, res) => {
 });
 
 
+
+/**
+ * Deletes all rows from the votes table
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ */
 app.delete('/api/voti/delete', async (req, res) => {
 
     try{
@@ -1044,6 +1058,50 @@ app.get('api/date', async (req, res) => {
 
 });
 
+
+/* SELECT d.date, COUNT(*) AS voti
+FROM seleziona_date d
+GROUP BY d.date
+HAVING COUNT(*) = (
+    SELECT MAX(cnt)
+    FROM (
+        SELECT COUNT(*) AS cnt
+        FROM seleziona_date
+        GROUP BY date
+    ) AS counts
+) */
+
+
+app.get('/api/date/deciding', async (req, res) => {
+
+    try{
+
+        const rows = await new Promise ((resolve, reject) => {
+            connection.query('SELECT d.date, COUNT(*) AS voti FROM seleziona_date d GROUP BY d.date HAVING COUNT(*) = (SELECT MAX(cnt) FROM ( SELECT COUNT(*) AS cnt FROM seleziona_date GROUP BY date) AS counts)', (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+            })
+        });
+
+        if(rows.length > 0) {
+            res.status(200).json({ message: 'voti maxvoti!', rows });
+        } else if (res.length <= 0) {
+            res.status(404).json({ error: 'Not Found' });
+        }
+
+    }catch (err) {
+        console.error(err);
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
+        }
+    }
+})
+
 /**
  * Adds a new vote to the database
  * @param {Object} req - The request object
@@ -1053,8 +1111,8 @@ app.post('/api/date/add', async (req, res) => {
     const { id_Utente, id_Evento, date } = req.body;
     console.log(req.body.date);
     try {
-        await new Promise((resolve, reject) => {
-            connection.query('DELETE FROM seleziona_date WHERE id_Utente = ?', [id_Utente], (err, result) => {
+        const del = await new Promise((resolve, reject) => {
+            connection.query('DELETE FROM seleziona_date WHERE id_Utente = ?', [req.session.user.id_Utente], (err, result) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -1063,14 +1121,14 @@ app.post('/api/date/add', async (req, res) => {
             });
         });
 
-/*         const insertValues = date.map(date => [id_Utente, id_Evento, date]);
- */
+        const insertValues = date.map(date => [id_Utente, id_Evento, date]);
 
 
-        const insertValues = date.map(date => {
+
+        /* const insertValues = date.map(date => {
             const nextDay = addDays(new Date(date), 1); // Aggiungi un giorno a ciascuna data
             return [id_Utente, id_Evento, nextDay];
-        });
+        }); */
 
 
         const result = await new Promise((resolve, reject) => {
@@ -1080,12 +1138,12 @@ app.post('/api/date/add', async (req, res) => {
                 } else {
                     resolve(resp);
                 }
-            });
+            }); 
         });
 
-        if(result.length > 0) {
+        if(result.affectedRows > 0) {
             res.status(200).json({ message: 'Dati inseriti correttamente!' });
-        } else if(result.length <= 0) {
+        } else {
             res.status(404).json({ error: 'Non inserito' });
         }
 
@@ -1112,7 +1170,7 @@ app.get('/api/date/:id', async (req, res) => {
     
     try{
         const rows = await new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM seleziona_date WHERE id_Utente =?', [userid], (err, rows) => {
+            connection.query('SELECT * FROM seleziona_date WHERE id_Utente = ?', [userid], (err, rows) => {
                 if (err) {
                     reject(err);
                 } else {
