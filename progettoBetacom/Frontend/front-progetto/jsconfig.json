@@ -1,7 +1,9 @@
+/* eslint-disable */
+
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
+    /* "target": "es5",
+    "module": "esnext", */
     "baseUrl": "./",
     "moduleResolution": "node",
     "paths": {

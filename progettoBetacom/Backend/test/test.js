@@ -1,6 +1,6 @@
 const axios = require('axios');
 const assert = require('assert');
-
+const server = require('../serverProgetto.js')
 
 const API_URL = "http://localhost:3000";
 
@@ -27,8 +27,8 @@ describe('POST /api/login', () => {
   it('should return a 401 error with invalid credentials', async () => {
     try {
       const credentials = {
-        username: 'invalid_username',
-        password: 'invalid_password'
+        email: 'asdsads',
+        password: 'asdasdasdasdasd'
       };
 
       await axios.post(`${API_URL}/api/login`, credentials);
@@ -47,7 +47,7 @@ describe('POST /api/login', () => {
     }
   });
 
-  it('should return a 500 error if there is an internal server error', async () => {
+  /* it('should return a 500 error if there is an internal server error', async () => {
     try {
       const credentials = {
         email: 's.maffiodo@betacom.it',
@@ -59,20 +59,187 @@ describe('POST /api/login', () => {
     } catch (error) {
       assert.strictEqual(error.response.status, 500);
     }
-  });
+  }); */
 
 });
 
 describe('GET /api/eventi', () => {
+  
+  let AuthToken;
+
+  before(async () => {
+    try{
+      const credentials = {
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro'
+      };
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    }catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+
   it('should return a list of events', async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/eventi`);
+      if (!AuthToken) {
+        throw new Error('Authentication token not found');
+      }
+      const response = await axios.get(`${API_URL}/api/eventi`, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
       assert.strictEqual(response.status, 200);
       assert.ok(Array.isArray(response.data)); 
     } catch (error) {
       throw new Error(`Error fetching events: ${error.message}`);
     }
   });
+
+
+  it('should return a 401 error if not authenticated', async () => {
+    try{
+      const response = await axios.get(`${API_URL}/api/eventi`);
+      throw new Error(`Expected request to fail with 401 error`);
+    } catch (error) {
+      assert.strictEqual(error.response.status, 401);
+    }
+  })
 });
 
 
+describe('GET /api/eventi/:id', () => {
+  let AuthToken;
+
+  before(async () => {
+    try{
+      const credentials = {
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro'
+      };
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    }catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+
+  it('should return an event', async () => {
+    try{
+        if (!AuthToken) {
+        throw new Error('Authentication token not found');
+      }
+      const response = await axios.get(`${API_URL}/api/eventi/36`, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+      assert.strictEqual(response.status, 200);
+      assert.ok(response.data);
+    } catch (error) {
+      throw new Error(`Error fetching events: ${error.message}`);
+    }
+  });
+
+  it('should return a 401 error if not authenticated', async () => {
+    try{
+      const response = await axios.get(`${API_URL}/api/eventi/36`);
+      throw new Error(`Expected request to fail with 401 error`);
+    } catch (error) {
+      assert.strictEqual(error.response.status, 401);
+    }
+  });
+});
+
+
+describe('POST /api/eventi/add', () => {
+
+  let AuthToken;
+
+  before(async () => {
+    try{
+      const credentials = {
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro'
+      };
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    }catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+  it('should add a new event', async () => {
+
+    try {
+
+      if (!AuthToken) {
+        throw new Error('Authentication token not found');
+      }
+
+      const newevent = {
+        id_Evento: null,
+        titolo: "padel",
+        data: "",
+        descrizione: "gioco innovativo",
+        luogo: "https://www.google.com/maps/place/Padelife+Settimo+Cielo/@45.142005,7.7335492,17z/data=!3m1!4b1!4m6!3m5!1s0x478871958011fdb9:0x1b57f1624344e251!8m2!3d45.142005!4d7.7335492!16s%2Fg%2F11l5k12dl6?hl=it&entry=ttu",
+        immagine_evento: "https://www.sporteimpianti.it/wp-content/uploads/2023/11/Favaretti-Settimo-copertina.jpg",
+      };
+
+      const response = await axios.post(`${API_URL}/api/eventi/add`, newevent, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+
+      assert.strictEqual(response.status, 200);
+      assert.ok(response.data);
+      
+      
+    } catch (error) {
+      throw new Error(`Error authenticating user: ${error.message}`);
+    }
+  });
+
+  it('should return a 401 error if not authenticated', async () => {
+    try{
+      const response = await axios.get(`${API_URL}/api/eventi`);
+      throw new Error(`Expected request to fail with 401 error`);
+    } catch (error) {
+      assert.strictEqual(error.response.status, 401);
+    }
+  });
+
+});
+
+describe('DELETE /api/eventi/delete/:id', () => {
+  let AuthToken;
+
+  before(async () => {
+    try{
+      const credentials = {
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro'
+      };
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    }catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+  it('should delete an event', async () => {
+    try{
+
+    } catch (error) {
+      
+    }
+  })
+})

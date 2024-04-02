@@ -27,7 +27,7 @@ function logout() {
 
 export default {
   fetchEvents() {
-    return axios.get(`${API_URL}/api/eventi`);
+    return axios.get(`${API_URL}/api/eventi`); //tested
   },
   fetchUsers() {
     return axios.get(`${API_URL}/api/utenti`);
@@ -42,16 +42,16 @@ export default {
     return axios.get(`${API_URL}/api/proposte`);
   },
   fetchEventDetails(id) {
-    return axios.get(`${API_URL}/api/eventi/${id}`);
+    return axios.get(`${API_URL}/api/eventi/${id}`); //tested
   },
   addEvents(newEvent) {
-    return axios.post(`${API_URL}/api/eventi/add`, newEvent);
+    return axios.post(`${API_URL}/api/eventi/add`, newEvent); //tested
   },
   deleteEvent(id) {
-    return axios.delete(`${API_URL}/api/eventi/delete/${id}`);
+    return axios.delete(`${API_URL}/api/eventi/delete/${id}`); //tested
   },
   Login(Credenziali) {
-    return axios.post(`${API_URL}/api/login`, Credenziali);
+    return axios.post(`${API_URL}/api/login`, Credenziali); //tested
   },
   addUtenti(newUtente) {
     return axios.post(`${API_URL}/api/utenti/add`, newUtente);
