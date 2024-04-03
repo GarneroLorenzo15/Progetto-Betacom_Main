@@ -7,6 +7,8 @@ const API_URL = "http://localhost:3000";
 
 
 
+//login done
+
 describe('POST /api/login', () => {
   it('should authenticate a user and return a token with valid credentials', async () => {
     try {
@@ -63,6 +65,11 @@ describe('POST /api/login', () => {
 
 });
 
+
+
+
+//GET eventi done
+
 describe('GET /api/eventi', () => {
   
   let AuthToken;
@@ -111,6 +118,9 @@ describe('GET /api/eventi', () => {
 });
 
 
+
+//GET eventi by id
+
 describe('GET /api/eventi/:id', () => {
   let AuthToken;
 
@@ -157,9 +167,13 @@ describe('GET /api/eventi/:id', () => {
 });
 
 
+//lifecycle of an event done
+
+
 describe('POST /api/eventi/add', () => {
 
   let AuthToken;
+  let id;
 
   before(async () => {
     try{
@@ -176,37 +190,38 @@ describe('POST /api/eventi/add', () => {
   });
 
   it('should add a new event', async () => {
-
+    
     try {
-
+      
       if (!AuthToken) {
         throw new Error('Authentication token not found');
       }
-
+      
+      
       const newevent = {
-        id_Evento: null,
         titolo: "padel",
         data: "",
         descrizione: "gioco innovativo",
         luogo: "https://www.google.com/maps/place/Padelife+Settimo+Cielo/@45.142005,7.7335492,17z/data=!3m1!4b1!4m6!3m5!1s0x478871958011fdb9:0x1b57f1624344e251!8m2!3d45.142005!4d7.7335492!16s%2Fg%2F11l5k12dl6?hl=it&entry=ttu",
         immagine_evento: "https://www.sporteimpianti.it/wp-content/uploads/2023/11/Favaretti-Settimo-copertina.jpg",
       };
-
+      
       const response = await axios.post(`${API_URL}/api/eventi/add`, newevent, {
         headers: {
           Authorization: `${AuthToken}`
         }
       });
-
+      
       assert.strictEqual(response.status, 200);
       assert.ok(response.data);
       
+      id = response.data.id_Evento;
       
     } catch (error) {
       throw new Error(`Error authenticating user: ${error.message}`);
     }
   });
-
+  
   it('should return a 401 error if not authenticated', async () => {
     try{
       const response = await axios.get(`${API_URL}/api/eventi`);
@@ -215,10 +230,43 @@ describe('POST /api/eventi/add', () => {
       assert.strictEqual(error.response.status, 401);
     }
   });
+  
+  it('should return the same event added previuosly by his id', async () => {
+    if(!AuthToken){
+      throw new Error('Authentication token not found');
+    }
+    try{
+      const response = await axios.get(`${API_URL}/api/eventi/${id}`, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+      assert.strictEqual(response.status, 200);
+      assert.ok(response.data);
+    } catch (error) {
+      throw new Error(`Error fetching events: ${error.message}`);
+    }
+  });
+
+  it('should return a delete of the element added previuosly by his id', async () => {
+    try{
+      const response = await axios.delete(`${API_URL}/api/eventi/delete/${id}`, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+      assert.strictEqual(response.status, 200);
+      assert.ok(response.data);
+    } catch (error) {
+      throw new Error(`Error deleting event: ${error.message}`);
+    }
+  });
+
+
 
 });
 
-describe('DELETE /api/eventi/delete/:id', () => {
+/* describe('DELETE /api/eventi/delete/:id', () => {
   let AuthToken;
 
   before(async () => {
@@ -241,5 +289,5 @@ describe('DELETE /api/eventi/delete/:id', () => {
     } catch (error) {
       
     }
-  })
-})
+  });
+}); */
