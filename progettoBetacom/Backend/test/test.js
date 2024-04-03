@@ -48,21 +48,6 @@ describe('POST /api/login', () => {
       assert.strictEqual(error.response.status, 400);
     }
   });
-
-  /* it('should return a 500 error if there is an internal server error', async () => {
-    try {
-      const credentials = {
-        email: 's.maffiodo@betacom.it',
-        password: 'Sandro',
-      };
-
-      await axios.post(`${API_URL}/api/login`, credentials);
-      throw new Error('Expected request to fail with 500 error');
-    } catch (error) {
-      assert.strictEqual(error.response.status, 500);
-    }
-  }); */
-
 });
 
 
@@ -119,7 +104,7 @@ describe('GET /api/eventi', () => {
 
 
 
-//GET eventi by id
+//GET eventi by id done 
 
 describe('GET /api/eventi/:id', () => {
   let AuthToken;
@@ -195,7 +180,7 @@ describe('POST /api/eventi/add', () => {
       
       if (!AuthToken) {
         throw new Error('Authentication token not found');
-      }
+      };
       
       
       const newevent = {
@@ -293,7 +278,9 @@ describe('GET /api/utenti', () => {
     try {
       if (!AuthToken) {
         throw new Error('Authentication token not found');
-      }
+      };
+
+
       const response = await axios.get(`${API_URL}/api/utenti`, {
         headers: {
           Authorization: `${AuthToken}`
@@ -369,12 +356,12 @@ describe('GET /api/utenti/:id', () => {
 });
 
 
-//lifecycle of an user working...
+//lifecycle of an user done
 
 describe('POST /api/user/add', () => {
 
   let AuthToken;
-  var id;
+  let id;
 
   before(async () => {
     try{
@@ -396,7 +383,7 @@ describe('POST /api/user/add', () => {
       
       if (!AuthToken) {
         throw new Error('Authentication token not found');
-      }
+      };
 
       const newuser = {
         nome: "luca",
@@ -437,6 +424,37 @@ describe('POST /api/user/add', () => {
     }
   });
 
+
+  it('should return the previously added user with an update', async () => {
+
+   try{
+
+     if (!AuthToken) {
+       throw new Error('Authentication token not found');
+     };
+
+     const newuserupdated = {
+       nome: "luca",
+       cognome: "beta",
+       password: "puff",
+       email: "l.betacom@betacom.it",
+       disponibile: true,
+     }
+
+     const response = await axios.put(`${API_URL}/api/utenti/update/${id}`, newuserupdated, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+
+       assert.strictEqual(response.status, 200);
+       assert.ok(response.data);
+
+   } catch (error) {
+     throw new Error(`Error updating user: ${error.message}`);
+   }
+  });
+
   it('should return a delete of the element added previuosly by his id', async () => {
 
     try{
@@ -449,13 +467,106 @@ describe('POST /api/user/add', () => {
       assert.strictEqual(response.status, 200);
       assert.ok(response.data);
 
-      
-
-
     }catch (error) {
       throw new Error(`Error deleting user: ${error.message}`);
     }
 
-  })
+  });
 });
+
+
+//GET proposte
+
+
+/* describe('GET /api/proposte', () => {
+
+  let AuthToken;
+
+  before(async () => {
+    try {
+      const credentials = {
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro'
+      };
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    } catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+
+  it('should return 404', async () => {
+    try {
+      if (!AuthToken) {
+        throw new Error('Authentication token not found');
+      };
+
+      const response = await axios.get(`${API_URL}/api/proposte`, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+
+      assert.strictEqual(response.status, 404);
+      assert.ok(response.data);
+
+    } catch (error) {
+      throw new Error(`Error authenticating user: ${error.message}`);
+    };
+
+  });
+
+}); */
+
+
+//GET date
+
+/* describe('GET /api/date', () => {
+  
+  let AuthToken;
+
+  before(async () => {
+    try{
+      const credentials = {
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro'
+      };
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    }catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+  it('should return an array of dates', async () => {
+    try {
+      if (!AuthToken) {
+        throw new Error('Authentication token not found');
+      };
+
+      const response = await axios.get(`${API_URL}/api/date`, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+
+       assert.strictEqual(response.status, 200);
+       assert.ok(response.data);
+    } catch (error) {
+      throw new Error(`Error fetching users: ${error.message}`);
+    }
+  });
+
+  it('should return a 401 error if not authenticated', async () => {
+    try{
+      const response = await axios.get(`${API_URL}/api/date`);
+      throw new Error(`Expected request to fail with 401 error`);
+    } catch (error) {
+      assert.strictEqual(error.response.status, 401);
+    }
+  });
+}); */
 

@@ -33,10 +33,10 @@ export default {
     return axios.get(`${API_URL}/api/utenti`); //tested
   },
   fetchUserDetails(id) {
-    return axios.get(`${API_URL}/api/utenti/${id}`); 
+    return axios.get(`${API_URL}/api/utenti/${id}`); //tested
   },
   updateUser(id, data) {
-    return axios.put(`${API_URL}/api/utenti/update/${id}`, data);
+    return axios.put(`${API_URL}/api/utenti/update/${id}`, data); //tested
   },
   fetchProposals() {
     return axios.get(`${API_URL}/api/proposte`);
@@ -57,7 +57,7 @@ export default {
     return axios.post(`${API_URL}/api/utenti/add`, newUtente); //tested
   },
   deleteUtenti(id) {
-    return axios.delete(`${API_URL}/api/utenti/delete/${id}`);
+    return axios.delete(`${API_URL}/api/utenti/delete/${id}`); //tested
   },
   fetchDate(){
     return axios.get(`${API_URL}/api/date`);
