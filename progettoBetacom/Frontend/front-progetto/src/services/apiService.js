@@ -30,10 +30,10 @@ export default {
     return axios.get(`${API_URL}/api/eventi`); //tested
   },
   fetchUsers() {
-    return axios.get(`${API_URL}/api/utenti`);
+    return axios.get(`${API_URL}/api/utenti`); //tested
   },
   fetchUserDetails(id) {
-    return axios.get(`${API_URL}/api/utenti/${id}`);
+    return axios.get(`${API_URL}/api/utenti/${id}`); 
   },
   updateUser(id, data) {
     return axios.put(`${API_URL}/api/utenti/update/${id}`, data);
@@ -41,7 +41,7 @@ export default {
   fetchProposals() {
     return axios.get(`${API_URL}/api/proposte`);
   },
-  fetchEventDetails(id) {
+  fetchEventDetails(id) { 
     return axios.get(`${API_URL}/api/eventi/${id}`); //tested
   },
   addEvents(newEvent) {
@@ -54,7 +54,7 @@ export default {
     return axios.post(`${API_URL}/api/login`, Credenziali); //tested
   },
   addUtenti(newUtente) {
-    return axios.post(`${API_URL}/api/utenti/add`, newUtente);
+    return axios.post(`${API_URL}/api/utenti/add`, newUtente); //tested
   },
   deleteUtenti(id) {
     return axios.delete(`${API_URL}/api/utenti/delete/${id}`);
