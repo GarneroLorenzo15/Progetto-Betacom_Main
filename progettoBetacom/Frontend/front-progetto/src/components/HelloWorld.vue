@@ -38,7 +38,15 @@
       </div>
     </div>
     <div class="container d-flex justify-content-center mt-5">
-      <GoogleLogin :callback="callback" prompt auto-login/>
+      <div v-if="logged">
+        
+      </div>
+      <div v-else>
+        <GoogleLogin :callback="callback" prompt auto-login />
+      </div>
+      <!-- <div class="g-signin2" data-onsuccess="onSignIn">
+        <i class="bi bi-google"></i>
+      </div> -->
     </div>
     <div class="container d-flex justify-content-center text-white fondo-page">
       <div class="row">
@@ -67,10 +75,11 @@ export default {
       showInfoMessage: false,
       logged: false,
       user: null,
-      callback: (response) => {
+      callback: async (response) => {
+        this.logged = true;
         console.log(response);
         this.user = decodeCredential(response.credential);
-        this.$router.push('/eventi');
+
       }
     };
   },
@@ -84,12 +93,12 @@ export default {
       try {
         const response = await apiService.Login(this.Credenziali);
         console.log(response.status);
-        if (!this.Credenziali.email || !this.Credenziali.password || response.status === 400){
+        if (!this.Credenziali.email || !this.Credenziali.password || response.status === 400) {
           this.showNoCredenziali();
           return;
         }
 
-        if(response.status === 200){
+        if (response.status === 200) {
           const token = await response.data.token;
           const admin = await response.data.admin;
           const utente = await response.data.utente;
@@ -98,7 +107,7 @@ export default {
           localStorage.setItem('admin', admin);
           this.$router.push('/eventi');
           this.accessCorrect();
-        } else if(response.status === 401){
+        } else if (response.status === 401) {
           this.accessDenied();
         }
       } catch (error) {
@@ -141,7 +150,10 @@ export default {
         confirmButtonColor: '#034ea1',
       });
     },
-   
+    goToEventi() {
+      this.$router.push('/eventi');
+      console.log('click');
+    },
   }
 };
 </script>
@@ -217,7 +229,8 @@ i {
 .h-auto {
   height: auto;
 }
-/* 
+
+
 .google-login-button {
   background-color: #fff;
   color: #034ea1;
@@ -241,5 +254,5 @@ i {
 
 button i{
   color: #034ea1;
-} */
+}
 </style>
