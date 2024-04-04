@@ -570,4 +570,258 @@ describe('POST /api/user/add', () => {
   });
 }); */
 
-//
+//GET date by id
+
+describe('GET /api/date/:id', () => {
+
+  let AuthToken;
+
+  before(async () => {
+    try{
+      const credentials = {
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro'
+      };
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    }catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+  it('should return an array of dates', async () => {
+    try{
+      if (!AuthToken) {
+        throw new Error('Authentication token not found');
+      };
+
+
+      const response = await axios.get(`${API_URL}/api/date/1`, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+
+       assert.strictEqual(response.status, 200);
+       assert.ok(response.data);
+
+    } catch (error) {
+      throw new Error(`Error fetching users: ${error.message}`);
+    }
+  });
+
+  it('should return a 401 error if not authenticated', async () => {
+    try{
+      const response = await axios.get(`${API_URL}/api/date/1`);
+      throw new Error(`Expected request to fail with 401 error`);
+    } catch (error) {
+      assert.strictEqual(error.response.status, 401);
+    }
+  });
+
+});
+
+
+//GET date deciding
+
+describe('GET /api/date/deciding', () => {
+
+  let AuthToken;
+
+  before(async () => {
+    try{
+      const credentials = {
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro'
+      };
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    }catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+  it('should return an array of dates from the most voted', async () => {
+    try{
+      if (!AuthToken) {
+        throw new Error('Authentication token not found');
+      };
+
+       const response = await axios.get(`${API_URL}/api/date/deciding`, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+
+       assert.strictEqual(response.status, 200);
+       assert.ok(response.data);
+
+    } catch (error) {
+      throw new Error(`Error fetching users: ${error.message}`);
+    }
+  });
+
+
+  it('should return a 401 error if not authenticated', async () => {
+     
+    try{
+      const response = await axios.get(`${API_URL}/api/date/deciding`);
+      throw new Error(`Expected request to fail with 401 error`);
+    } catch (error) {
+      assert.strictEqual(error.response.status, 401);
+    }
+  });
+});
+
+
+//GET voti 
+
+describe('GET /api/voti', () => {
+
+  let AuthToken;
+
+  before(async () => {
+    try{
+      const credentials ={
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro',
+      }
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    } catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+  it('should return an array of voti', async () => {
+
+    try{
+      if(!AuthToken) {
+        throw new Error('Authentication token not found');
+      };
+
+      const response = await axios.get(`${API_URL}/api/voti`, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+
+       assert.strictEqual(response.status, 200);
+       assert.ok(response.data);
+    } catch (error) {
+      throw new Error(`Error fetching users: ${error.message}`);
+    }
+  });
+
+  it('should return a 401 error if not authenticated', async () => {
+
+    try{
+      const response = await axios.get(`${API_URL}/api/voti`);
+      throw new Error(`Expected request to fail with 401 error`);
+    } catch (error) {
+      assert.strictEqual(error.response.status, 401);
+    }
+  });
+});
+
+//GET count voti
+
+describe('Get /api/voti/count', () => {
+  let AuthToken;
+
+  before(async () => {
+    try{
+      const credentials ={
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro',
+      }
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    } catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+  it('should return the count of voti', async () => {
+    try{
+      if(!AuthToken){
+        throw new Error('Authentication token not found');
+      };
+
+      const response = await axios.get(`${API_URL}/api/voti/count`, {
+        headers: {
+          Authorization: `${AuthToken}`
+        }
+      });
+
+       assert.strictEqual(response.status, 200);
+       assert.ok(response.data);
+    } catch (error) {
+      throw new Error(`Error fetching users: ${error.message}`);
+    }
+  });
+
+  it('should return a 401 error if not authenticated', async () => {
+    try{
+      const response = await axios.get(`${API_URL}/api/voti/count`);
+      throw new Error(`Expected request to fail with 401 error`);
+    } catch (error) {
+      assert.strictEqual(error.response.status, 401);
+    }
+  });
+});
+
+
+//lifecycle dei voti working...
+
+
+describe('POST /api/voti/lifecycle', () => {
+
+  let AuthToken;
+
+  before(async () => {
+    try{
+      const credentials ={
+        email: 's.maffiodo@betacom.it',
+        password: 'Sandro',
+      }
+
+      const response = await axios.post(`${API_URL}/api/login`, credentials);
+      AuthToken = response.data.token;
+    } catch (ERR) {
+      console.log(ERR);
+    }
+  });
+
+  it('should add a new voto', async () => {
+    
+    try{
+
+      if(!AuthToken){
+        throw new Error('Authentication token not found');
+      };
+
+      const infovoti = {
+        id_Voto: '',
+        id_Evento: '',
+        id_Utente: '',
+        voto: true,
+      }
+      
+      const response = await axios.post(`${API_URL}/api/voti/add`, {
+        headers:{
+          Authorization: `${AuthToken}`,
+        }
+      });
+
+       assert.strictEqual(response.status, 200);
+       assert.ok(response.data);
+    }catch (error) {
+      console.log(ERR);
+    }
+  })
+})
