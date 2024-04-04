@@ -83,5 +83,5 @@ export default {
   deleteVoti(){
     return axios.delete(`${API_URL}/api/voti/delete`);
   },
-  logout
+  
 };

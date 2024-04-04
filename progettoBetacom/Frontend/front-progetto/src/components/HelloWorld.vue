@@ -33,9 +33,12 @@
       </div>
     </div>
     <div class="container d-flex justify-content-center">
-      <div class="row" style="width: 50%">
-        <button class="w-full mb-3" @click="login()">LOGIN</button>
+      <div style="width: 50%">
+        <button class="d-flex justify-content-center w-full" @click="login()">LOGIN</button>
       </div>
+    </div>
+    <div class="container d-flex justify-content-center mt-5">
+      <GoogleLogin :callback="callback" prompt auto-login/>
     </div>
     <div class="container d-flex justify-content-center text-white fondo-page">
       <div class="row">
@@ -47,8 +50,10 @@
 
 <script>
 /*eslint-disable*/
+import { GoogleLogin } from "vue3-google-login";
 import apiService from "../services/apiService";
 import Swal from 'sweetalert2'
+import { decodeCredential } from "vue3-google-login";
 
 export default {
   name: "HelloWorld",
@@ -59,7 +64,14 @@ export default {
         password: '',
       },
       showPassword: true,
-      showInfoMessage: false
+      showInfoMessage: false,
+      logged: false,
+      user: null,
+      callback: (response) => {
+        console.log(response);
+        this.user = decodeCredential(response.credential);
+        this.$router.push('/eventi');
+      }
     };
   },
   computed: {
@@ -128,8 +140,8 @@ export default {
         title: "Accesso negato!",
         confirmButtonColor: '#034ea1',
       });
-    }
-
+    },
+   
   }
 };
 </script>
@@ -205,4 +217,29 @@ i {
 .h-auto {
   height: auto;
 }
+/* 
+.google-login-button {
+  background-color: #fff;
+  color: #034ea1;
+  border: 2px solid #757575;
+  border-radius: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.google-login-button:hover {
+  background-color: #f1f1f1;
+}
+
+.google-login-button img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+button i{
+  color: #034ea1;
+} */
 </style>
