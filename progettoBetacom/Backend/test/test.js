@@ -741,7 +741,7 @@ describe('Get /api/voti/count', () => {
 
       const response = await axios.post(`${API_URL}/api/login`, credentials);
       AuthToken = response.data.token;
-    } catch (ERR) {
+    } catch (ERR) {  
       console.log(ERR);
     }
   });
@@ -821,7 +821,29 @@ describe('POST /api/voti/lifecycle', () => {
        assert.strictEqual(response.status, 200);
        assert.ok(response.data);
     }catch (error) {
+      throw new Error(`Error fetching users: ${error.message}`);
+    }
+  });
+
+  it('should return an array of voti', async () => {
+    try{
+      if(!AuthToken){
+        throw new Error('Authentication token not found');
+      };
+    } catch (ERR) {
       console.log(ERR);
     }
-  })
-})
+
+    const response = await axios.get(`${API_URL}/api/voti`, {
+      headers:{
+        Authorization: `${AuthToken}`,
+      }
+    });
+
+    assert.strictEqual(response.status, 200);
+    assert.ok(response.data);
+  });
+
+
+
+});

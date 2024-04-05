@@ -19,16 +19,15 @@
                 </div>
                 <div class="card-body d-flex justify-content-center">
                     <div class="row w-full">
-                        <div class="w-7 spaces" v-for="days in month.daysign" :key="days">{{ days }}</div>
+                        <div class="w-7 spaces d-flex justify-content-center" v-for="days in month.daysign" :key="days">{{ days }}</div>
                         <div class="w-7" v-for="n in month.blankDays" :key="`empty-${n}`"></div>
                         <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in  daysInMonth(key)"
-                            :key="index" @click="toggleDate(day, key)" :class="{ 'selected': isSelected(day, key) }">
-                            <div>{{ day }}</div>
+                            :key="index" @click="toggleDate(day, key)">
+                            <div class="px-2 py-1" :class="{ 'selected': isSelected(day, key) }">{{ day }}</div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="fab-wrapper">
                 <button class="fab-button" @click="addDateFromApi()" v-if="showConfirm">
                     <i class="bi bi-check"></i>
@@ -213,10 +212,11 @@ export default {
 
 .selected {
     background-color: #034ea1;
-    border-radius: 100%;
     color: white;
-    padding: 8px;
+    cursor: pointer;
 }
+
+
 
 .fab-wrapper {
     position: fixed;

@@ -151,6 +151,11 @@ export default {
 .w-full {
   width: 100%;
 }
+@media (min-width: 992px) {
+  .w-lg-40 {
+    width: 40%;
+  }
+}
 
 .bg-white {
   background-color: white;

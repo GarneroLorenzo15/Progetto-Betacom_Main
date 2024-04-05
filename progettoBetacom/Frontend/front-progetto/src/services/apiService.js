@@ -83,5 +83,7 @@ export default {
   deleteVoti(){
     return axios.delete(`${API_URL}/api/voti/delete`);
   },
-  
+  LoginGoogle(email){
+    return axios.post(`${API_URL}/api/login/google/${email}`, ); 
+  }
 };

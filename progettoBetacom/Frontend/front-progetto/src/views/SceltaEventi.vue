@@ -225,6 +225,7 @@ export default {
 
 i {
   font-size: 45px;
+  cursor: pointer;
 }
 
 .active {
