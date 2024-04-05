@@ -19,11 +19,11 @@
                 </div>
                 <div class="card-body d-flex justify-content-center">
                     <div class="row w-full">
-                        <div class="w-7 spaces d-flex justify-content-center" v-for="days in month.daysign" :key="days">{{ days }}</div>
-                        <div class="w-7" v-for="n in month.blankDays" :key="`empty-${n}`"></div>
-                        <div class="w-7 d-flex justify-content-center my-1" v-for="(day, index) in  daysInMonth(key)"
-                            :key="index" @click="toggleDate(day, key)">
-                            <div class="px-2 py-1" :class="{ 'selected': isSelected(day, key) }">{{ day }}</div>
+                        <div class="w-7 spaces d-flex justify-content-center border boreder-primary" v-for="days in month.daysign" :key="days">{{ days }}</div>
+                        <div class="w-7 border boreder-primary" v-for="n in month.blankDays" :key="`empty-${n}`"></div>
+                        <div class="w-7 d-flex justify-content-center border boreder-primary" v-for="(day, index) in  daysInMonth(key)"
+                            :key="index" @click="toggleDate(day, key)" :class="{ 'selected': isSelected(day, key) }">
+                            <div class="px-2 py-1" >{{ day }}</div>
                         </div>
                     </div>
                 </div>
