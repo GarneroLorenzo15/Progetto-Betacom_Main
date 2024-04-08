@@ -127,6 +127,10 @@ export default {
     async addEventsFromApi() {
       try {
         const response = await apiService.addEvents(this.newEvent);
+        console.log(response.status );
+        if(response.status === 400){
+          this.wrondData();
+        }
         this.closeModal();
         this.eventAddConfirm();
         window.location.reload();
@@ -183,11 +187,20 @@ export default {
       })
     },
 
+    wrondData() {
+      Swal.fire({
+        icon: 'error',
+        title: 'Formato dati non valido',
+        showConfirmButton: false,
+        confirmButtonColor: '#034ea1',
+        timer: 1500
+      })
+    },
 
-
-  },
-
+  }
 };
+
+
 </script>
 
 <style scoped>
