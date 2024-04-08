@@ -128,7 +128,7 @@ export default {
       try {
         const response = await apiService.addEvents(this.newEvent);
         console.log(response.status );
-        if(response.status === 400){
+        if(response.status && response.status === 400){
           this.wrondData();
         }
         this.closeModal();
