@@ -8,7 +8,7 @@
         </figure>
       </div>
     </div>
-    <div class="container my-4">
+    <div class="container my-4 w-full w-lg-40">
       <div class="row">
         <div class="w-full d-flex justify-content-end">
           <div class="hover-info" @click="toggleInfoMessage()"><i class="bi bi-info-circle-fill font-i"></i>
@@ -33,9 +33,12 @@
       </div>
     </div>
     <div class="container d-flex justify-content-center">
-      <div class="row" style="width: 50%">
-        <button class="w-full mb-3" @click="login()">LOGIN</button>
+      <div style="width: 50%" class="d-flex justify-content-center">
+        <button class=" w-75" @click="login()">LOGIN</button>
       </div>
+    </div>
+    <div class="container d-flex justify-content-center mt-5">
+      <GoogleLogin :callback="callback" prompt auto-login />
     </div>
     <div class="container d-flex justify-content-center text-white fondo-page">
       <div class="row">
@@ -47,8 +50,10 @@
 
 <script>
 /*eslint-disable*/
+import { GoogleLogin } from "vue3-google-login";
 import apiService from "../services/apiService";
 import Swal from 'sweetalert2'
+import { decodeCredential } from "vue3-google-login";
 
 export default {
   name: "HelloWorld",
@@ -59,7 +64,18 @@ export default {
         password: '',
       },
       showPassword: true,
-      showInfoMessage: false
+      showInfoMessage: false,
+      logged: false,
+      user: null,
+      email: '',
+      callback: async (response) => {
+        this.logged = true;
+        console.log(response);
+        this.user = decodeCredential(response.credential);
+        this.email = this.user.email;
+        console.log(this.email);
+        this.loginGoogle();
+      }
     };
   },
   computed: {
@@ -72,11 +88,37 @@ export default {
       try {
         const response = await apiService.Login(this.Credenziali);
         console.log(response.status);
-        if (!this.Credenziali.email || !this.Credenziali.password || response.status === 400){
+        if (!this.Credenziali.email || !this.Credenziali.password || response.status === 400) {
           this.showNoCredenziali();
           return;
         }
 
+        if (response.status === 200) {
+          const token = await response.data.token;
+          const admin = await response.data.admin;
+          const utente = await response.data.utente;
+          localStorage.setItem('token', token);
+          localStorage.setItem('utente', utente);
+          localStorage.setItem('admin', admin);
+          this.$router.push('/eventi');
+        } else if (response.status === 401) {
+          this.accessDenied();
+        }
+      } catch (error) {
+        console.log(error, 'login normale');
+      }
+    },
+
+    async loginGoogle() {
+      try{
+        const response = await apiService.LoginGoogle(this.email);
+
+        if (!this.email || response.status === 400) {
+          this.showNoCredenziali();
+          return;
+        }
+
+        
         if(response.status === 200){
           const token = await response.data.token;
           const admin = await response.data.admin;
@@ -85,12 +127,9 @@ export default {
           localStorage.setItem('utente', utente);
           localStorage.setItem('admin', admin);
           this.$router.push('/eventi');
-          this.accessCorrect();
-        } else if(response.status === 401){
-          this.accessDenied();
         }
       } catch (error) {
-        console.log(error);
+        console.log(error, 'login google');
       }
     },
     togglePassword() {
@@ -101,9 +140,6 @@ export default {
       const hoverInfo = document.querySelector('.hover-info');
       hoverInfo.classList.toggle('clicked');
       console.log(this.showInfoMessage);
-    },
-    shownAlterProva() {
-      Swal.fire("SweetAlert2 is working!");
     },
     showNoCredenziali() {
       if (this.Credenziali === undefined) {
@@ -128,8 +164,11 @@ export default {
         title: "Accesso negato!",
         confirmButtonColor: '#034ea1',
       });
-    }
-
+    },
+    goToEventi() {
+      this.$router.push('/eventi');
+      console.log('click');
+    },
   }
 };
 </script>
@@ -139,6 +178,25 @@ export default {
 .w-full {
   width: 100%;
 }
+
+.w-75{
+  width: 75%;
+}
+
+.w-55{
+  width: 55%;
+}
+
+.w-40{
+  width: 40%;
+}
+
+@media (min-width: 992px) {
+  .w-lg-40 {
+    width: 40%;
+  }
+}
+
 
 .hover-info {
   position: relative;
@@ -205,4 +263,31 @@ i {
 .h-auto {
   height: auto;
 }
+
+
+.google-login-button {
+  background-color: #fff;
+  color: #034ea1;
+  border: 2px solid #757575;
+  border-radius: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.google-login-button:hover {
+  background-color: #f1f1f1;
+}
+
+.google-login-button img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
+button i{
+  color: #034ea1;
+}
+
 </style>

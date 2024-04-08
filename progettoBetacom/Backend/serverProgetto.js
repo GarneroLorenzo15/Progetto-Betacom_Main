@@ -86,6 +86,41 @@ app.post('/api/login', async (req, res) => {
  
 });
 
+
+
+app.post('/api/login/google/:email', async (req, res) => {
+
+    const { email } = req.params;
+    
+    try{
+        const rows = await new Promise((resolve, reject) => {
+            connection.query('SELECT * FROM utente WHERE email = ?', [email], (err, rows) => {
+                if (err) {
+                    reject(err);
+                } else if (rows) {
+                    resolve(rows);
+                }
+            });
+        });
+
+        if (rows.length > 0) {
+            let user = rows[0];
+            delete user.password;
+            const token = jwt.sign({ ...user }, secretKey, { expiresIn: '10h' });
+            return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
+        } else if (rows.length <= 0) {
+            res.status(401).json({ error: 'Non autorizzato' });
+        }
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        if (res.statusCode === 500) {
+            res.status(500).json({ error: 'Server Error' });
+        } else if (res.statusCode === 400) {
+            res.status(400).json({ error: 'Bad Request' });
+        }
+    }
+});
+
 /* 
  *   Creation session
  */
@@ -171,10 +206,10 @@ app.get('/api/utenti', async (req, res) => {
             delete row.password;
         })
 
-        res.status(200).json(rows);
+        res.status(200).json(rows);  
     } catch (err) {
         console.error('Error fetching users:', err);
-        if (res.statusCode === 404) {
+        if (res.statusCode === 404) { 
             res.status(404).json({ error: 'Not Found' });
         } else if (res.statusCode === 500) {
             res.status(500).json({ error: 'Server Error' });

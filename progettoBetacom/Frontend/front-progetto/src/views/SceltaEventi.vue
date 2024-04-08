@@ -1,7 +1,6 @@
 <template>
   <!-- eslint-disable -->
   <div class="eventi">
-
     <div class="container text-center d-flex justify-content-center flex-wrap">
       <div class="row w-full flex-nowrap align-items-center ">
         <div class="col-6  d-flex justify-content-start">
@@ -152,7 +151,7 @@ export default {
         confirmButtonText: 'Si, uscire!'
       }).then((result) => {
         if (result.isConfirmed) {
-          this.apiService.logout()
+          this.logout()
         }
       })
     },
@@ -226,6 +225,7 @@ export default {
 
 i {
   font-size: 45px;
+  cursor: pointer;
 }
 
 .active {

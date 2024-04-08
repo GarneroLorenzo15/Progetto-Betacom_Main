@@ -30,19 +30,19 @@ export default {
     return axios.get(`${API_URL}/api/eventi`); //tested
   },
   fetchUsers() {
-    return axios.get(`${API_URL}/api/utenti`);
+    return axios.get(`${API_URL}/api/utenti`); //tested
   },
   fetchUserDetails(id) {
-    return axios.get(`${API_URL}/api/utenti/${id}`);
+    return axios.get(`${API_URL}/api/utenti/${id}`); //tested
   },
   updateUser(id, data) {
-    return axios.put(`${API_URL}/api/utenti/update/${id}`, data);
+    return axios.put(`${API_URL}/api/utenti/update/${id}`, data); //tested
   },
   fetchProposals() {
-    return axios.get(`${API_URL}/api/proposte`);
+    return axios.get(`${API_URL}/api/proposte`); //tested
   },
-  fetchEventDetails(id) {
-    return axios.get(`${API_URL}/api/eventi/${id}`); //tested
+  fetchEventDetails(id) { 
+    return axios.get(`${API_URL}/api/eventi/${id}`); //tested X
   },
   addEvents(newEvent) {
     return axios.post(`${API_URL}/api/eventi/add`, newEvent); //tested
@@ -54,34 +54,36 @@ export default {
     return axios.post(`${API_URL}/api/login`, Credenziali); //tested
   },
   addUtenti(newUtente) {
-    return axios.post(`${API_URL}/api/utenti/add`, newUtente);
+    return axios.post(`${API_URL}/api/utenti/add`, newUtente); //tested
   },
   deleteUtenti(id) {
-    return axios.delete(`${API_URL}/api/utenti/delete/${id}`);
+    return axios.delete(`${API_URL}/api/utenti/delete/${id}`); //tested
   },
   fetchDate(){
-    return axios.get(`${API_URL}/api/date`);
+    return axios.get(`${API_URL}/api/date`); //tested X
   },
   fetchDateId(id){
-    return axios.get(`${API_URL}/api/date/${id}`);
+    return axios.get(`${API_URL}/api/date/${id}`); //tested
   },
   addDate(nuovaDataInserita) {
     return axios.post(`${API_URL}/api/date/add`, nuovaDataInserita);
   },
   fetchMaxVotedDate(){
-    return axios.get(`${API_URL}/api/date/deciding`);
+    return axios.get(`${API_URL}/api/date/deciding`); //tested
   },
   addVoti(infoVoti){
     return axios.post(`${API_URL}/api/voti/add`, infoVoti);
   },
   fetchVoti(){
-    return axios.get(`${API_URL}/api/voti`);
+    return axios.get(`${API_URL}/api/voti`); //tested
   },
   countVoti(){
-    return axios.get(`${API_URL}/api/voti/count`);
+    return axios.get(`${API_URL}/api/voti/count`); //tested
   },
   deleteVoti(){
     return axios.delete(`${API_URL}/api/voti/delete`);
   },
-  logout
+  LoginGoogle(email){
+    return axios.post(`${API_URL}/api/login/google/${email}`, ); 
+  }
 };
