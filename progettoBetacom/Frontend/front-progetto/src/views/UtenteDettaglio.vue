@@ -50,7 +50,7 @@
             </div>
             <div class="d-flex justify-content-center flex-wrap w-full my-2">
               <button class="spaces mb-2" @click="updateConfirm()">Salva le modifiche</button>
-              <button class="spaces " @click="deleteConfirm()">Elimina il Partecipante</button>
+              <button v-if="this.admin == 1" class="spaces " @click="deleteConfirm()">Elimina il Partecipante</button>
             </div>
           </div>
         </div>
@@ -81,7 +81,8 @@ export default {
         email: "",
         password: "",
         disponibile: true,
-      }
+      },
+      admin: localStorage.getItem('admin'),
     };
   },
   created(){
