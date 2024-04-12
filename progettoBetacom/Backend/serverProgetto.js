@@ -235,9 +235,9 @@ app.put('/api/utenti/update/:id', async (req, res) => {
     
 
  
-    if(decoded.admin === 0 ){
+    /* if(decoded.admin === 0 ){
         updateData.admin = decoded.admin;
-    }
+    } */
 
     if(req.session.user.id_Utente != userid && req.session.user.admin == 0){
         return  res.status(403).json('non autorizzato');       
