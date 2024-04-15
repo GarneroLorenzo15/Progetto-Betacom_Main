@@ -501,7 +501,7 @@ app.post('/api/eventi/add', async (req, res) => {
             res.status(400).json({ error: 'Il campo fornito non è un url valido' });
         } else if (immagine_evento && !urlCheck.test(immagine_evento)){
             res.status(400).json({ error: 'Il campo fornito non è un url valido' });
-        }
+        } 
    
  
 
@@ -524,9 +524,7 @@ app.post('/api/eventi/add', async (req, res) => {
 
     } catch (err) {
         console.error('Errore durante l\'inserimento dell\'evento:', err);
-        if (err.code === 'ER_BAD_FIELD_ERROR') {
-            res.status(400).json({ error: 'Il campo fornito non è valido' });
-        } else {
+        if (res.statusCode === 500) {
             res.status(500).json({ error: 'Si è verificato un errore durante l\'elaborazione della richiesta' });
         }
     }
@@ -736,7 +734,7 @@ app.get('/api/voti/count', async (req, res) => {
         }
     }
 });
-
+ 
 
 
 /**
