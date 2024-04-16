@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card mb-5">
                     <p class=" d-flex justify-content-center my-2">Grafico Sondaggio</p>
                     <canvas class="my-3  d-flex justify-content-center" id="pieChart"></canvas>
                 </div>
@@ -141,7 +141,7 @@ export default {
 
 <style scoped>
 .sondaggi {
-    height: 100vh;
+    height: 150vh;
 }
 
 .mr-5 {
