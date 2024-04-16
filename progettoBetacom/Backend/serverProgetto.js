@@ -95,7 +95,7 @@ app.post('/api/login/google/:email', async (req, res) => {
         if (rows.length > 0) {
             let user = rows[0];
             delete user.password;
-            const token = jwt.sign({ ...user }, secretKey, { expiresIn: '10h' });
+            const token = jwt.sign({ ...user, google: true }, secretKey, { expiresIn: '10h' });
             return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
         } else if (rows.length <= 0) {
             res.status(401).json({ error: 'Non autorizzato' });
@@ -184,6 +184,8 @@ app.get('/api/utenti/:id', async (req, res) => {
         return  res.status(403).json('non autorizzato');       
     }
 
+
+    let google = req.session.user.google;
     try {
         const rows = await new Promise((resolve, reject) => {
             connection.query('SELECT * FROM utente WHERE id_Utente = ?', [userid], (err, rows) => {
@@ -200,7 +202,7 @@ app.get('/api/utenti/:id', async (req, res) => {
             delete row.password;
         })
 
-        res.status(200).json({ message: 'OK', rows });
+        res.status(200).json({ message: 'OK', rows , google: google});    
     } catch (err) {
         console.error('Error fetching users:', err);
         if (res.statusCode === 404) {

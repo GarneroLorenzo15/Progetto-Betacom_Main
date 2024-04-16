@@ -40,7 +40,7 @@
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
               <div class="mx-1" style="width: 74px;">Email:</div><input v-model="userData.email" type="email">
             </div>
-            <div class="w-full d-flex  justify-content-center align-items-center my-2">
+            <div class="w-full d-flex  justify-content-center align-items-center my-2" v-if="google !== true">
               <div class="mx-1" style="width: 74px;">Password:</div><input v-model="userData.password" type="password">
             </div>
             <div class="w-full d-flex  justify-content-center align-items-center my-2">
@@ -82,6 +82,7 @@ export default {
         password: "",
         disponibile: true,
       },
+      google: false,
       admin: localStorage.getItem('admin'),
     };
   },
@@ -96,7 +97,9 @@ export default {
     async fetchUsersDetailsFromApi(id) {
       try {
         const response = await apiService.fetchUserDetails(id);
-        this.userData = response.data.rows[0]
+        this.userData = response.data.rows[0];
+        this.google = response.data.google;
+        console.log(response.data);
       } catch (e) {
         console.error(e);
       }
