@@ -155,6 +155,12 @@ export default {
   .w-lg-40 {
     width: 40%;
   }
+
+  img{
+    height: 20rem;
+    image-rendering: optimizeQuality;
+    object-fit: cover;
+  }
 }
 
 .bg-white {
