@@ -49,8 +49,12 @@
                   style="color: black;" class="bi bi-arrow-repeat"></i></button>
             </div>
             <div class="d-flex justify-content-center flex-wrap w-full my-2">
-              <button class="spaces mb-2" @click="updateConfirm()">Salva le modifiche</button>
-              <button v-if="this.admin == 1" class="spaces " @click="deleteConfirm()">Elimina il Partecipante</button>
+              <div class="w-full d-flex justify-content-center">
+                <button class="spaces mb-2" @click="updateConfirm()">Salva le modifiche</button>
+              </div>
+              <div class="w-full d-flex justify-content-center ">
+                <button v-if="this.admin == 1" class="spaces" @click="deleteConfirm()">Elimina il Partecipante</button>
+              </div>
             </div>
           </div>
         </div>

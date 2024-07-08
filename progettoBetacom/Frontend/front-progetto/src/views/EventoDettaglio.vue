@@ -1,7 +1,7 @@
 <template>
   <!-- eslint-disable -->
   <div class="bg-white">
-    <img class="w-full" :src="eventDetails[0].immagine_evento" alt="immagine evento" />
+    <img class="w-full h-lg-40 " :src="eventDetails[0].immagine_evento" alt="immagine evento" />
     <div class="container">
       <div class="row d-flex justify-content-center">
         <div class="row mt-1">
@@ -152,8 +152,9 @@ export default {
   width: 100%;
 }
 @media (min-width: 992px) {
-  .w-lg-40 {
-    width: 40%;
+  .h-lg-40 {
+    height: 40%;
+    object-fit: cover;
   }
 }
 

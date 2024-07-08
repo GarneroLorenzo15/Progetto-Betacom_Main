@@ -80,7 +80,7 @@ app.post('/api/login', async (req, res) => {
 app.post('/api/login/google/:email', async (req, res) => {
 
     const { email } = req.params;
-    
+     
     try{
         const rows = await new Promise((resolve, reject) => {
             connection.query('SELECT * FROM utente WHERE email = ?', [email], (err, rows) => {
@@ -88,7 +88,7 @@ app.post('/api/login/google/:email', async (req, res) => {
                     reject(err);
                 } else if (rows) {
                     resolve(rows);
-                }
+                } 
             });
         });
 
@@ -96,7 +96,7 @@ app.post('/api/login/google/:email', async (req, res) => {
             let user = rows[0];
             delete user.password;
             const token = jwt.sign({ ...user }, secretKey, { expiresIn: '10h' });
-            return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente });
+            return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente, pass: rows[0].password });
         } else if (rows.length <= 0) {
             res.status(401).json({ error: 'Non autorizzato' });
         }

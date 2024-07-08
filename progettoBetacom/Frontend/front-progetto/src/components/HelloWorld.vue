@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable -->
-  <div class="hello">
+  <div class="hello h-900">
     <div class="container margin-top h-auto">
       <div class="row" style="height: 200px">
         <figure class="w-full d-flex justify-content-center">
@@ -191,6 +191,9 @@ export default {
   width: 40%;
 }
 
+.h-900{
+  height: 900px;
+}
 @media (min-width: 992px) {
   .w-lg-40 {
     width: 40%;
