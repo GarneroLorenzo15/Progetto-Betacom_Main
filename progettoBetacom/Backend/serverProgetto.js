@@ -97,6 +97,7 @@ app.post('/api/login/google/:email', async (req, res) => {
             delete user.password;
             const token = jwt.sign({ ...user }, secretKey, { expiresIn: '10h' });
             return res.status(200).json({ token: token, admin: rows[0].admin, utente: rows[0].id_Utente, pass: rows[0].password });
+
         } else if (rows.length <= 0) {
             res.status(401).json({ error: 'Non autorizzato' });
         }
@@ -184,6 +185,8 @@ app.get('/api/utenti/:id', async (req, res) => {
         return  res.status(403).json('non autorizzato');       
     }
 
+
+    let google = req.session.user.google;
     try {
         const rows = await new Promise((resolve, reject) => {
             connection.query('SELECT * FROM utente WHERE id_Utente = ?', [userid], (err, rows) => {
@@ -200,7 +203,7 @@ app.get('/api/utenti/:id', async (req, res) => {
             delete row.password;
         })
 
-        res.status(200).json({ message: 'OK', rows });
+        res.status(200).json({ message: 'OK', rows , google: google});    
     } catch (err) {
         console.error('Error fetching users:', err);
         if (res.statusCode === 404) {
@@ -501,7 +504,7 @@ app.post('/api/eventi/add', async (req, res) => {
             res.status(400).json({ error: 'Il campo fornito non è un url valido' });
         } else if (immagine_evento && !urlCheck.test(immagine_evento)){
             res.status(400).json({ error: 'Il campo fornito non è un url valido' });
-        }
+        } 
    
  
 
@@ -524,9 +527,7 @@ app.post('/api/eventi/add', async (req, res) => {
 
     } catch (err) {
         console.error('Errore durante l\'inserimento dell\'evento:', err);
-        if (err.code === 'ER_BAD_FIELD_ERROR') {
-            res.status(400).json({ error: 'Il campo fornito non è valido' });
-        } else {
+        if (res.statusCode === 500) {
             res.status(500).json({ error: 'Si è verificato un errore durante l\'elaborazione della richiesta' });
         }
     }
@@ -736,7 +737,7 @@ app.get('/api/voti/count', async (req, res) => {
         }
     }
 });
-
+ 
 
 
 /**

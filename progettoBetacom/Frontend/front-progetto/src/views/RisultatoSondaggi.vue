@@ -28,9 +28,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card mb-5">
                     <p class=" d-flex justify-content-center my-2">Grafico Sondaggio</p>
-                    <canvas class="my-3" id="pieChart"></canvas>
+                    <canvas class="my-3  d-flex justify-content-center" id="pieChart"></canvas>
                 </div>
         </div>
     </div>
@@ -154,4 +154,12 @@ template{
     background-size: cover;
     height: auto;
 }
+
+@media (min-width: 992px) {
+    #pieChart {
+        margin: auto;
+        max-width: 500px; 
+    }
+}
+
 </style>

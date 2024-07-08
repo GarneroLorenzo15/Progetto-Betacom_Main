@@ -156,6 +156,12 @@ export default {
     height: 40%;
     object-fit: cover;
   }
+
+  img{
+    height: 20rem;
+    image-rendering: optimizeQuality;
+    object-fit: cover;
+  }
 }
 
 .bg-white {
